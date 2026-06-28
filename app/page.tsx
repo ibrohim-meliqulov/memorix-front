@@ -26,6 +26,7 @@ interface Stats {
   streak: number;
   totalStudied: number;
   weekly: number[];
+  limits?: { decks: number; cards: number };
 }
 
 interface User {
@@ -39,7 +40,7 @@ interface QuizScore {
   wrong: number;
 }
 
-type Screen = "home" | "create" | "study" | "quiz" | "pro";
+type Screen = "home" | "create" | "study" | "quiz" | "pro" | "account" | "progress";
 type Lang = "english" | "russian" | "korean";
 type InputMethod = "text" | "image";
 type PricingType = "monthly" | "yearly";
@@ -342,6 +343,7 @@ export default function MemorixPage() {
   const switchScreen = (name: Screen) => {
     setActiveScreen(name);
     if (name === "home") loadHomeData();
+    if (name === "progress") loadHomeData();
     if (name === "quiz") setQuizPhase("home");
     if (name === "study") {
       // If not in active study session, show study home
@@ -954,6 +956,9 @@ export default function MemorixPage() {
         .ob-feature-text { font-size: 13px; color: rgba(255,255,255,0.7); line-height: 1.4; }
         .ob-feature-text strong { color: white; display: block; margin-bottom: 2px; }
 
+        /* Progress sahifasi */
+        #screen-progress { max-width: 720px; margin: 0 auto; }
+
         /* home-layout: mobile da bitta ustun */
         .home-layout { display: flex; flex-direction: column; gap: 0; }
         .home-right { margin-top: 4px; }
@@ -1133,8 +1138,12 @@ export default function MemorixPage() {
           .flip-back .fc-trans { font-size: 28px; }
 
           /* Kichik sahifalar — markazda */
-          #screen-create, #screen-quiz, #screen-pro {
+          #screen-create, #screen-quiz, #screen-pro, #screen-account {
             max-width: 660px;
+            margin: 0 auto;
+          }
+          #screen-progress {
+            max-width: 800px;
             margin: 0 auto;
           }
 
@@ -1292,6 +1301,20 @@ export default function MemorixPage() {
             <div className="home-layout">
               <div className="home-left">
 
+                {/* Jump back in — oxirgi to'plam */}
+                {decks.length > 0 && (
+                  <div style={{ background: "linear-gradient(135deg,rgba(16,185,129,0.1),rgba(14,165,233,0.1))", border: "1px solid rgba(16,185,129,0.25)", borderRadius: "var(--radius)", padding: "12px 14px", marginBottom: 12, cursor: "pointer", display: "flex", alignItems: "center", gap: 12 }}
+                    onClick={() => openDeckForStudy(decks[0].id, decks[0].description || "")}
+                  >
+                    <span style={{ fontSize: 18 }}>⚡</span>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(16,185,129,0.9)", textTransform: "uppercase", letterSpacing: "0.06em" }}>Davom etish</div>
+                      <div style={{ fontSize: 13, fontWeight: 700, color: "white", marginTop: 1 }}>{decks[0].title}</div>
+                    </div>
+                    <div style={{ fontSize: 12, fontWeight: 700, color: "rgba(16,185,129,0.8)" }}>▶</div>
+                  </div>
+                )}
+
                 {/* Streak Banner */}
                 {streak > 0 && (
                   <div className="streak-banner" style={{ marginTop: 0 }}>
@@ -1311,9 +1334,30 @@ export default function MemorixPage() {
                   {!stats && decks.length === 0 ? (
                     <div className="loader"><div className="spinner" /><p>Yuklanmoqda...</p></div>
                   ) : decks.length === 0 ? (
-                    <div className="empty-state">
-                      <div className="icon">📚</div>
-                      <p>Hali to'plamlar yo'q.<br />"Yaratish" bo'limidan birinchisini yarating!</p>
+                    /* SMART EMPTY STATE */
+                    <div style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 22, padding: "28px 20px", textAlign: "center", backdropFilter: "blur(16px)" }}>
+                      <div style={{ fontSize: 52, marginBottom: 12, display: "block", animation: "obFloat 3s ease-in-out infinite" }}>✨</div>
+                      <div style={{ fontSize: 17, fontWeight: 800, color: "white", marginBottom: 6 }}>Birinchi to'plamingizni yarating!</div>
+                      <div style={{ fontSize: 13, color: "rgba(255,255,255,0.5)", lineHeight: 1.5, marginBottom: 20 }}>Matn yoki rasm yuboring — AI o'zi flashcard yaratib beradi</div>
+                      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 16 }}>
+                        <button style={{ padding: "16px 12px", borderRadius: 16, background: "linear-gradient(135deg,rgba(108,92,231,0.35),rgba(108,92,231,0.15))", border: "1px solid rgba(108,92,231,0.5)", cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "center", gap: 6, fontFamily: "inherit" }} onClick={() => { switchScreen("create"); setInputMethod("text"); }}>
+                          <span style={{ fontSize: 26 }}>📝</span>
+                          <span style={{ fontSize: 12, fontWeight: 700, color: "white" }}>Matn</span>
+                          <span style={{ fontSize: 10, color: "rgba(255,255,255,0.5)" }}>Paste qiling</span>
+                        </button>
+                        <button style={{ padding: "16px 12px", borderRadius: 16, background: "linear-gradient(135deg,rgba(168,85,247,0.35),rgba(168,85,247,0.15))", border: "1px solid rgba(168,85,247,0.5)", cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "center", gap: 6, fontFamily: "inherit" }} onClick={() => { switchScreen("create"); setInputMethod("image"); }}>
+                          <span style={{ fontSize: 26 }}>📷</span>
+                          <span style={{ fontSize: 12, fontWeight: 700, color: "white" }}>Rasm</span>
+                          <span style={{ fontSize: 10, color: "rgba(255,255,255,0.5)" }}>Lug'at rasmi</span>
+                        </button>
+                      </div>
+                      <div style={{ background: "rgba(16,185,129,0.08)", border: "1px solid rgba(16,185,129,0.2)", borderRadius: 14, padding: "12px 14px", display: "flex", alignItems: "center", gap: 10, textAlign: "left" }}>
+                        <span style={{ fontSize: 20, flexShrink: 0 }}>💡</span>
+                        <div style={{ fontSize: 12, color: "rgba(255,255,255,0.6)", lineHeight: 1.4 }}>
+                          <strong style={{ color: "rgba(16,185,129,0.9)", display: "block", fontSize: 11, marginBottom: 1 }}>Tezkor yo'l</strong>
+                          Lug'at sahifasini rasmga oling — AI so'zlarni o'zi ajratadi
+                        </div>
+                      </div>
                     </div>
                   ) : (
                     decks.map((deck, i) => {
@@ -1342,6 +1386,21 @@ export default function MemorixPage() {
                         </div>
                       );
                     })
+                  )}
+                  {/* Yangi to'plam CTA — faqat decks bor bo'lganda */}
+                  {decks.length > 0 && (
+                    <div style={{ marginTop: 12 }}>
+                      <button
+                        style={{ width: "100%", background: "linear-gradient(135deg,rgba(108,92,231,0.25),rgba(168,85,247,0.15))", border: "1px dashed rgba(168,85,247,0.4)", borderRadius: "var(--radius)", padding: "14px 18px", display: "flex", alignItems: "center", justifyContent: "space-between", cursor: "pointer", fontFamily: "inherit" }}
+                        onClick={() => switchScreen("create")}
+                      >
+                        <div style={{ textAlign: "left" }}>
+                          <div style={{ fontSize: 13, fontWeight: 700, color: "white" }}>+ Yangi to'plam yarating</div>
+                          <div style={{ fontSize: 11, color: "rgba(255,255,255,0.45)", marginTop: 2 }}>AI bilan flashcard yarating</div>
+                        </div>
+                        <span style={{ fontSize: 24 }}>✨</span>
+                      </button>
+                    </div>
                   )}
                 </div>
 
@@ -1620,13 +1679,22 @@ export default function MemorixPage() {
                       const langBadge = langMatch ? langMatch[1] : "";
                       const count = deck._count?.flashcards ?? 0;
                       return (
-                        <div key={deck.id} className="deck-card" onClick={() => openDeckForStudy(deck.id, desc)}>
-                          <div className={`deck-icon ${iconClass}`}>{emoji}</div>
-                          <div className="deck-body">
+                        <div key={deck.id} style={{ background: "var(--glass)", border: "1px solid var(--glass-border)", borderRadius: "var(--radius)", padding: "12px 16px", display: "flex", alignItems: "center", gap: 12, marginBottom: 0 }}>
+                          <div className={`deck-icon ${iconClass}`} onClick={() => openDeckForStudy(deck.id, desc)} style={{ cursor: "pointer" }}>{emoji}</div>
+                          <div className="deck-body" onClick={() => openDeckForStudy(deck.id, desc)} style={{ cursor: "pointer", flex: 1, minWidth: 0 }}>
                             <div className="deck-title">{deck.title}</div>
                             <div className="deck-meta">{count} ta so'z{langBadge ? " • " + langBadge : ""}</div>
                           </div>
-                          <div style={{ color: "rgba(255,255,255,0.3)", fontSize: 18 }}>▶</div>
+                          <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
+                            <button
+                              style={{ background: "rgba(108,92,231,0.2)", border: "1px solid rgba(108,92,231,0.35)", borderRadius: 8, padding: "6px 10px", cursor: "pointer", fontFamily: "inherit", color: "#c4b5fd", fontSize: 11, fontWeight: 700 }}
+                              onClick={(e) => { e.stopPropagation(); openDeckForStudy(deck.id, desc); }}
+                            >▶ O'qish</button>
+                            <button
+                              style={{ background: "rgba(168,85,247,0.2)", border: "1px solid rgba(168,85,247,0.35)", borderRadius: 8, padding: "6px 10px", cursor: "pointer", fontFamily: "inherit", color: "#e9d5ff", fontSize: 11, fontWeight: 700 }}
+                              onClick={(e) => { e.stopPropagation(); switchScreen("quiz"); selectQuizDeck(deck.id); }}
+                            >🎮 Quiz</button>
+                          </div>
                         </div>
                       );
                     })}
@@ -1634,6 +1702,215 @@ export default function MemorixPage() {
                 </div>
               )
             )}
+          </div>
+
+          {/* ── PROGRESS SCREEN ── */}
+          <div className={`screen${activeScreen === "progress" ? " active" : ""}`} id="screen-progress">
+            <div style={{ maxWidth: 720, margin: "0 auto" }}>
+
+              {/* Streak banner */}
+              {streak > 0 && (
+                <div className="streak-banner" style={{ marginBottom: 16 }}>
+                  <div className="streak-fire">{streakFire}</div>
+                  <div className="streak-info">
+                    <div className="streak-num">{streak} kun</div>
+                    <div className="streak-label">ketma-ket o'rganmoqdasiz</div>
+                  </div>
+                  {streakBadge && (
+                    <div className={`streak-badge-pill ${streakBadge.cls}`}>{streakBadge.label}</div>
+                  )}
+                </div>
+              )}
+
+              {/* Stats kartalar — 4 ta */}
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 16 }}>
+                <div style={{ background: "var(--glass)", border: "1px solid var(--glass-border)", borderRadius: "var(--radius)", padding: 20, textAlign: "center" }}>
+                  <div style={{ fontSize: 32, marginBottom: 6 }}>📚</div>
+                  <div style={{ fontSize: 28, fontWeight: 800, color: "white" }}>{stats?.totalDecks ?? 0}</div>
+                  <div style={{ fontSize: 11, color: "var(--text-dim)", marginTop: 3 }}>To'plamlar</div>
+                  {stats?.limits && stats.limits.decks !== Infinity && (
+                    <div style={{ marginTop: 8 }}>
+                      <div style={{ height: 4, background: "rgba(255,255,255,0.08)", borderRadius: 100, overflow: "hidden" }}>
+                        <div style={{ height: "100%", width: `${Math.min(100, ((stats.totalDecks) / (stats.limits.decks)) * 100)}%`, background: "linear-gradient(90deg,#6C5CE7,#a855f7)", borderRadius: 100 }} />
+                      </div>
+                      <div style={{ fontSize: 10, color: "var(--text-dim)", marginTop: 4 }}>{stats.totalDecks} / {stats.limits.decks}</div>
+                    </div>
+                  )}
+                </div>
+                <div style={{ background: "var(--glass)", border: "1px solid var(--glass-border)", borderRadius: "var(--radius)", padding: 20, textAlign: "center" }}>
+                  <div style={{ fontSize: 32, marginBottom: 6 }}>📝</div>
+                  <div style={{ fontSize: 28, fontWeight: 800, color: "white" }}>{stats?.totalFlashcards ?? 0}</div>
+                  <div style={{ fontSize: 11, color: "var(--text-dim)", marginTop: 3 }}>So'zlar</div>
+                  {stats?.limits && stats.limits.cards !== Infinity && (
+                    <div style={{ marginTop: 8 }}>
+                      <div style={{ height: 4, background: "rgba(255,255,255,0.08)", borderRadius: 100, overflow: "hidden" }}>
+                        <div style={{ height: "100%", width: `${Math.min(100, ((stats.totalFlashcards) / (stats.limits.cards)) * 100)}%`, background: "linear-gradient(90deg,#10b981,#0ea5e9)", borderRadius: 100 }} />
+                      </div>
+                      <div style={{ fontSize: 10, color: "var(--text-dim)", marginTop: 4 }}>{stats?.totalFlashcards ?? 0} / {stats?.limits?.cards ?? 30}</div>
+                    </div>
+                  )}
+                </div>
+                <div style={{ background: "var(--glass)", border: "1px solid var(--glass-border)", borderRadius: "var(--radius)", padding: 20, textAlign: "center" }}>
+                  <div style={{ fontSize: 32, marginBottom: 6 }}>🔥</div>
+                  <div style={{ fontSize: 28, fontWeight: 800, color: "#fbbf24" }}>{streak}</div>
+                  <div style={{ fontSize: 11, color: "var(--text-dim)", marginTop: 3 }}>Streak kun</div>
+                </div>
+                <div style={{ background: "var(--glass)", border: "1px solid var(--glass-border)", borderRadius: "var(--radius)", padding: 20, textAlign: "center" }}>
+                  <div style={{ fontSize: 32, marginBottom: 6 }}>🎯</div>
+                  <div style={{ fontSize: 28, fontWeight: 800, color: "white" }}>{stats?.totalStudied ?? 0}</div>
+                  <div style={{ fontSize: 11, color: "var(--text-dim)", marginTop: 3 }}>Jami o'rganilgan</div>
+                </div>
+              </div>
+
+              {/* Haftalik grafik — katta */}
+              <div style={{ background: "var(--glass)", border: "1px solid var(--glass-border)", borderRadius: "var(--radius)", padding: 20, marginBottom: 16 }}>
+                <div style={{ fontSize: 12, fontWeight: 700, color: "var(--text-dim)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 16 }}>Haftalik faollik</div>
+                <div style={{ display: "flex", gap: 8, alignItems: "flex-end", height: 120 }}>
+                  {weekly.map((val, i) => {
+                    const h = Math.round((val / Math.max(...weekly, 1)) * 100);
+                    const isToday = i === todayIdx;
+                    return (
+                      <div key={i} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 6 }}>
+                        <div style={{ fontSize: 11, color: "var(--text-dim)", fontWeight: 600, minHeight: 14 }}>{val > 0 ? val : ""}</div>
+                        <div style={{ width: "100%", flex: 1, display: "flex", alignItems: "flex-end" }}>
+                          <div style={{
+                            width: "100%",
+                            height: `${h}%`,
+                            minHeight: 4,
+                            borderRadius: "6px 6px 0 0",
+                            background: isToday
+                              ? "linear-gradient(180deg,#a855f7,#6C5CE7)"
+                              : val > 0
+                                ? "rgba(108,92,231,0.45)"
+                                : "rgba(255,255,255,0.07)",
+                            boxShadow: isToday ? "0 0 12px rgba(168,85,247,0.5)" : "none",
+                            transition: "height 0.3s ease"
+                          }} />
+                        </div>
+                        <div style={{ fontSize: 11, color: isToday ? "#a855f7" : "var(--text-dim)", fontWeight: isToday ? 700 : 400 }}>
+                          {dayLabels[i]}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Plan progress */}
+              <div style={{ background: "linear-gradient(135deg,rgba(108,92,231,0.15),rgba(168,85,247,0.1))", border: "1px solid rgba(168,85,247,0.3)", borderRadius: "var(--radius)", padding: 18, marginBottom: 16 }}>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
+                  <div style={{ fontSize: 13, fontWeight: 700, color: "white" }}>👑 {stats?.plan ?? "FREE"} reja</div>
+                  <button onClick={() => switchScreen("pro")} style={{ fontSize: 11, fontWeight: 700, color: "#c4b5fd", background: "rgba(168,85,247,0.2)", border: "1px solid rgba(168,85,247,0.4)", borderRadius: 100, padding: "4px 12px", cursor: "pointer", fontFamily: "inherit" }}>
+                    Upgrade →
+                  </button>
+                </div>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+                  <div>
+                    <div style={{ fontSize: 11, color: "var(--text-dim)", marginBottom: 4 }}>To'plamlar</div>
+                    <div style={{ height: 6, background: "rgba(255,255,255,0.08)", borderRadius: 100, overflow: "hidden" }}>
+                      <div style={{ height: "100%", width: `${stats?.limits?.decks && stats.limits.decks !== Infinity ? Math.min(100, ((stats.totalDecks ?? 0) / (stats.limits.decks)) * 100) : 0}%`, background: "linear-gradient(90deg,#6C5CE7,#a855f7)", borderRadius: 100 }} />
+                    </div>
+                    <div style={{ fontSize: 10, color: "var(--text-dim)", marginTop: 3 }}>{stats?.totalDecks ?? 0} / {stats?.limits?.decks ?? 3}</div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: 11, color: "var(--text-dim)", marginBottom: 4 }}>So'zlar</div>
+                    <div style={{ height: 6, background: "rgba(255,255,255,0.08)", borderRadius: 100, overflow: "hidden" }}>
+                      <div style={{ height: "100%", width: `${stats?.limits?.cards && stats.limits.cards !== Infinity ? Math.min(100, ((stats.totalFlashcards ?? 0) / (stats.limits.cards)) * 100) : 0}%`, background: "linear-gradient(90deg,#10b981,#0ea5e9)", borderRadius: 100 }} />
+                    </div>
+                    <div style={{ fontSize: 10, color: "var(--text-dim)", marginTop: 3 }}>{stats?.totalFlashcards ?? 0} / {stats?.limits?.cards ?? 30}</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Jump back in — oxirgi to'plam */}
+              {decks.length > 0 && (
+                <div style={{ marginBottom: 16 }}>
+                  <div className="section-label">Davom etish</div>
+                  <div
+                    style={{ background: "linear-gradient(135deg,rgba(108,92,231,0.2),rgba(168,85,247,0.1))", border: "1px solid rgba(168,85,247,0.3)", borderRadius: "var(--radius)", padding: 16, cursor: "pointer", display: "flex", alignItems: "center", gap: 14 }}
+                    onClick={() => openDeckForStudy(decks[0].id, decks[0].description || "")}
+                  >
+                    <div style={{ width: 48, height: 48, borderRadius: 14, background: "linear-gradient(135deg,#6C5CE7,#a855f7)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22, flexShrink: 0 }}>
+                      {getDeckEmoji(decks[0].title)}
+                    </div>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ fontSize: 15, fontWeight: 700, color: "white" }}>{decks[0].title}</div>
+                      <div style={{ fontSize: 12, color: "rgba(255,255,255,0.45)", marginTop: 2 }}>{decks[0]._count?.flashcards ?? 0} ta so'z</div>
+                    </div>
+                    <div style={{ background: "linear-gradient(135deg,#6C5CE7,#a855f7)", color: "white", fontSize: 12, fontWeight: 700, padding: "8px 16px", borderRadius: 100, flexShrink: 0 }}>
+                      ▶ Boshlash
+                    </div>
+                  </div>
+                </div>
+              )}
+
+            </div>
+          </div>
+
+          {/* ── ACCOUNT SCREEN ── */}
+          <div className={`screen${activeScreen === "account" ? " active" : ""}`} id="screen-account">
+            <div style={{ maxWidth: 480, margin: "0 auto" }}>
+              {/* Avatar card */}
+              <div style={{ textAlign: "center", padding: "32px 20px 24px", background: "var(--glass)", border: "1px solid var(--glass-border)", borderRadius: "var(--radius)", marginBottom: 16 }}>
+                <div style={{ width: 72, height: 72, borderRadius: "50%", background: "linear-gradient(135deg,#6C5CE7,#a855f7)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 28, fontWeight: 800, color: "white", margin: "0 auto 14px" }}>{avatarLetter}</div>
+                <div style={{ fontSize: 20, fontWeight: 800, color: "white", marginBottom: 4 }}>{userName}</div>
+                <div style={{ fontSize: 13, color: "var(--text-dim)", marginBottom: 14 }}>{user?.telegramId ? "@" + user.telegramId : "Telegram foydalanuvchi"}</div>
+                <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(108,92,231,0.2)", border: "1px solid rgba(108,92,231,0.35)", borderRadius: 100, padding: "6px 14px", fontSize: 12, fontWeight: 700, color: "#c4b5fd" }}>
+                  👑 {stats?.plan ?? "FREE"} reja
+                </div>
+              </div>
+
+              {/* Stats */}
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10, marginBottom: 16 }}>
+                <div style={{ background: "var(--glass)", border: "1px solid var(--glass-border)", borderRadius: "var(--radius-sm)", padding: "14px 12px", textAlign: "center" }}>
+                  <div style={{ fontSize: 22, fontWeight: 800, color: "white" }}>{stats?.totalDecks ?? 0}</div>
+                  <div style={{ fontSize: 11, color: "var(--text-dim)", marginTop: 2 }}>To'plamlar</div>
+                </div>
+                <div style={{ background: "var(--glass)", border: "1px solid var(--glass-border)", borderRadius: "var(--radius-sm)", padding: "14px 12px", textAlign: "center" }}>
+                  <div style={{ fontSize: 22, fontWeight: 800, color: "white" }}>{stats?.totalFlashcards ?? 0}</div>
+                  <div style={{ fontSize: 11, color: "var(--text-dim)", marginTop: 2 }}>So'zlar</div>
+                </div>
+                <div style={{ background: "var(--glass)", border: "1px solid var(--glass-border)", borderRadius: "var(--radius-sm)", padding: "14px 12px", textAlign: "center" }}>
+                  <div style={{ fontSize: 22, fontWeight: 800, color: "white" }}>{streak > 0 ? streak : 0}</div>
+                  <div style={{ fontSize: 11, color: "var(--text-dim)", marginTop: 2 }}>Streak 🔥</div>
+                </div>
+              </div>
+
+              {/* Menu items */}
+              <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 16 }}>
+                <button onClick={() => switchScreen("pro")} style={{ display: "flex", alignItems: "center", gap: 14, padding: "14px 16px", background: "linear-gradient(135deg,rgba(108,92,231,0.2),rgba(168,85,247,0.1))", border: "1px solid rgba(168,85,247,0.3)", borderRadius: "var(--radius-sm)", cursor: "pointer", fontFamily: "inherit", color: "white", fontSize: 14, fontWeight: 600 }}>
+                  <span style={{ fontSize: 20 }}>👑</span>
+                  <span style={{ flex: 1, textAlign: "left" }}>Premium rejaga o'tish</span>
+                  <span style={{ color: "var(--text-dim)", fontSize: 16 }}>→</span>
+                </button>
+                <button onClick={() => switchScreen("home")} style={{ display: "flex", alignItems: "center", gap: 14, padding: "14px 16px", background: "var(--glass)", border: "1px solid var(--glass-border)", borderRadius: "var(--radius-sm)", cursor: "pointer", fontFamily: "inherit", color: "white", fontSize: 14, fontWeight: 500 }}>
+                  <span style={{ fontSize: 20 }}>📚</span>
+                  <span style={{ flex: 1, textAlign: "left" }}>Mening to'plamlarim</span>
+                  <span style={{ color: "var(--text-dim)", fontSize: 16 }}>→</span>
+                </button>
+              </div>
+
+              {/* Log out */}
+              <button
+                onClick={() => {
+                  localStorage.removeItem("memorix_onboarded");
+                  setAccessToken(null);
+                  setUser(null);
+                  setDecks([]);
+                  setStats(null);
+                  showToast("Chiqildi ✓");
+                  window.location.reload();
+                }}
+                style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center", gap: 10, padding: "14px", background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.2)", borderRadius: "var(--radius-sm)", cursor: "pointer", fontFamily: "inherit", color: "#ef4444", fontSize: 14, fontWeight: 700 }}
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" />
+                  <polyline points="16 17 21 12 16 7" />
+                  <line x1="21" y1="12" x2="9" y2="12" />
+                </svg>
+                Chiqish (Log out)
+              </button>
+            </div>
           </div>
 
           {/* ── QUIZ SCREEN ── */}
@@ -1985,18 +2262,49 @@ export default function MemorixPage() {
               </svg>
               <span>PRO</span>
             </button>
-            <button className={`nav-item${activeScreen === "quiz" ? " active" : ""}`} onClick={() => switchScreen("quiz")}>
+            <button className={`nav-item${activeScreen === "progress" ? " active" : ""}`} onClick={() => switchScreen("progress")}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M9 11l3 3L22 4" />
-                <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" />
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
               </svg>
-              <span>Quiz</span>
+              <span>Progress</span>
+            </button>
+            <button className={`nav-item${activeScreen === "account" ? " active" : ""}`} onClick={() => switchScreen("account")}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="12" cy="8" r="4" />
+                <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
+              </svg>
+              <span>Profil</span>
             </button>
 
-            {/* Desktop: avatar at bottom */}
-            <div className="sidebar-avatar-wrap">
-              <div className="avatar">{avatarLetter}</div>
-              <div className="avatar-name">{userName}</div>
+            {/* Desktop: avatar + logout at bottom */}
+            <div className="sidebar-avatar-wrap" style={{ flexDirection: "column", alignItems: "stretch", gap: 8 }}>
+              <button
+                className={`nav-item${activeScreen === "account" ? " active" : ""}`}
+                onClick={() => switchScreen("account")}
+                style={{ justifyContent: "flex-start" }}
+              >
+                <div className="avatar" style={{ width: 28, height: 28, fontSize: 12 }}>{avatarLetter}</div>
+                <span style={{ fontSize: 13 }}>{userName}</span>
+              </button>
+              <button
+                onClick={() => {
+                  localStorage.removeItem("memorix_onboarded");
+                  setAccessToken(null);
+                  setUser(null);
+                  setDecks([]);
+                  setStats(null);
+                  showToast("Chiqildi ✓");
+                  window.location.reload();
+                }}
+                style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 14px", borderRadius: 10, background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.15)", cursor: "pointer", fontFamily: "inherit", color: "#ef4444", fontSize: 13, fontWeight: 600 }}
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" />
+                  <polyline points="16 17 21 12 16 7" />
+                  <line x1="21" y1="12" x2="9" y2="12" />
+                </svg>
+                Log out
+              </button>
             </div>
           </div>
 
