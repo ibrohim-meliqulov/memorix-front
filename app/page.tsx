@@ -1020,46 +1020,88 @@ export default function MemorixPage() {
           .bottom-nav.sidebar-closed .sidebar-avatar-wrap {
             justify-content: center;
             padding: 14px 0 20px;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
           }
           .bottom-nav.sidebar-closed .avatar-name,
-          .bottom-nav.sidebar-closed .sidebar-avatar-wrap button span,
-          .bottom-nav.sidebar-closed .sidebar-avatar-wrap > button > span {
+          .bottom-nav.sidebar-closed .sidebar-avatar-wrap > button > span,
+          .bottom-nav.sidebar-closed .logout-text {
             display: none;
           }
-          .bottom-nav.sidebar-closed .sidebar-avatar-wrap button {
+          /* Avatar tugma — yopiq holatda markazda */
+          .bottom-nav.sidebar-closed .sidebar-avatar-wrap > .nav-item {
             justify-content: center;
-            padding: 8px 4px;
+            padding: 7px 0;
+          }
+          /* Logout — yopiq holatda markazda, kvadrat icon */
+          .bottom-nav.sidebar-closed .logout-btn {
+            justify-content: center !important;
+            padding: 7px 0 !important;
+            margin: 0 auto !important;
+            width: 36px !important;
+            height: 36px !important;
+            border-radius: 10px !important;
+            gap: 0 !important;
           }
           .bottom-nav::before { display: none; }
 
-          /* Toggle button — always visible, floats on sidebar edge */
+          /* Sidebar header row — logo + toggle bir qatorda */
+          .sidebar-header-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 10px 14px 14px;
+            border-bottom: 1px solid rgba(0,0,0,0.07);
+            margin-bottom: 8px;
+          }
+          .sidebar-logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            overflow: hidden;
+          }
+          .sidebar-logo-text {
+            font-size: 15px;
+            font-weight: 800;
+            color: #1e293b;
+            letter-spacing: -0.02em;
+            white-space: nowrap;
+            transition: opacity 0.2s, width 0.2s;
+          }
+          /* Toggle — sidebar ichida, doim ko'rinadi */
           .sidebar-toggle {
             display: flex;
-            position: fixed;
-            top: 18px;
-            left: 18px;
-            z-index: 300;
-            width: 34px;
-            height: 34px;
-            border-radius: 10px;
-            background: rgba(255,255,255,0.95);
-            border: 1px solid rgba(0,0,0,0.09);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.10);
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            background: rgba(108,92,231,0.08);
+            border: 1px solid rgba(108,92,231,0.15);
             cursor: pointer;
             align-items: center;
             justify-content: center;
-            transition: background 0.15s, box-shadow 0.15s;
             color: #6C5CE7;
+            flex-shrink: 0;
+            transition: background 0.15s;
           }
           .sidebar-toggle:hover {
-            background: white;
-            box-shadow: 0 4px 18px rgba(108,92,231,0.18);
+            background: rgba(108,92,231,0.15);
+          }
+          /* Sidebar yopiq — logo matni yashirin, toggle markazda */
+          .bottom-nav.sidebar-closed .sidebar-header-row {
+            justify-content: center;
+            padding: 14px 0;
+          }
+          .bottom-nav.sidebar-closed .sidebar-logo-text {
+            display: none;
+          }
+          .bottom-nav.sidebar-closed .sidebar-logo svg {
+            display: none;
           }
 
           .sidebar-top {
             display: flex;
             flex-direction: column;
-            padding: 16px 14px 12px;
             flex-shrink: 0;
           }
 
@@ -1084,12 +1126,32 @@ export default function MemorixPage() {
           .sidebar-avatar-wrap {
             margin-top: auto;
             display: flex;
-            flex-direction: row;
-            align-items: center;
-            gap: 10px;
-            padding: 14px 16px 20px;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 4px;
+            padding: 10px 10px 16px;
             border-top: 1px solid rgba(0,0,0,0.07);
             white-space: nowrap;
+          }
+          /* Profile tugma — logout ga o'xshab kichik padding */
+          .sidebar-avatar-wrap > .nav-item {
+            padding: 7px 10px;
+            justify-content: flex-start;
+          }
+          .logout-btn {
+            display: flex !important;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 10px !important;
+            border-radius: 10px !important;
+            background: rgba(239,68,68,0.07) !important;
+            border: 1px solid rgba(239,68,68,0.13) !important;
+            cursor: pointer;
+            font-family: inherit;
+            color: #ef4444 !important;
+            font-size: 12px !important;
+            font-weight: 600;
+            width: 100%;
           }
           .avatar {
             width: 28px; height: 28px;
@@ -1401,8 +1463,6 @@ export default function MemorixPage() {
                 {user ? `Salom, ${userName} 👋` : "Xush kelibsiz 👋"}
               </div>
             </div>
-            {/* Mobile avatar — hidden on desktop (moved to sidebar) */}
-            <div className="avatar avatar-mobile">{avatarLetter}</div>
           </div>
 
           {/* ── HOME SCREEN ── */}
@@ -2312,31 +2372,33 @@ export default function MemorixPage() {
             </div>
           </div>
 
-          {/* ── SIDEBAR TOGGLE (desktop only) ── */}
-          <button
-            className="sidebar-toggle"
-            onClick={() => setSidebarOpen(o => !o)}
-            title={sidebarOpen ? "Yopish" : "Ochish"}
-          >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-              {sidebarOpen
-                ? <path d="M15 18l-6-6 6-6" />
-                : <path d="M9 18l6-6-6-6" />}
-            </svg>
-          </button>
-
           {/* ── BOTTOM NAV (mobile) / SIDEBAR (desktop) ── */}
           <div className={`bottom-nav${sidebarOpen ? "" : " sidebar-closed"}`}>
-            {/* Desktop sidebar logo */}
+            {/* Desktop sidebar logo + toggle */}
             <div className="sidebar-top">
-              <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "6px 4px 14px 52px", borderBottom: "1px solid rgba(0,0,0,0.07)", marginBottom: 8 }}>
-                <svg width="22" height="22" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect width="32" height="32" rx="8" fill="#6C5CE7" />
-                  <rect x="7" y="9" width="18" height="14" rx="3" fill="white" fillOpacity="0.15" stroke="white" strokeWidth="1.5" />
-                  <line x1="11" y1="14" x2="21" y2="14" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
-                  <line x1="11" y1="18" x2="17" y2="18" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
-                </svg>
-                <span style={{ fontSize: 15, fontWeight: 800, color: "#1e293b", letterSpacing: "-0.02em", whiteSpace: "nowrap" }}>Memorix</span>
+              <div className="sidebar-header-row">
+                {/* Logo — sidebar ochiq bo'lganda ko'rinadi */}
+                <div className="sidebar-logo">
+                  <svg width="22" height="22" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="32" height="32" rx="8" fill="#6C5CE7" />
+                    <rect x="7" y="9" width="18" height="14" rx="3" fill="white" fillOpacity="0.15" stroke="white" strokeWidth="1.5" />
+                    <line x1="11" y1="14" x2="21" y2="14" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
+                    <line x1="11" y1="18" x2="17" y2="18" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
+                  </svg>
+                  <span className="sidebar-logo-text">Memorix</span>
+                </div>
+                {/* Toggle — har doim ko'rinadi */}
+                <button
+                  className="sidebar-toggle"
+                  onClick={() => setSidebarOpen(o => !o)}
+                  title={sidebarOpen ? "Yopish" : "Ochish"}
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                    {sidebarOpen
+                      ? <path d="M15 18l-6-6 6-6" />
+                      : <path d="M9 18l6-6-6-6" />}
+                  </svg>
+                </button>
               </div>
             </div>
 
@@ -2371,23 +2433,15 @@ export default function MemorixPage() {
               </svg>
               <span>Progress</span>
             </button>
-            <button className={`nav-item${activeScreen === "account" ? " active" : ""}`} onClick={() => switchScreen("account")}>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <circle cx="12" cy="8" r="4" />
-                <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
-              </svg>
-              <span>Profil</span>
-            </button>
 
             {/* Desktop: avatar + logout at bottom */}
-            <div className="sidebar-avatar-wrap" style={{ flexDirection: "column", alignItems: "stretch", gap: 8 }}>
+            <div className="sidebar-avatar-wrap">
               <button
                 className={`nav-item${activeScreen === "account" ? " active" : ""}`}
                 onClick={() => switchScreen("account")}
-                style={{ justifyContent: "flex-start" }}
               >
                 <div className="avatar" style={{ width: 28, height: 28, fontSize: 12 }}>{avatarLetter}</div>
-                <span style={{ fontSize: 13 }}>{userName}</span>
+                <span className="avatar-name" style={{ fontSize: 13 }}>{userName}</span>
               </button>
               <button
                 onClick={() => {
@@ -2399,14 +2453,14 @@ export default function MemorixPage() {
                   showToast("Chiqildi ✓");
                   window.location.reload();
                 }}
-                style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 14px", borderRadius: 10, background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.15)", cursor: "pointer", fontFamily: "inherit", color: "#ef4444", fontSize: 13, fontWeight: 600 }}
+                className="logout-btn"
               >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ flexShrink: 0 }}>
                   <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" />
                   <polyline points="16 17 21 12 16 7" />
                   <line x1="21" y1="12" x2="9" y2="12" />
                 </svg>
-                Log out
+                <span className="logout-text">Log out</span>
               </button>
             </div>
           </div>
