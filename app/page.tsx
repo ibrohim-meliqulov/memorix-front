@@ -945,16 +945,17 @@ export default function MemorixPage() {
         /* sidebar-top only shows on desktop */
         .sidebar-top { display: none; }
         .sidebar-avatar-wrap { display: none; }
-        .ob-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.2); transition: all 0.3s ease; }
+        .ob-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.25); transition: all 0.3s ease; }
         .ob-dot.active { width: 24px; border-radius: 4px; background: var(--accent2); }
         .ob-icon { font-size: 80px; margin-bottom: 24px; animation: obFloat 3s ease-in-out infinite; }
         @keyframes obFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
-        .ob-title { font-size: 26px; font-weight: 800; color: white; letter-spacing: -0.02em; margin-bottom: 12px; }
-        .ob-desc { font-size: 15px; color: rgba(255,255,255,0.55); line-height: 1.6; max-width: 280px; }
-        .ob-feature { display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 14px 16px; margin-bottom: 10px; width: 100%; text-align: left; }
-        .ob-feature-icon { font-size: 24px; flex-shrink: 0; }
-        .ob-feature-text { font-size: 13px; color: rgba(255,255,255,0.7); line-height: 1.4; }
-        .ob-feature-text strong { color: white; display: block; margin-bottom: 2px; }
+        .ob-title { font-size: 28px; font-weight: 900; color: #ffffff; letter-spacing: -0.03em; margin-bottom: 14px; text-shadow: 0 2px 20px rgba(168,85,247,0.4); }
+        .ob-desc { font-size: 16px; color: rgba(255,255,255,0.78); line-height: 1.65; max-width: 290px; }
+        .ob-feature { display: flex; align-items: center; gap: 14px; background: rgba(255,255,255,0.10); border: 1px solid rgba(255,255,255,0.16); border-radius: 16px; padding: 15px 18px; margin-bottom: 10px; width: 100%; text-align: left; transition: background 0.15s; }
+        .ob-feature:hover { background: rgba(255,255,255,0.14); }
+        .ob-feature-icon { font-size: 26px; flex-shrink: 0; }
+        .ob-feature-text { font-size: 14px; color: rgba(255,255,255,0.82); line-height: 1.45; }
+        .ob-feature-text strong { color: #ffffff; display: block; margin-bottom: 3px; font-size: 15px; font-weight: 700; }
 
         /* Empty deck state */
         .empty-deck-state { background: rgba(255,255,255,0.05) !important; border-color: rgba(255,255,255,0.1) !important; }
@@ -1391,7 +1392,7 @@ export default function MemorixPage() {
           <div
             style={{
               position: "fixed", top: 0, left: 0, right: 0, bottom: 0,
-              background: "linear-gradient(135deg,#0a0015,#1a0035,#0d1545)",
+              background: "linear-gradient(160deg,#0d0025 0%,#1a0040 50%,#0a1550 100%)",
               zIndex: 1000, display: "flex", flexDirection: "column",
               alignItems: "center", justifyContent: "space-between",
               padding: "40px 24px 40px",
@@ -1440,7 +1441,7 @@ export default function MemorixPage() {
               {obIndex < OB_SLIDES.length - 1 && (
                 <button
                   onClick={finishOnboarding}
-                  style={{ background: "none", border: "none", color: "var(--text-dim)", fontSize: 13, width: "100%", padding: 14, cursor: "pointer", fontFamily: "inherit" }}
+                  style={{ background: "none", border: "none", color: "rgba(255,255,255,0.45)", fontSize: 14, width: "100%", padding: 14, cursor: "pointer", fontFamily: "inherit", marginTop: 4 }}
                 >
                   O'tkazib yuborish
                 </button>
