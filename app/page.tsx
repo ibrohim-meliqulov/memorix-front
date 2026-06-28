@@ -33,6 +33,7 @@ interface User {
   firstName?: string;
   lastName?: string;
   telegramId?: string;
+  onboarded?: boolean;
 }
 
 interface QuizScore {
@@ -270,8 +271,7 @@ export default function MemorixPage() {
             userData = await res.json();
             setUser(userData);
             // Check onboarding after URL token login too
-            const seen = localStorage.getItem("memorix_onboarded");
-            if (!seen) {
+            if (!userData?.onboarded) {
               setShowOnboarding(true);
               setObIndex(0);
             }
@@ -303,8 +303,7 @@ export default function MemorixPage() {
         setAccessToken(result.accessToken);
         setUser(result.user);
 
-        const seen = localStorage.getItem("memorix_onboarded");
-        if (!seen) {
+        if (!result.user?.onboarded) {
           setShowOnboarding(true);
           setObIndex(0);
         }
@@ -368,9 +367,15 @@ export default function MemorixPage() {
     }
   };
 
-  const finishOnboarding = () => {
-    localStorage.setItem("memorix_onboarded", "1");
+  const finishOnboarding = async () => {
     setShowOnboarding(false);
+    try {
+      await apiCall("/users/me", {
+        method: "PATCH",
+        body: JSON.stringify({ onboarded: true }),
+      });
+      setUser(prev => prev ? { ...prev, onboarded: true } : prev);
+    } catch (_) { }
   };
 
   // ─── CREATE ───────────────────────────────────────────────────────────────
