@@ -528,7 +528,7 @@ export default function MemorixPage() {
           if (badge && [3, 7, 14, 30].includes(newStreak)) {
             setCelebration({ streak: newStreak, badge });
           }
-        } catch {}
+        } catch { }
       }, 300);
       return;
     }
@@ -550,7 +550,7 @@ export default function MemorixPage() {
           return;
         }
       }
-    } catch {}
+    } catch { }
     if ("speechSynthesis" in window) {
       const u = new SpeechSynthesisUtterance(word);
       u.lang = langCode;
@@ -947,6 +947,153 @@ export default function MemorixPage() {
         .ob-feature-icon { font-size: 24px; flex-shrink: 0; }
         .ob-feature-text { font-size: 13px; color: rgba(255,255,255,0.7); line-height: 1.4; }
         .ob-feature-text strong { color: white; display: block; margin-bottom: 2px; }
+
+        /* ── DESKTOP LAYOUT ─────────────────────────────────────────── */
+        @media (min-width: 768px) {
+          /* Root becomes a flex row: sidebar + main */
+          .memorix-root {
+            display: flex;
+            flex-direction: row;
+            min-height: 100vh;
+            padding-bottom: 0;
+          }
+
+          /* Sidebar nav */
+          .bottom-nav {
+            position: fixed;
+            top: 0; left: 0; bottom: 0; right: auto;
+            width: 220px;
+            flex-direction: column;
+            border-top: none;
+            border-right: 1px solid rgba(255,255,255,0.07);
+            padding: 28px 12px 28px;
+            gap: 6px;
+            align-items: stretch;
+            background: rgba(10,0,21,0.92);
+          }
+
+          /* Sidebar brand at top */
+          .bottom-nav::before {
+            content: '● Memorix';
+            display: block;
+            font-size: 20px;
+            font-weight: 800;
+            color: white;
+            letter-spacing: -0.03em;
+            padding: 0 10px 24px;
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+            margin-bottom: 12px;
+          }
+
+          .nav-item {
+            flex-direction: row;
+            justify-content: flex-start;
+            gap: 10px;
+            padding: 11px 14px;
+            border-radius: 12px;
+            font-size: 13px;
+          }
+          .nav-item svg { width: 18px; height: 18px; flex-shrink: 0; }
+          .nav-item span { font-size: 13px; font-weight: 600; letter-spacing: 0; }
+          .nav-item.active { background: rgba(108,92,231,0.25); }
+
+          /* Main content area */
+          .desktop-main {
+            margin-left: 220px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+          }
+
+          /* Header desktop */
+          .header {
+            padding: 28px 40px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+          }
+          .logo-text { font-size: 0; } /* hide duplicate logo in header on desktop */
+          .logo-dot { display: none; }
+
+          /* Content wrapper centered */
+          .desktop-content {
+            max-width: 860px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 0 40px 40px;
+          }
+
+          .screen { padding: 0; }
+
+          /* Home: 2-col layout (decks left, stats right) */
+          .home-layout {
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 28px;
+            align-items: start;
+          }
+
+          /* Wider stats strip */
+          .stats-strip {
+            gap: 12px;
+            margin-bottom: 8px;
+          }
+          .stat-card { padding: 18px 16px; }
+          .stat-card .num { font-size: 28px; }
+
+          /* Deck cards more padded */
+          .deck-card { padding: 16px 20px; }
+          .deck-card:hover { border-color: rgba(168,85,247,0.4); background: rgba(255,255,255,0.08); transform: translateY(-1px); }
+
+          /* Flip card bigger on desktop */
+          .flip-scene { height: 340px; }
+          .flip-front .fc-word { font-size: 40px; }
+          .flip-back .fc-trans { font-size: 30px; }
+
+          /* Section label bigger */
+          .section-label { font-size: 12px; margin: 24px 0 12px; }
+
+          /* Bigger buttons */
+          .btn { padding: 15px 20px; font-size: 15px; }
+
+          /* PRO screen plan cards in a row */
+          .plans-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 14px;
+          }
+
+          /* Chart taller */
+          .bars { height: 100px; }
+
+          /* Quiz mode cards in a row */
+          .quiz-modes-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+          }
+          .quiz-mode-card { margin-bottom: 0; }
+
+          /* Toast repositioned */
+          .toast {
+            left: auto;
+            right: 32px;
+            bottom: 32px;
+            width: 320px;
+          }
+
+          /* Preview cards in 2 cols */
+          .preview-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+          }
+        }
+
+        @media (min-width: 1100px) {
+          .desktop-content { max-width: 960px; }
+          .bottom-nav { width: 240px; }
+          .desktop-main { margin-left: 240px; }
+        }
       `}</style>
 
       <div className="memorix-root">
@@ -1037,670 +1184,681 @@ export default function MemorixPage() {
         )}
 
         {/* ── HEADER ── */}
-        <div className="header">
-          <div>
-            <div className="logo">
-              <div className="logo-dot" />
-              <span className="logo-text">Memorix</span>
-            </div>
-            <div className="logo-sub">
-              {user ? `Salom, ${userName} 👋` : "Xush kelibsiz 👋"}
-            </div>
-          </div>
-          <div className="avatar">{avatarLetter}</div>
-        </div>
-
-        {/* ── HOME SCREEN ── */}
-        <div className={`screen${activeScreen === "home" ? " active" : ""}`} id="screen-home">
-          <div className="stats-strip">
-            <div className="stat-card">
-              <div className="num">{stats?.totalDecks ?? "—"}</div>
-              <div className="lbl">To'plam</div>
-            </div>
-            <div className="stat-card">
-              <div className="num">{stats?.totalFlashcards ?? "—"}</div>
-              <div className="lbl">So'z</div>
-            </div>
-            <div className="stat-card accent">
-              <div className="num">{stats?.plan ?? "FREE"}</div>
-              <div className="lbl">Reja</div>
-            </div>
-          </div>
-
-          {/* Streak Banner */}
-          {streak > 0 && (
-            <div className="streak-banner" style={{ marginTop: 12 }}>
-              <div className="streak-fire">{streakFire}</div>
-              <div className="streak-info">
-                <div className="streak-num">{streak} kun</div>
-                <div className="streak-label">ketma-ket o'rganmoqdasiz</div>
+        <div className="desktop-main">
+          <div className="header">
+            <div>
+              <div className="logo">
+                <div className="logo-dot" />
+                <span className="logo-text">Memorix</span>
               </div>
-              {streakBadge && (
-                <div className={`streak-badge-pill ${streakBadge.cls}`}>{streakBadge.label}</div>
-              )}
-            </div>
-          )}
-
-          <div className="section-label">Mening to'plamlarim</div>
-          <div className="deck-list">
-            {!stats && decks.length === 0 ? (
-              <div className="loader"><div className="spinner" /><p>Yuklanmoqda...</p></div>
-            ) : decks.length === 0 ? (
-              <div className="empty-state">
-                <div className="icon">📚</div>
-                <p>Hali to'plamlar yo'q.<br />"Yaratish" bo'limidan birinchisini yarating!</p>
+              <div className="logo-sub">
+                {user ? `Salom, ${userName} 👋` : "Xush kelibsiz 👋"}
               </div>
-            ) : (
-              decks.map((deck, i) => {
-                const emoji = getDeckEmoji(deck.title);
-                const iconClass = getDeckIcon(i);
-                const desc = deck.description || "";
-                const langMatch = desc.match(/(🇬🇧 Ingliz|🇷🇺 Rus|🇰🇷 Koreys)/);
-                const langBadge = langMatch ? langMatch[1] : "";
-                const count = deck._count?.flashcards ?? 0;
-                return (
-                  <div
-                    key={deck.id}
-                    className="deck-card"
-                    onClick={() => openDeckForStudy(deck.id, desc)}
-                  >
-                    <div className={`deck-icon ${iconClass}`}>{emoji}</div>
-                    <div className="deck-body">
-                      <div className="deck-title">{deck.title}</div>
-                      <div className="deck-meta">{count} ta so'z{langBadge ? " • " + langBadge : ""}</div>
-                    </div>
-                    <div className="deck-actions" onClick={(e) => e.stopPropagation()}>
-                      <div className="deck-count">{count}</div>
-                      <button className="icon-btn" onClick={() => renameDeck(deck.id, deck.title)}>✏️</button>
-                      <button className="icon-btn danger" onClick={() => deleteDeck(deck.id)}>🗑</button>
-                    </div>
+            </div>
+            <div className="avatar">{avatarLetter}</div>
+          </div>
+          <div className="desktop-content">
+
+            {/* ── HOME SCREEN ── */}
+            <div className={`screen${activeScreen === "home" ? " active" : ""}`} id="screen-home">
+              <div className="stats-strip">
+                <div className="stat-card">
+                  <div className="num">{stats?.totalDecks ?? "—"}</div>
+                  <div className="lbl">To'plam</div>
+                </div>
+                <div className="stat-card">
+                  <div className="num">{stats?.totalFlashcards ?? "—"}</div>
+                  <div className="lbl">So'z</div>
+                </div>
+                <div className="stat-card accent">
+                  <div className="num">{stats?.plan ?? "FREE"}</div>
+                  <div className="lbl">Reja</div>
+                </div>
+              </div>
+
+              {/* Streak Banner */}
+              {streak > 0 && (
+                <div className="streak-banner" style={{ marginTop: 12 }}>
+                  <div className="streak-fire">{streakFire}</div>
+                  <div className="streak-info">
+                    <div className="streak-num">{streak} kun</div>
+                    <div className="streak-label">ketma-ket o'rganmoqdasiz</div>
                   </div>
-                );
-              })
-            )}
-          </div>
+                  {streakBadge && (
+                    <div className={`streak-badge-pill ${streakBadge.cls}`}>{streakBadge.label}</div>
+                  )}
+                </div>
+              )}
 
-          {/* Stats Section */}
-          {stats && (
-            <div style={{ marginTop: 4 }}>
-              <div className="section-label">Statistika</div>
-              <div className="stats-grid">
-                <div className="stat-big">
-                  <div className="emoji">{streakFire}</div>
-                  <div className="val">{streak}</div>
-                  <div className="lbl2">Ketma-ket kun</div>
-                </div>
-                <div className="stat-big">
-                  <div className="emoji">📖</div>
-                  <div className="val">{stats.totalStudied ?? 0}</div>
-                  <div className="lbl2">Jami o'rganilgan</div>
-                </div>
-              </div>
-              <div className="chart-wrap">
-                <div className="chart-title">Haftalik faollik</div>
-                <div className="bars">
-                  {weekly.map((val, i) => {
-                    const h = Math.round((val / maxVal) * 100);
-                    const isToday = i === todayIdx;
-                    return (
-                      <div key={i} className="bar-col">
-                        <div className="bar-val">{val > 0 ? val : ""}</div>
-                        <div className="bar-wrap">
-                          <div
-                            className={`bar${isToday ? " active" : val > 0 ? " filled" : ""}`}
-                            style={{ height: `${h}%` }}
-                          />
-                        </div>
-                        <div className={`bar-day${isToday ? " today" : ""}`}>{dayLabels[i]}</div>
+              <div className="home-layout">
+                <div>{/* left col: decks */}
+                  <div className="section-label">Mening to'plamlarim</div>
+                  <div className="deck-list">
+                    {!stats && decks.length === 0 ? (
+                      <div className="loader"><div className="spinner" /><p>Yuklanmoqda...</p></div>
+                    ) : decks.length === 0 ? (
+                      <div className="empty-state">
+                        <div className="icon">📚</div>
+                        <p>Hali to'plamlar yo'q.<br />"Yaratish" bo'limidan birinchisini yarating!</p>
                       </div>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* ── CREATE SCREEN ── */}
-        <div className={`screen${activeScreen === "create" ? " active" : ""}`} id="screen-create">
-          <div className="field-label">To'plam nomi</div>
-          <input
-            type="text"
-            className="mx-input"
-            placeholder="Masalan: Hissiyotlar, Ovqatlar..."
-            value={newDeckTitle}
-            onChange={(e) => setNewDeckTitle(e.target.value)}
-          />
-
-          <div className="field-label">O'rganish tili</div>
-          <div className="seg-tabs">
-            {(["english", "russian", "korean"] as Lang[]).map((lang) => (
-              <button
-                key={lang}
-                className={`seg-tab${selectedLang === lang ? " active" : ""}`}
-                onClick={() => setSelectedLang(lang)}
-              >
-                {LANG_LABELS[lang]}
-              </button>
-            ))}
-          </div>
-
-          <div className="field-label">So'z manbasi</div>
-          <div className="seg-tabs">
-            <button
-              className={`seg-tab${inputMethod === "text" ? " active" : ""}`}
-              onClick={() => setInputMethod("text")}
-            >📝 Matn</button>
-            <button
-              className={`seg-tab${inputMethod === "image" ? " active" : ""}`}
-              onClick={() => setInputMethod("image")}
-            >📷 Rasm</button>
-          </div>
-
-          {inputMethod === "text" ? (
-            <textarea
-              className="mx-textarea"
-              placeholder={
-                selectedLang === "english" ? "Inglizcha matn..." :
-                selectedLang === "russian" ? "Ruscha matn..." : "Koreycha matn..."
-              }
-              value={textInput}
-              onChange={(e) => setTextInput(e.target.value)}
-            />
-          ) : (
-            <div>
-              <div className="upload-zone" onClick={() => fileInputRef.current?.click()}>
-                <div className="uz-icon">📷</div>
-                <div className="uz-title">Rasm tanlash</div>
-                <div className="uz-sub">Lug'at sahifasi yoki istalgan matn</div>
-                <input
-                  type="file"
-                  ref={fileInputRef}
-                  accept="image/*"
-                  style={{ display: "none" }}
-                  onChange={handleImageChange}
-                />
-              </div>
-              {imagePreviewUrl && (
-                <img
-                  src={imagePreviewUrl}
-                  alt="preview"
-                  style={{ width: "100%", borderRadius: "var(--radius)", marginTop: 12 }}
-                />
-              )}
-            </div>
-          )}
-
-          <button
-            className="btn btn-primary"
-            disabled={aiLoading}
-            onClick={handleGenerate}
-          >
-            {aiLoading ? "AI tahlil qilmoqda..." : "✨ AI bilan flashcard yaratish"}
-          </button>
-
-          {aiLoading && (
-            <div className="loader"><div className="spinner" /><p>AI tahlil qilmoqda...</p></div>
-          )}
-
-          {aiError && !aiLoading && (
-            <div style={{ textAlign: "center", padding: "30px 20px" }}>
-              <div style={{ fontSize: 36, marginBottom: 12 }}>😔</div>
-              <div style={{ fontSize: 15, color: "white", marginBottom: 8 }}>AI hozir band</div>
-              <div style={{ fontSize: 13, color: "rgba(255,255,255,0.4)", lineHeight: 1.6 }}>{aiError}</div>
-              <button className="btn btn-primary" style={{ marginTop: 20 }} onClick={() => setAiError("")}>
-                ← Qayta urinish
-              </button>
-            </div>
-          )}
-
-          {aiFlashcards.length > 0 && !aiLoading && !aiError && (
-            <div>
-              <div className="section-label" style={{ marginTop: 16 }}>{aiFlashcards.length} ta so'z topildi</div>
-              <div className="preview-list">
-                {aiFlashcards.map((c, i) => (
-                  <div key={i} className="preview-card">
-                    <div className="pf">{c.frontText}</div>
-                    <div className="pb">{c.backText}</div>
-                    {c.example && <div className="pe">"{c.example}"</div>}
-                  </div>
-                ))}
-              </div>
-              <button
-                className="btn btn-primary"
-                disabled={savingDeck}
-                onClick={saveAiDeck}
-              >
-                {savingDeck ? "Saqlanmoqda..." : "💾 To'plamga saqlash"}
-              </button>
-            </div>
-          )}
-        </div>
-
-        {/* ── STUDY SCREEN ── */}
-        <div className={`screen${activeScreen === "study" ? " active" : ""}`} id="screen-study">
-          {studyLoading ? (
-            <div className="loader"><div className="spinner" /><p>Yuklanmoqda...</p></div>
-          ) : studyFinished ? (
-            <div className="empty-state">
-              <div className="icon">🎉</div>
-              <p>Tabriklaymiz!<br />"{currentDeck?.title}" tugatdingiz</p>
-              <button
-                className="btn btn-primary"
-                style={{ marginTop: 20, maxWidth: 200, marginLeft: "auto", marginRight: "auto" }}
-                onClick={() => {
-                  if (currentDeck) openDeckForStudy(currentDeck.id, currentDeck.description || "");
-                }}
-              >🔄 Qayta boshlash</button>
-            </div>
-          ) : studyQueue.length > 0 && currentCard ? (
-            <div>
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
-                <span style={{ fontSize: 13, color: "var(--text-dim)" }}>{studyIndex + 1} / {studyQueue.length}</span>
-                <span style={{ fontSize: 12, color: "var(--text-dim)" }}>{currentDeck?.title || ""}</span>
-              </div>
-              <div className="study-progress">
-                <div className="study-progress-bar" style={{ width: `${studyProgress}%` }} />
-              </div>
-
-              {/* 3D Flip Card */}
-              <div className="flip-scene" onClick={handleFlip}>
-                <div className={`flip-inner${isFlipped ? " flipped" : ""}`}>
-                  <div className="flip-front">
-                    <div className="fc-word">{currentCard.frontText}</div>
-                    <div className="fc-tap">👆 Bosing — tarjimani ko'ring</div>
-                  </div>
-                  <div className="flip-back">
-                    <div className="fc-trans">{currentCard.backText}</div>
-                    {currentCard.example && (
-                      <div className="fc-ex">"{currentCard.example}"</div>
+                    ) : (
+                      decks.map((deck, i) => {
+                        const emoji = getDeckEmoji(deck.title);
+                        const iconClass = getDeckIcon(i);
+                        const desc = deck.description || "";
+                        const langMatch = desc.match(/(🇬🇧 Ingliz|🇷🇺 Rus|🇰🇷 Koreys)/);
+                        const langBadge = langMatch ? langMatch[1] : "";
+                        const count = deck._count?.flashcards ?? 0;
+                        return (
+                          <div
+                            key={deck.id}
+                            className="deck-card"
+                            onClick={() => openDeckForStudy(deck.id, desc)}
+                          >
+                            <div className={`deck-icon ${iconClass}`}>{emoji}</div>
+                            <div className="deck-body">
+                              <div className="deck-title">{deck.title}</div>
+                              <div className="deck-meta">{count} ta so'z{langBadge ? " • " + langBadge : ""}</div>
+                            </div>
+                            <div className="deck-actions" onClick={(e) => e.stopPropagation()}>
+                              <div className="deck-count">{count}</div>
+                              <button className="icon-btn" onClick={() => renameDeck(deck.id, deck.title)}>✏️</button>
+                              <button className="icon-btn danger" onClick={() => deleteDeck(deck.id)}>🗑</button>
+                            </div>
+                          </div>
+                        );
+                      })
                     )}
                   </div>
-                </div>
+                </div>{/* /left col */}
+
+                {/* Stats Section */}
+                {stats && (
+                  <div style={{ marginTop: 4 }}>
+                    <div className="section-label">Statistika</div>
+                    <div className="stats-grid">
+                      <div className="stat-big">
+                        <div className="emoji">{streakFire}</div>
+                        <div className="val">{streak}</div>
+                        <div className="lbl2">Ketma-ket kun</div>
+                      </div>
+                      <div className="stat-big">
+                        <div className="emoji">📖</div>
+                        <div className="val">{stats.totalStudied ?? 0}</div>
+                        <div className="lbl2">Jami o'rganilgan</div>
+                      </div>
+                    </div>
+                    <div className="chart-wrap">
+                      <div className="chart-title">Haftalik faollik</div>
+                      <div className="bars">
+                        {weekly.map((val, i) => {
+                          const h = Math.round((val / maxVal) * 100);
+                          const isToday = i === todayIdx;
+                          return (
+                            <div key={i} className="bar-col">
+                              <div className="bar-val">{val > 0 ? val : ""}</div>
+                              <div className="bar-wrap">
+                                <div
+                                  className={`bar${isToday ? " active" : val > 0 ? " filled" : ""}`}
+                                  style={{ height: `${h}%` }}
+                                />
+                              </div>
+                              <div className={`bar-day${isToday ? " today" : ""}`}>{dayLabels[i]}</div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>{/* /home-layout */}
+            </div>{/* /screen-home */}
+
+            {/* ── CREATE SCREEN ── */}
+            <div className={`screen${activeScreen === "create" ? " active" : ""}`} id="screen-create">
+              <div className="field-label">To'plam nomi</div>
+              <input
+                type="text"
+                className="mx-input"
+                placeholder="Masalan: Hissiyotlar, Ovqatlar..."
+                value={newDeckTitle}
+                onChange={(e) => setNewDeckTitle(e.target.value)}
+              />
+
+              <div className="field-label">O'rganish tili</div>
+              <div className="seg-tabs">
+                {(["english", "russian", "korean"] as Lang[]).map((lang) => (
+                  <button
+                    key={lang}
+                    className={`seg-tab${selectedLang === lang ? " active" : ""}`}
+                    onClick={() => setSelectedLang(lang)}
+                  >
+                    {LANG_LABELS[lang]}
+                  </button>
+                ))}
               </div>
 
-              <div style={{ display: "flex", justifyContent: "center", marginTop: 14 }}>
-                <button className="speak-btn" onClick={() => speakWord(currentCard.frontText, studyLang)}>
-                  🔊 Talaffuz
+              <div className="field-label">So'z manbasi</div>
+              <div className="seg-tabs">
+                <button
+                  className={`seg-tab${inputMethod === "text" ? " active" : ""}`}
+                  onClick={() => setInputMethod("text")}
+                >📝 Matn</button>
+                <button
+                  className={`seg-tab${inputMethod === "image" ? " active" : ""}`}
+                  onClick={() => setInputMethod("image")}
+                >📷 Rasm</button>
+              </div>
+
+              {inputMethod === "text" ? (
+                <textarea
+                  className="mx-textarea"
+                  placeholder={
+                    selectedLang === "english" ? "Inglizcha matn..." :
+                      selectedLang === "russian" ? "Ruscha matn..." : "Koreycha matn..."
+                  }
+                  value={textInput}
+                  onChange={(e) => setTextInput(e.target.value)}
+                />
+              ) : (
+                <div>
+                  <div className="upload-zone" onClick={() => fileInputRef.current?.click()}>
+                    <div className="uz-icon">📷</div>
+                    <div className="uz-title">Rasm tanlash</div>
+                    <div className="uz-sub">Lug'at sahifasi yoki istalgan matn</div>
+                    <input
+                      type="file"
+                      ref={fileInputRef}
+                      accept="image/*"
+                      style={{ display: "none" }}
+                      onChange={handleImageChange}
+                    />
+                  </div>
+                  {imagePreviewUrl && (
+                    <img
+                      src={imagePreviewUrl}
+                      alt="preview"
+                      style={{ width: "100%", borderRadius: "var(--radius)", marginTop: 12 }}
+                    />
+                  )}
+                </div>
+              )}
+
+              <button
+                className="btn btn-primary"
+                disabled={aiLoading}
+                onClick={handleGenerate}
+              >
+                {aiLoading ? "AI tahlil qilmoqda..." : "✨ AI bilan flashcard yaratish"}
+              </button>
+
+              {aiLoading && (
+                <div className="loader"><div className="spinner" /><p>AI tahlil qilmoqda...</p></div>
+              )}
+
+              {aiError && !aiLoading && (
+                <div style={{ textAlign: "center", padding: "30px 20px" }}>
+                  <div style={{ fontSize: 36, marginBottom: 12 }}>😔</div>
+                  <div style={{ fontSize: 15, color: "white", marginBottom: 8 }}>AI hozir band</div>
+                  <div style={{ fontSize: 13, color: "rgba(255,255,255,0.4)", lineHeight: 1.6 }}>{aiError}</div>
+                  <button className="btn btn-primary" style={{ marginTop: 20 }} onClick={() => setAiError("")}>
+                    ← Qayta urinish
+                  </button>
+                </div>
+              )}
+
+              {aiFlashcards.length > 0 && !aiLoading && !aiError && (
+                <div>
+                  <div className="section-label" style={{ marginTop: 16 }}>{aiFlashcards.length} ta so'z topildi</div>
+                  <div className="preview-list">
+                    {aiFlashcards.map((c, i) => (
+                      <div key={i} className="preview-card">
+                        <div className="pf">{c.frontText}</div>
+                        <div className="pb">{c.backText}</div>
+                        {c.example && <div className="pe">"{c.example}"</div>}
+                      </div>
+                    ))}
+                  </div>
+                  <button
+                    className="btn btn-primary"
+                    disabled={savingDeck}
+                    onClick={saveAiDeck}
+                  >
+                    {savingDeck ? "Saqlanmoqda..." : "💾 To'plamga saqlash"}
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {/* ── STUDY SCREEN ── */}
+            <div className={`screen${activeScreen === "study" ? " active" : ""}`} id="screen-study">
+              {studyLoading ? (
+                <div className="loader"><div className="spinner" /><p>Yuklanmoqda...</p></div>
+              ) : studyFinished ? (
+                <div className="empty-state">
+                  <div className="icon">🎉</div>
+                  <p>Tabriklaymiz!<br />"{currentDeck?.title}" tugatdingiz</p>
+                  <button
+                    className="btn btn-primary"
+                    style={{ marginTop: 20, maxWidth: 200, marginLeft: "auto", marginRight: "auto" }}
+                    onClick={() => {
+                      if (currentDeck) openDeckForStudy(currentDeck.id, currentDeck.description || "");
+                    }}
+                  >🔄 Qayta boshlash</button>
+                </div>
+              ) : studyQueue.length > 0 && currentCard ? (
+                <div>
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
+                    <span style={{ fontSize: 13, color: "var(--text-dim)" }}>{studyIndex + 1} / {studyQueue.length}</span>
+                    <span style={{ fontSize: 12, color: "var(--text-dim)" }}>{currentDeck?.title || ""}</span>
+                  </div>
+                  <div className="study-progress">
+                    <div className="study-progress-bar" style={{ width: `${studyProgress}%` }} />
+                  </div>
+
+                  {/* 3D Flip Card */}
+                  <div className="flip-scene" onClick={handleFlip}>
+                    <div className={`flip-inner${isFlipped ? " flipped" : ""}`}>
+                      <div className="flip-front">
+                        <div className="fc-word">{currentCard.frontText}</div>
+                        <div className="fc-tap">👆 Bosing — tarjimani ko'ring</div>
+                      </div>
+                      <div className="flip-back">
+                        <div className="fc-trans">{currentCard.backText}</div>
+                        {currentCard.example && (
+                          <div className="fc-ex">"{currentCard.example}"</div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div style={{ display: "flex", justifyContent: "center", marginTop: 14 }}>
+                    <button className="speak-btn" onClick={() => speakWord(currentCard.frontText, studyLang)}>
+                      🔊 Talaffuz
+                    </button>
+                  </div>
+
+                  {!isFlipped && (
+                    <p style={{ textAlign: "center", marginTop: 12, fontSize: 12, color: "var(--text-dim)" }}>
+                      Kartani bosing — aylanadi ↩️
+                    </p>
+                  )}
+
+                  {isFlipped && (
+                    <div className="study-actions">
+                      <button className="btn btn-fail" onClick={nextCard}>✗ Bilmadim</button>
+                      <button className="btn btn-success" onClick={nextCard}>✓ Bildim</button>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                /* Study Home — deck list */
+                decks.length === 0 ? (
+                  <div className="empty-state">
+                    <div className="icon">🎯</div>
+                    <p>Hali to'plamlar yo'q.<br />"Yaratish" bo'limidan birinchisini yarating!</p>
+                  </div>
+                ) : (
+                  <div>
+                    {currentDeck && (
+                      <>
+                        <div className="section-label">Davom etish</div>
+                        <div
+                          style={{
+                            background: "linear-gradient(135deg,rgba(108,92,231,0.2),rgba(168,85,247,0.15))",
+                            border: "1px solid rgba(168,85,247,0.3)", borderRadius: "var(--radius)",
+                            padding: 18, marginBottom: 4, cursor: "pointer",
+                          }}
+                          onClick={() => openDeckForStudy(currentDeck.id, currentDeck.description || "")}
+                        >
+                          <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 14 }}>
+                            <div style={{ width: 48, height: 48, borderRadius: 14, background: "linear-gradient(135deg,#6C5CE7,#a855f7)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22 }}>
+                              {getDeckEmoji(currentDeck.title)}
+                            </div>
+                            <div>
+                              <div style={{ fontSize: 16, fontWeight: 700, color: "white" }}>{currentDeck.title}</div>
+                              <div style={{ fontSize: 12, color: "rgba(255,255,255,0.45)", marginTop: 2 }}>{currentDeck.flashcards?.length ?? 0} ta so'z</div>
+                            </div>
+                            <div style={{ marginLeft: "auto", background: "linear-gradient(135deg,#6C5CE7,#a855f7)", color: "white", fontSize: 12, fontWeight: 700, padding: "8px 16px", borderRadius: 100 }}>
+                              ▶ Davom
+                            </div>
+                          </div>
+                          <div style={{ height: 4, background: "rgba(255,255,255,0.08)", borderRadius: 100, overflow: "hidden" }}>
+                            <div style={{ height: "100%", width: `${Math.round((studyIndex / (studyQueue.length || 1)) * 100)}%`, background: "linear-gradient(90deg,#6C5CE7,#a855f7)", borderRadius: 100 }} />
+                          </div>
+                          <div style={{ fontSize: 11, color: "rgba(255,255,255,0.35)", marginTop: 6 }}>
+                            {Math.round((studyIndex / (studyQueue.length || 1)) * 100)}% tugallangan
+                          </div>
+                        </div>
+                      </>
+                    )}
+
+                    <div className="section-label" style={{ marginTop: currentDeck ? 20 : 0 }}>Barcha to'plamlar</div>
+                    <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                      {decks.map((deck, i) => {
+                        const emoji = getDeckEmoji(deck.title);
+                        const iconClass = getDeckIcon(i);
+                        const desc = deck.description || "";
+                        const langMatch = desc.match(/(🇬🇧 Ingliz|🇷🇺 Rus|🇰🇷 Koreys)/);
+                        const langBadge = langMatch ? langMatch[1] : "";
+                        const count = deck._count?.flashcards ?? 0;
+                        return (
+                          <div key={deck.id} className="deck-card" onClick={() => openDeckForStudy(deck.id, desc)}>
+                            <div className={`deck-icon ${iconClass}`}>{emoji}</div>
+                            <div className="deck-body">
+                              <div className="deck-title">{deck.title}</div>
+                              <div className="deck-meta">{count} ta so'z{langBadge ? " • " + langBadge : ""}</div>
+                            </div>
+                            <div style={{ color: "rgba(255,255,255,0.3)", fontSize: 18 }}>▶</div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )
+              )}
+            </div>
+
+            {/* ── QUIZ SCREEN ── */}
+            <div className={`screen${activeScreen === "quiz" ? " active" : ""}`} id="screen-quiz">
+              {quizLoading && (
+                <div className="loader"><div className="spinner" /></div>
+              )}
+
+              {/* QUIZ HOME */}
+              {!quizLoading && quizPhase === "home" && (
+                decks.length === 0 ? (
+                  <div className="empty-state">
+                    <div className="icon">🎮</div>
+                    <p>Quiz uchun avval to'plam yarating!</p>
+                  </div>
+                ) : (
+                  <>
+                    <div className="section-label">To'plam tanlang</div>
+                    {decks.map((deck, i) => {
+                      const emoji = getDeckEmoji(deck.title);
+                      const iconClass = getDeckIcon(i);
+                      const count = deck._count?.flashcards ?? 0;
+                      return (
+                        <div
+                          key={deck.id}
+                          className="quiz-deck-card"
+                          onClick={() => count >= 4 ? selectQuizDeck(deck.id) : showToast("Quiz uchun kamida 4 ta so'z kerak!")}
+                        >
+                          <div className={`deck-icon ${iconClass}`} style={{ width: 44, height: 44, borderRadius: 12, flexShrink: 0 }}>{emoji}</div>
+                          <div style={{ flex: 1 }}>
+                            <div style={{ fontSize: 15, fontWeight: 700, color: "white" }}>{deck.title}</div>
+                            <div style={{ fontSize: 12, color: "var(--text-dim)", marginTop: 2 }}>{count} ta so'z</div>
+                          </div>
+                          {count < 4 ? (
+                            <div style={{ fontSize: 11, color: "rgba(239,68,68,0.7)", background: "rgba(239,68,68,0.1)", padding: "4px 10px", borderRadius: 100 }}>Min 4 so'z kerak</div>
+                          ) : (
+                            <div style={{ color: "rgba(255,255,255,0.3)", fontSize: 18 }}>▶</div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </>
+                )
+              )}
+
+              {/* QUIZ MODE SELECT */}
+              {!quizLoading && quizPhase === "modeSelect" && quizDeck && (
+                <>
+                  <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20 }}>
+                    <button
+                      onClick={() => setQuizPhase("home")}
+                      style={{ background: "var(--glass)", border: "1px solid var(--glass-border)", borderRadius: 10, padding: "8px 12px", color: "white", cursor: "pointer", fontFamily: "inherit" }}
+                    >← Orqaga</button>
+                    <span style={{ fontSize: 15, fontWeight: 700 }}>{quizDeck.title}</span>
+                  </div>
+                  <div className="section-label">Quiz rejimi</div>
+                  <div className="quiz-modes-row">
+                    <div className="quiz-mode-card" onClick={() => startQuiz("choice")}>
+                      <div className="quiz-mode-icon">🅰️</div>
+                      <div className="quiz-mode-title">Ko'p tanlov</div>
+                      <div className="quiz-mode-sub">4 ta variant ichidan to'g'risini tanlang</div>
+                    </div>
+                    <div className="quiz-mode-card" onClick={() => startQuiz("typing")}>
+                      <div className="quiz-mode-icon">✏️</div>
+                      <div className="quiz-mode-title">Yozish</div>
+                      <div className="quiz-mode-sub">Tarjimasini o'zingiz yozing</div>
+                    </div>
+                    <div className="quiz-mode-card" onClick={() => startQuiz("mixed")}>
+                      <div className="quiz-mode-icon">🎯</div>
+                      <div className="quiz-mode-title">Aralash</div>
+                      <div className="quiz-mode-sub">Avval tanlov, keyin yozish</div>
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {/* QUIZ QUESTION */}
+              {!quizLoading && quizPhase === "question" && quizCards[quizIndex] && (() => {
+                const card = quizCards[quizIndex];
+                const progress = (quizIndex / quizCards.length) * 100;
+                const currentMode = getCurrentQuizMode();
+                const letters = ["A", "B", "C", "D"];
+                const correct = card.backText;
+
+                return (
+                  <>
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
+                      <span style={{ fontSize: 13, color: "var(--text-dim)" }}>{quizIndex + 1} / {quizCards.length}</span>
+                      <span style={{ fontSize: 12 }}>
+                        <span style={{ color: "#6ee7b7" }}>✓ {quizScore.correct}</span>
+                        {" "}
+                        <span style={{ color: "#fca5a5" }}>✗ {quizScore.wrong}</span>
+                      </span>
+                    </div>
+                    <div className="study-progress" style={{ marginBottom: 20 }}>
+                      <div className="study-progress-bar" style={{ width: `${progress}%` }} />
+                    </div>
+                    <div className="quiz-question">
+                      <div className="q-label">{currentMode === "choice" ? "Tarjimasini toping" : "Tarjimasini yozing"}</div>
+                      <div className="q-word">{card.frontText}</div>
+                      {card.example && <div className="q-hint">"{card.example}"</div>}
+                    </div>
+
+                    {currentMode === "choice" ? (
+                      choiceOptions.map((opt, i) => {
+                        let cls = "";
+                        if (choiceSelected) {
+                          if (opt === correct) cls = "correct";
+                          else if (opt === choiceSelected) cls = "wrong";
+                          else cls = "disabled";
+                        }
+                        return (
+                          <button key={i} className={`choice-btn${cls ? " " + cls : ""}`} onClick={() => checkChoice(opt)}>
+                            <span className="choice-letter">{letters[i]}</span>
+                            {opt}
+                          </button>
+                        );
+                      })
+                    ) : (
+                      <>
+                        <input
+                          className={`quiz-input${typingChecked ? (typingCorrect ? " correct" : " wrong") : ""}`}
+                          placeholder="Tarjimani yozing..."
+                          autoComplete="off"
+                          value={typingInput}
+                          disabled={typingChecked}
+                          onChange={(e) => setTypingInput(e.target.value)}
+                          onKeyDown={(e) => { if (e.key === "Enter") checkTyping(); }}
+                          autoFocus
+                        />
+                        {!typingChecked && (
+                          <button className="btn btn-primary" style={{ marginTop: 0 }} onClick={checkTyping}>✓ Tekshirish</button>
+                        )}
+                        {typingChecked && (
+                          <div style={{ marginTop: 12 }}>
+                            {typingCorrect ? (
+                              <div style={{ textAlign: "center", color: "#6ee7b7", fontSize: 14, fontWeight: 700 }}>✓ To'g'ri!</div>
+                            ) : (
+                              <div style={{ textAlign: "center", marginBottom: 12 }}>
+                                <div style={{ color: "#fca5a5", fontSize: 14, fontWeight: 700, marginBottom: 4 }}>✗ Noto'g'ri</div>
+                                <div style={{ color: "rgba(255,255,255,0.5)", fontSize: 13 }}>
+                                  To'g'ri javob: <span style={{ color: "#c4b5fd", fontWeight: 700 }}>{card.backText}</span>
+                                </div>
+                              </div>
+                            )}
+                            <button className="btn btn-primary" style={{ marginTop: 0 }} onClick={nextQuizQuestion}>Davom →</button>
+                          </div>
+                        )}
+                      </>
+                    )}
+                  </>
+                );
+              })()}
+
+              {/* QUIZ RESULT */}
+              {!quizLoading && quizPhase === "result" && (
+                <>
+                  <div className="result-card">
+                    <div style={{ fontSize: 56, marginBottom: 12 }}>{quizEmoji}</div>
+                    <div style={{ fontSize: 22, fontWeight: 800, color: "white", marginBottom: 4 }}>{quizMsg}</div>
+                    <div style={{ fontSize: 48, fontWeight: 800, background: "linear-gradient(135deg,#6C5CE7,#a855f7)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", margin: "16px 0" }}>{quizPct}%</div>
+                    <div style={{ display: "flex", justifyContent: "center", gap: 24, marginBottom: 8 }}>
+                      <div style={{ textAlign: "center" }}>
+                        <div style={{ fontSize: 24, fontWeight: 800, color: "#6ee7b7" }}>{quizScore.correct}</div>
+                        <div style={{ fontSize: 12, color: "var(--text-dim)" }}>To'g'ri</div>
+                      </div>
+                      <div style={{ width: 1, background: "rgba(255,255,255,0.1)" }} />
+                      <div style={{ textAlign: "center" }}>
+                        <div style={{ fontSize: 24, fontWeight: 800, color: "#fca5a5" }}>{quizScore.wrong}</div>
+                        <div style={{ fontSize: 12, color: "var(--text-dim)" }}>Noto'g'ri</div>
+                      </div>
+                      <div style={{ width: 1, background: "rgba(255,255,255,0.1)" }} />
+                      <div style={{ textAlign: "center" }}>
+                        <div style={{ fontSize: 24, fontWeight: 800, color: "white" }}>{quizTotal}</div>
+                        <div style={{ fontSize: 12, color: "var(--text-dim)" }}>Jami</div>
+                      </div>
+                    </div>
+                  </div>
+                  <button className="btn btn-primary" onClick={() => startQuiz(quizMode as any)} style={{ marginBottom: 12 }}>🔄 Qayta urinish</button>
+                  <button className="btn btn-glass" style={{ marginTop: 0 }} onClick={() => setQuizPhase("modeSelect")}>← Rejim tanlash</button>
+                  <button className="btn btn-glass" style={{ marginTop: 10 }} onClick={() => setQuizPhase("home")}>🏠 To'plamlar</button>
+                </>
+              )}
+            </div>
+
+            {/* ── PRO SCREEN ── */}
+            <div className={`screen${activeScreen === "pro" ? " active" : ""}`} id="screen-pro">
+              <div className="pro-header">
+                <div className="pro-badge"><span>✨ MEMORIX PREMIUM</span></div>
+                <div className="pro-h2">Cheksiz o'rganish</div>
+                <div className="pro-sub">Limitlarsiz. AI bilan. Hamma qurilmada.</div>
+              </div>
+
+              <div className="seg-tabs" style={{ marginBottom: 16 }}>
+                <button className={`seg-tab${pricingType === "monthly" ? " active" : ""}`} onClick={() => setPricingType("monthly")}>Oylik</button>
+                <button className={`seg-tab${pricingType === "yearly" ? " active" : ""}`} onClick={() => setPricingType("yearly")}>
+                  Yillik &nbsp;<span style={{ background: "#10b981", color: "white", fontSize: 10, padding: "2px 7px", borderRadius: 100 }}>−30%</span>
                 </button>
               </div>
 
-              {!isFlipped && (
-                <p style={{ textAlign: "center", marginTop: 12, fontSize: 12, color: "var(--text-dim)" }}>
-                  Kartani bosing — aylanadi ↩️
-                </p>
-              )}
-
-              {isFlipped && (
-                <div className="study-actions">
-                  <button className="btn btn-fail" onClick={nextCard}>✗ Bilmadim</button>
-                  <button className="btn btn-success" onClick={nextCard}>✓ Bildim</button>
+              <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 20 }} className="plans-row">
+                {/* FREE */}
+                <div className="plan-card">
+                  <div className="plan-name">Free</div>
+                  <div style={{ display: "flex", alignItems: "baseline", gap: 4, marginBottom: 4 }}>
+                    <div className="plan-price">0</div>
+                    <div style={{ fontSize: 13, color: "var(--text-dim)" }}>so'm / oy</div>
+                  </div>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6, marginBottom: 12 }}>
+                    <div className="pf-item ok">📚 3 ta to'plam</div>
+                    <div className="pf-item ok">📝 30 ta so'z</div>
+                    <div className="pf-item ok">✨ AI yaratish</div>
+                    <div className="pf-item ok">🌐 3 ta til</div>
+                    <div className="pf-item no">✗ Statistika</div>
+                    <div className="pf-item no">✗ Quiz rejimi</div>
+                  </div>
+                  <div className="plan-current">Hozirgi rejangiz</div>
                 </div>
-              )}
-            </div>
-          ) : (
-            /* Study Home — deck list */
-            decks.length === 0 ? (
-              <div className="empty-state">
-                <div className="icon">🎯</div>
-                <p>Hali to'plamlar yo'q.<br />"Yaratish" bo'limidan birinchisini yarating!</p>
-              </div>
-            ) : (
-              <div>
-                {currentDeck && (
-                  <>
-                    <div className="section-label">Davom etish</div>
-                    <div
-                      style={{
-                        background: "linear-gradient(135deg,rgba(108,92,231,0.2),rgba(168,85,247,0.15))",
-                        border: "1px solid rgba(168,85,247,0.3)", borderRadius: "var(--radius)",
-                        padding: 18, marginBottom: 4, cursor: "pointer",
-                      }}
-                      onClick={() => openDeckForStudy(currentDeck.id, currentDeck.description || "")}
-                    >
-                      <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 14 }}>
-                        <div style={{ width: 48, height: 48, borderRadius: 14, background: "linear-gradient(135deg,#6C5CE7,#a855f7)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22 }}>
-                          {getDeckEmoji(currentDeck.title)}
-                        </div>
-                        <div>
-                          <div style={{ fontSize: 16, fontWeight: 700, color: "white" }}>{currentDeck.title}</div>
-                          <div style={{ fontSize: 12, color: "rgba(255,255,255,0.45)", marginTop: 2 }}>{currentDeck.flashcards?.length ?? 0} ta so'z</div>
-                        </div>
-                        <div style={{ marginLeft: "auto", background: "linear-gradient(135deg,#6C5CE7,#a855f7)", color: "white", fontSize: 12, fontWeight: 700, padding: "8px 16px", borderRadius: 100 }}>
-                          ▶ Davom
-                        </div>
-                      </div>
-                      <div style={{ height: 4, background: "rgba(255,255,255,0.08)", borderRadius: 100, overflow: "hidden" }}>
-                        <div style={{ height: "100%", width: `${Math.round((studyIndex / (studyQueue.length || 1)) * 100)}%`, background: "linear-gradient(90deg,#6C5CE7,#a855f7)", borderRadius: 100 }} />
-                      </div>
-                      <div style={{ fontSize: 11, color: "rgba(255,255,255,0.35)", marginTop: 6 }}>
-                        {Math.round((studyIndex / (studyQueue.length || 1)) * 100)}% tugallangan
-                      </div>
+
+                {/* STARTER */}
+                <div className="plan-card" style={{ borderColor: "rgba(14,165,233,0.4)", background: "linear-gradient(145deg,rgba(14,165,233,0.1),rgba(99,102,241,0.1))" }}>
+                  <div className="plan-name" style={{ color: "#7dd3fc" }}>⚡ Starter</div>
+                  <div style={{ display: "flex", alignItems: "baseline", gap: 4, marginBottom: 4 }}>
+                    <div className="plan-price">{pricingType === "yearly" ? "6,930" : "9,900"}</div>
+                    <div style={{ fontSize: 13, color: "#7dd3fc" }}>
+                      {pricingType === "yearly" ? <span>so'm / oy <span style={{ fontSize: 10, color: "#10b981" }}>83,160/yil</span></span> : "so'm / oy"}
                     </div>
-                  </>
-                )}
-
-                <div className="section-label" style={{ marginTop: currentDeck ? 20 : 0 }}>Barcha to'plamlar</div>
-                <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                  {decks.map((deck, i) => {
-                    const emoji = getDeckEmoji(deck.title);
-                    const iconClass = getDeckIcon(i);
-                    const desc = deck.description || "";
-                    const langMatch = desc.match(/(🇬🇧 Ingliz|🇷🇺 Rus|🇰🇷 Koreys)/);
-                    const langBadge = langMatch ? langMatch[1] : "";
-                    const count = deck._count?.flashcards ?? 0;
-                    return (
-                      <div key={deck.id} className="deck-card" onClick={() => openDeckForStudy(deck.id, desc)}>
-                        <div className={`deck-icon ${iconClass}`}>{emoji}</div>
-                        <div className="deck-body">
-                          <div className="deck-title">{deck.title}</div>
-                          <div className="deck-meta">{count} ta so'z{langBadge ? " • " + langBadge : ""}</div>
-                        </div>
-                        <div style={{ color: "rgba(255,255,255,0.3)", fontSize: 18 }}>▶</div>
-                      </div>
-                    );
-                  })}
+                  </div>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6, marginBottom: 12 }}>
+                    <div className="pf-item pro-ok">📚 10 ta to'plam</div>
+                    <div className="pf-item pro-ok">📝 100 ta so'z</div>
+                    <div className="pf-item pro-ok">✨ AI yaratish</div>
+                    <div className="pf-item pro-ok">🌐 3 ta til</div>
+                    <div className="pf-item pro-ok">✓ Statistika</div>
+                    <div className="pf-item pro-ok">✓ Quiz rejimi</div>
+                  </div>
+                  <button className="plan-btn" style={{ background: "linear-gradient(135deg,#0ea5e9,#6366f1)" }} onClick={() => {
+                    const url = "https://t.me/memorix_uz_bot?start=starter";
+                    const tg = (window as any).Telegram?.WebApp;
+                    if (tg?.openTelegramLink) tg.openTelegramLink(url);
+                    else window.open(url, "_blank");
+                  }}>Starter olish →</button>
                 </div>
-              </div>
-            )
-          )}
-        </div>
 
-        {/* ── QUIZ SCREEN ── */}
-        <div className={`screen${activeScreen === "quiz" ? " active" : ""}`} id="screen-quiz">
-          {quizLoading && (
-            <div className="loader"><div className="spinner" /></div>
-          )}
-
-          {/* QUIZ HOME */}
-          {!quizLoading && quizPhase === "home" && (
-            decks.length === 0 ? (
-              <div className="empty-state">
-                <div className="icon">🎮</div>
-                <p>Quiz uchun avval to'plam yarating!</p>
-              </div>
-            ) : (
-              <>
-                <div className="section-label">To'plam tanlang</div>
-                {decks.map((deck, i) => {
-                  const emoji = getDeckEmoji(deck.title);
-                  const iconClass = getDeckIcon(i);
-                  const count = deck._count?.flashcards ?? 0;
-                  return (
-                    <div
-                      key={deck.id}
-                      className="quiz-deck-card"
-                      onClick={() => count >= 4 ? selectQuizDeck(deck.id) : showToast("Quiz uchun kamida 4 ta so'z kerak!")}
-                    >
-                      <div className={`deck-icon ${iconClass}`} style={{ width: 44, height: 44, borderRadius: 12, flexShrink: 0 }}>{emoji}</div>
-                      <div style={{ flex: 1 }}>
-                        <div style={{ fontSize: 15, fontWeight: 700, color: "white" }}>{deck.title}</div>
-                        <div style={{ fontSize: 12, color: "var(--text-dim)", marginTop: 2 }}>{count} ta so'z</div>
-                      </div>
-                      {count < 4 ? (
-                        <div style={{ fontSize: 11, color: "rgba(239,68,68,0.7)", background: "rgba(239,68,68,0.1)", padding: "4px 10px", borderRadius: 100 }}>Min 4 so'z kerak</div>
-                      ) : (
-                        <div style={{ color: "rgba(255,255,255,0.3)", fontSize: 18 }}>▶</div>
-                      )}
+                {/* PREMIUM */}
+                <div className="plan-card pro-card">
+                  <div className="plan-rec">TAVSIYA</div>
+                  <div className="plan-name">👑 Premium</div>
+                  <div style={{ display: "flex", alignItems: "baseline", gap: 4, marginBottom: 4 }}>
+                    <div className="plan-price">{pricingType === "yearly" ? "20,930" : "29,900"}</div>
+                    <div style={{ fontSize: 13, color: "#a78bfa" }}>
+                      {pricingType === "yearly" ? <span>so'm / oy <span style={{ fontSize: 10, color: "#10b981" }}>249,900/yil</span></span> : "so'm / oy"}
                     </div>
-                  );
-                })}
-              </>
-            )
-          )}
-
-          {/* QUIZ MODE SELECT */}
-          {!quizLoading && quizPhase === "modeSelect" && quizDeck && (
-            <>
-              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20 }}>
-                <button
-                  onClick={() => setQuizPhase("home")}
-                  style={{ background: "var(--glass)", border: "1px solid var(--glass-border)", borderRadius: 10, padding: "8px 12px", color: "white", cursor: "pointer", fontFamily: "inherit" }}
-                >← Orqaga</button>
-                <span style={{ fontSize: 15, fontWeight: 700 }}>{quizDeck.title}</span>
-              </div>
-              <div className="section-label">Quiz rejimi</div>
-              <div className="quiz-mode-card" onClick={() => startQuiz("choice")}>
-                <div className="quiz-mode-icon">🅰️</div>
-                <div className="quiz-mode-title">Ko'p tanlov</div>
-                <div className="quiz-mode-sub">4 ta variant ichidan to'g'risini tanlang</div>
-              </div>
-              <div className="quiz-mode-card" onClick={() => startQuiz("typing")}>
-                <div className="quiz-mode-icon">✏️</div>
-                <div className="quiz-mode-title">Yozish</div>
-                <div className="quiz-mode-sub">Tarjimasini o'zingiz yozing</div>
-              </div>
-              <div className="quiz-mode-card" onClick={() => startQuiz("mixed")}>
-                <div className="quiz-mode-icon">🎯</div>
-                <div className="quiz-mode-title">Aralash</div>
-                <div className="quiz-mode-sub">Avval tanlov, keyin yozish</div>
-              </div>
-            </>
-          )}
-
-          {/* QUIZ QUESTION */}
-          {!quizLoading && quizPhase === "question" && quizCards[quizIndex] && (() => {
-            const card = quizCards[quizIndex];
-            const progress = (quizIndex / quizCards.length) * 100;
-            const currentMode = getCurrentQuizMode();
-            const letters = ["A", "B", "C", "D"];
-            const correct = card.backText;
-
-            return (
-              <>
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
-                  <span style={{ fontSize: 13, color: "var(--text-dim)" }}>{quizIndex + 1} / {quizCards.length}</span>
-                  <span style={{ fontSize: 12 }}>
-                    <span style={{ color: "#6ee7b7" }}>✓ {quizScore.correct}</span>
-                    {" "}
-                    <span style={{ color: "#fca5a5" }}>✗ {quizScore.wrong}</span>
-                  </span>
-                </div>
-                <div className="study-progress" style={{ marginBottom: 20 }}>
-                  <div className="study-progress-bar" style={{ width: `${progress}%` }} />
-                </div>
-                <div className="quiz-question">
-                  <div className="q-label">{currentMode === "choice" ? "Tarjimasini toping" : "Tarjimasini yozing"}</div>
-                  <div className="q-word">{card.frontText}</div>
-                  {card.example && <div className="q-hint">"{card.example}"</div>}
-                </div>
-
-                {currentMode === "choice" ? (
-                  choiceOptions.map((opt, i) => {
-                    let cls = "";
-                    if (choiceSelected) {
-                      if (opt === correct) cls = "correct";
-                      else if (opt === choiceSelected) cls = "wrong";
-                      else cls = "disabled";
-                    }
-                    return (
-                      <button key={i} className={`choice-btn${cls ? " " + cls : ""}`} onClick={() => checkChoice(opt)}>
-                        <span className="choice-letter">{letters[i]}</span>
-                        {opt}
-                      </button>
-                    );
-                  })
-                ) : (
-                  <>
-                    <input
-                      className={`quiz-input${typingChecked ? (typingCorrect ? " correct" : " wrong") : ""}`}
-                      placeholder="Tarjimani yozing..."
-                      autoComplete="off"
-                      value={typingInput}
-                      disabled={typingChecked}
-                      onChange={(e) => setTypingInput(e.target.value)}
-                      onKeyDown={(e) => { if (e.key === "Enter") checkTyping(); }}
-                      autoFocus
-                    />
-                    {!typingChecked && (
-                      <button className="btn btn-primary" style={{ marginTop: 0 }} onClick={checkTyping}>✓ Tekshirish</button>
-                    )}
-                    {typingChecked && (
-                      <div style={{ marginTop: 12 }}>
-                        {typingCorrect ? (
-                          <div style={{ textAlign: "center", color: "#6ee7b7", fontSize: 14, fontWeight: 700 }}>✓ To'g'ri!</div>
-                        ) : (
-                          <div style={{ textAlign: "center", marginBottom: 12 }}>
-                            <div style={{ color: "#fca5a5", fontSize: 14, fontWeight: 700, marginBottom: 4 }}>✗ Noto'g'ri</div>
-                            <div style={{ color: "rgba(255,255,255,0.5)", fontSize: 13 }}>
-                              To'g'ri javob: <span style={{ color: "#c4b5fd", fontWeight: 700 }}>{card.backText}</span>
-                            </div>
-                          </div>
-                        )}
-                        <button className="btn btn-primary" style={{ marginTop: 0 }} onClick={nextQuizQuestion}>Davom →</button>
-                      </div>
-                    )}
-                  </>
-                )}
-              </>
-            );
-          })()}
-
-          {/* QUIZ RESULT */}
-          {!quizLoading && quizPhase === "result" && (
-            <>
-              <div className="result-card">
-                <div style={{ fontSize: 56, marginBottom: 12 }}>{quizEmoji}</div>
-                <div style={{ fontSize: 22, fontWeight: 800, color: "white", marginBottom: 4 }}>{quizMsg}</div>
-                <div style={{ fontSize: 48, fontWeight: 800, background: "linear-gradient(135deg,#6C5CE7,#a855f7)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", margin: "16px 0" }}>{quizPct}%</div>
-                <div style={{ display: "flex", justifyContent: "center", gap: 24, marginBottom: 8 }}>
-                  <div style={{ textAlign: "center" }}>
-                    <div style={{ fontSize: 24, fontWeight: 800, color: "#6ee7b7" }}>{quizScore.correct}</div>
-                    <div style={{ fontSize: 12, color: "var(--text-dim)" }}>To'g'ri</div>
                   </div>
-                  <div style={{ width: 1, background: "rgba(255,255,255,0.1)" }} />
-                  <div style={{ textAlign: "center" }}>
-                    <div style={{ fontSize: 24, fontWeight: 800, color: "#fca5a5" }}>{quizScore.wrong}</div>
-                    <div style={{ fontSize: 12, color: "var(--text-dim)" }}>Noto'g'ri</div>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6, marginBottom: 12 }}>
+                    <div className="pf-item pro-ok">📚 Cheksiz to'plam</div>
+                    <div className="pf-item pro-ok">📝 Cheksiz so'z</div>
+                    <div className="pf-item pro-ok">✨ AI yaratish</div>
+                    <div className="pf-item pro-ok">🌐 3 ta til</div>
+                    <div className="pf-item pro-ok">✓ Statistika</div>
+                    <div className="pf-item pro-ok">✓ Quiz rejimi</div>
+                    <div className="pf-item pro-ok">✓ Spaced rep.</div>
+                    <div className="pf-item pro-ok">⚡ Ustuvorlik</div>
                   </div>
-                  <div style={{ width: 1, background: "rgba(255,255,255,0.1)" }} />
-                  <div style={{ textAlign: "center" }}>
-                    <div style={{ fontSize: 24, fontWeight: 800, color: "white" }}>{quizTotal}</div>
-                    <div style={{ fontSize: 12, color: "var(--text-dim)" }}>Jami</div>
+                  <button className="plan-btn" onClick={() => {
+                    const url = "https://t.me/memorix_uz_bot?start=premium";
+                    const tg = (window as any).Telegram?.WebApp;
+                    if (tg?.openTelegramLink) tg.openTelegramLink(url);
+                    else window.open(url, "_blank");
+                  }}>Premium olish →</button>
+                </div>
+              </div>
+
+              {/* Feature Table */}
+              <div className="section-label">Batafsil taqqoslash</div>
+              <div className="feature-table">
+                <div className="ft-row" style={{ background: "rgba(255,255,255,0.05)" }}>
+                  <div className="ft-col-name" style={{ fontWeight: 700, color: "white" }}>Feature</div>
+                  <div style={{ textAlign: "center", fontSize: 12, fontWeight: 700, color: "var(--text-dim)" }}>Free</div>
+                  <div style={{ textAlign: "center", fontSize: 12, fontWeight: 700, color: "#7dd3fc" }}>Starter</div>
+                  <div style={{ textAlign: "center", fontSize: 12, fontWeight: 700, color: "#c4b5fd" }}>Premium</div>
+                </div>
+                {PLAN_FEATURES.map((f, i) => (
+                  <div key={i} className="ft-row">
+                    <div className="ft-col-name"><span>{f.icon}</span>{f.name}</div>
+                    <div style={{ textAlign: "center", fontSize: 13, fontWeight: 600, color: f.freeNo ? "#ef4444" : "#10b981" }}>{f.free}</div>
+                    <div style={{ textAlign: "center", fontSize: 13, fontWeight: 600, color: f.starterNo ? "#ef4444" : f.starterOk ? "#10b981" : "var(--text-dim)" }}>{f.starter}</div>
+                    <div style={{ textAlign: "center", fontSize: 13, fontWeight: 700, color: f.proOk ? "#10b981" : "#ef4444" }}>{f.proOk ? "✓" : "✗"}</div>
                   </div>
-                </div>
+                ))}
               </div>
-              <button className="btn btn-primary" onClick={() => startQuiz(quizMode as any)} style={{ marginBottom: 12 }}>🔄 Qayta urinish</button>
-              <button className="btn btn-glass" style={{ marginTop: 0 }} onClick={() => setQuizPhase("modeSelect")}>← Rejim tanlash</button>
-              <button className="btn btn-glass" style={{ marginTop: 10 }} onClick={() => setQuizPhase("home")}>🏠 To'plamlar</button>
-            </>
-          )}
-        </div>
 
-        {/* ── PRO SCREEN ── */}
-        <div className={`screen${activeScreen === "pro" ? " active" : ""}`} id="screen-pro">
-          <div className="pro-header">
-            <div className="pro-badge"><span>✨ MEMORIX PREMIUM</span></div>
-            <div className="pro-h2">Cheksiz o'rganish</div>
-            <div className="pro-sub">Limitlarsiz. AI bilan. Hamma qurilmada.</div>
-          </div>
-
-          <div className="seg-tabs" style={{ marginBottom: 16 }}>
-            <button className={`seg-tab${pricingType === "monthly" ? " active" : ""}`} onClick={() => setPricingType("monthly")}>Oylik</button>
-            <button className={`seg-tab${pricingType === "yearly" ? " active" : ""}`} onClick={() => setPricingType("yearly")}>
-              Yillik &nbsp;<span style={{ background: "#10b981", color: "white", fontSize: 10, padding: "2px 7px", borderRadius: 100 }}>−30%</span>
-            </button>
-          </div>
-
-          <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 20 }}>
-            {/* FREE */}
-            <div className="plan-card">
-              <div className="plan-name">Free</div>
-              <div style={{ display: "flex", alignItems: "baseline", gap: 4, marginBottom: 4 }}>
-                <div className="plan-price">0</div>
-                <div style={{ fontSize: 13, color: "var(--text-dim)" }}>so'm / oy</div>
+              <div style={{ textAlign: "center", background: "var(--glass)", border: "1px solid var(--glass-border)", borderRadius: "var(--radius)", padding: 16, marginBottom: 24 }}>
+                <div style={{ fontSize: 13, color: "var(--text-dim)", marginBottom: 8 }}>Savollar bormi?</div>
+                <a href="https://t.me/memorix_uz_bot" style={{ color: "#c4b5fd", fontWeight: 700, fontSize: 14, textDecoration: "none" }}>
+                  @memorix_uz_bot ga yozing →
+                </a>
               </div>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6, marginBottom: 12 }}>
-                <div className="pf-item ok">📚 3 ta to'plam</div>
-                <div className="pf-item ok">📝 30 ta so'z</div>
-                <div className="pf-item ok">✨ AI yaratish</div>
-                <div className="pf-item ok">🌐 3 ta til</div>
-                <div className="pf-item no">✗ Statistika</div>
-                <div className="pf-item no">✗ Quiz rejimi</div>
-              </div>
-              <div className="plan-current">Hozirgi rejangiz</div>
             </div>
 
-            {/* STARTER */}
-            <div className="plan-card" style={{ borderColor: "rgba(14,165,233,0.4)", background: "linear-gradient(145deg,rgba(14,165,233,0.1),rgba(99,102,241,0.1))" }}>
-              <div className="plan-name" style={{ color: "#7dd3fc" }}>⚡ Starter</div>
-              <div style={{ display: "flex", alignItems: "baseline", gap: 4, marginBottom: 4 }}>
-                <div className="plan-price">{pricingType === "yearly" ? "6,930" : "9,900"}</div>
-                <div style={{ fontSize: 13, color: "#7dd3fc" }}>
-                  {pricingType === "yearly" ? <span>so'm / oy <span style={{ fontSize: 10, color: "#10b981" }}>83,160/yil</span></span> : "so'm / oy"}
-                </div>
-              </div>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6, marginBottom: 12 }}>
-                <div className="pf-item pro-ok">📚 10 ta to'plam</div>
-                <div className="pf-item pro-ok">📝 100 ta so'z</div>
-                <div className="pf-item pro-ok">✨ AI yaratish</div>
-                <div className="pf-item pro-ok">🌐 3 ta til</div>
-                <div className="pf-item pro-ok">✓ Statistika</div>
-                <div className="pf-item pro-ok">✓ Quiz rejimi</div>
-              </div>
-              <button className="plan-btn" style={{ background: "linear-gradient(135deg,#0ea5e9,#6366f1)" }} onClick={() => {
-                const url = "https://t.me/memorix_uz_bot?start=starter";
-                const tg = (window as any).Telegram?.WebApp;
-                if (tg?.openTelegramLink) tg.openTelegramLink(url);
-                else window.open(url, "_blank");
-              }}>Starter olish →</button>
-            </div>
-
-            {/* PREMIUM */}
-            <div className="plan-card pro-card">
-              <div className="plan-rec">TAVSIYA</div>
-              <div className="plan-name">👑 Premium</div>
-              <div style={{ display: "flex", alignItems: "baseline", gap: 4, marginBottom: 4 }}>
-                <div className="plan-price">{pricingType === "yearly" ? "20,930" : "29,900"}</div>
-                <div style={{ fontSize: 13, color: "#a78bfa" }}>
-                  {pricingType === "yearly" ? <span>so'm / oy <span style={{ fontSize: 10, color: "#10b981" }}>249,900/yil</span></span> : "so'm / oy"}
-                </div>
-              </div>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6, marginBottom: 12 }}>
-                <div className="pf-item pro-ok">📚 Cheksiz to'plam</div>
-                <div className="pf-item pro-ok">📝 Cheksiz so'z</div>
-                <div className="pf-item pro-ok">✨ AI yaratish</div>
-                <div className="pf-item pro-ok">🌐 3 ta til</div>
-                <div className="pf-item pro-ok">✓ Statistika</div>
-                <div className="pf-item pro-ok">✓ Quiz rejimi</div>
-                <div className="pf-item pro-ok">✓ Spaced rep.</div>
-                <div className="pf-item pro-ok">⚡ Ustuvorlik</div>
-              </div>
-              <button className="plan-btn" onClick={() => {
-                const url = "https://t.me/memorix_uz_bot?start=premium";
-                const tg = (window as any).Telegram?.WebApp;
-                if (tg?.openTelegramLink) tg.openTelegramLink(url);
-                else window.open(url, "_blank");
-              }}>Premium olish →</button>
-            </div>
-          </div>
-
-          {/* Feature Table */}
-          <div className="section-label">Batafsil taqqoslash</div>
-          <div className="feature-table">
-            <div className="ft-row" style={{ background: "rgba(255,255,255,0.05)" }}>
-              <div className="ft-col-name" style={{ fontWeight: 700, color: "white" }}>Feature</div>
-              <div style={{ textAlign: "center", fontSize: 12, fontWeight: 700, color: "var(--text-dim)" }}>Free</div>
-              <div style={{ textAlign: "center", fontSize: 12, fontWeight: 700, color: "#7dd3fc" }}>Starter</div>
-              <div style={{ textAlign: "center", fontSize: 12, fontWeight: 700, color: "#c4b5fd" }}>Premium</div>
-            </div>
-            {PLAN_FEATURES.map((f, i) => (
-              <div key={i} className="ft-row">
-                <div className="ft-col-name"><span>{f.icon}</span>{f.name}</div>
-                <div style={{ textAlign: "center", fontSize: 13, fontWeight: 600, color: f.freeNo ? "#ef4444" : "#10b981" }}>{f.free}</div>
-                <div style={{ textAlign: "center", fontSize: 13, fontWeight: 600, color: f.starterNo ? "#ef4444" : f.starterOk ? "#10b981" : "var(--text-dim)" }}>{f.starter}</div>
-                <div style={{ textAlign: "center", fontSize: 13, fontWeight: 700, color: f.proOk ? "#10b981" : "#ef4444" }}>{f.proOk ? "✓" : "✗"}</div>
-              </div>
-            ))}
-          </div>
-
-          <div style={{ textAlign: "center", background: "var(--glass)", border: "1px solid var(--glass-border)", borderRadius: "var(--radius)", padding: 16, marginBottom: 24 }}>
-            <div style={{ fontSize: 13, color: "var(--text-dim)", marginBottom: 8 }}>Savollar bormi?</div>
-            <a href="https://t.me/memorix_uz_bot" style={{ color: "#c4b5fd", fontWeight: 700, fontSize: 14, textDecoration: "none" }}>
-              @memorix_uz_bot ga yozing →
-            </a>
-          </div>
-        </div>
+          </div>{/* /desktop-content */}
+        </div>{/* /desktop-main */}
 
         {/* ── BOTTOM NAV ── */}
         <div className="bottom-nav">
