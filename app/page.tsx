@@ -154,6 +154,7 @@ export default function MemorixPage() {
   // Auth & User
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [user, setUser] = useState<User | null>(null);
+  const [authLoading, setAuthLoading] = useState(true);
 
   // Navigation
   const [activeScreen, setActiveScreen] = useState<Screen>("home");
@@ -252,10 +253,15 @@ export default function MemorixPage() {
       const urlParams = new URLSearchParams(window.location.search);
       const urlToken = urlParams.get("token");
 
-      let token = urlToken;
+      // localStorage dan token (login page saqlagan)
+      const storedToken = localStorage.getItem("memorix_token");
+
+      let token = urlToken || storedToken;
       let userData: User | null = null;
 
       if (urlToken) {
+        // URL dan kelgan tokenni localStorage ga saqlab, URL ni tozalaymiz
+        localStorage.setItem("memorix_token", urlToken);
         window.history.replaceState({}, "", window.location.pathname);
       }
 
@@ -270,11 +276,11 @@ export default function MemorixPage() {
           if (res.ok) {
             userData = await res.json();
             setUser(userData);
-            // Check onboarding after URL token login too
             if (!userData?.onboarded) {
               setShowOnboarding(true);
               setObIndex(0);
             }
+            setAuthLoading(false);
             return;
           }
         }
@@ -309,6 +315,8 @@ export default function MemorixPage() {
         }
       } catch (err: any) {
         showToast("Kirishda xatolik: " + (err?.message || ""));
+      } finally {
+        setAuthLoading(false);
       }
     };
 
@@ -729,6 +737,27 @@ export default function MemorixPage() {
   };
 
   // ─── JSX ──────────────────────────────────────────────────────────────────
+
+  // Auth yuklanayotganda — blank screen emas, spinner ko'rsat
+  if (authLoading) {
+    return (
+      <div style={{
+        minHeight: "100vh",
+        background: "linear-gradient(135deg, #0a0015 0%, #1a0035 50%, #0d1545 100%)",
+        display: "flex", alignItems: "center", justifyContent: "center",
+        flexDirection: "column", gap: 16,
+      }}>
+        <div style={{
+          width: 44, height: 44,
+          border: "3px solid rgba(255,255,255,0.08)",
+          borderTopColor: "#a855f7",
+          borderRadius: "50%",
+          animation: "spin 0.7s linear infinite",
+        }} />
+        <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -2092,10 +2121,9 @@ export default function MemorixPage() {
               {/* Log out */}
               <button
                 onClick={() => {
-                  localStorage.removeItem("memorix_onboarded");
                   setAccessToken(null); setUser(null); setDecks([]); setStats(null);
-                  showToast("Chiqildi ✓");
-                  window.location.reload();
+                  localStorage.removeItem("memorix_token");
+                  window.location.href = "/login";
                 }}
                 style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center", gap: 10, padding: "14px", background: "rgba(239,68,68,0.06)", border: "1px solid rgba(239,68,68,0.18)", borderRadius: "var(--radius-sm)", cursor: "pointer", fontFamily: "inherit", color: "#dc2626", fontSize: 14, fontWeight: 700 }}
               >
@@ -2482,9 +2510,8 @@ export default function MemorixPage() {
                   setUser(null);
                   setDecks([]);
                   setStats(null);
-                  // memorix_onboarded saqlanadi — keyingi kirishda onboarding chiqmaydi
-                  // Landing sahifaga qaytish
-                  window.location.href = window.location.origin + window.location.pathname.replace(/\/app.*/, "") || "/";
+                  localStorage.removeItem("memorix_token");
+                  window.location.href = "/login";
                 }}
                 className="logout-btn"
               >
