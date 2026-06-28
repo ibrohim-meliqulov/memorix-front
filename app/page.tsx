@@ -962,12 +962,12 @@ export default function MemorixPage() {
           .bottom-nav {
             position: fixed;
             top: 0; left: 0; bottom: 0; right: auto;
-            width: 220px;
+            width: 200px;
             flex-direction: column;
             border-top: none;
             border-right: 1px solid rgba(255,255,255,0.07);
-            padding: 28px 12px 28px;
-            gap: 6px;
+            padding: 20px 10px 20px;
+            gap: 2px;
             align-items: stretch;
             background: rgba(10,0,21,0.92);
           }
@@ -976,30 +976,30 @@ export default function MemorixPage() {
           .bottom-nav::before {
             content: '● Memorix';
             display: block;
-            font-size: 20px;
+            font-size: 17px;
             font-weight: 800;
             color: white;
             letter-spacing: -0.03em;
-            padding: 0 10px 24px;
+            padding: 0 8px 16px;
             border-bottom: 1px solid rgba(255,255,255,0.07);
-            margin-bottom: 12px;
+            margin-bottom: 8px;
           }
 
           .nav-item {
             flex-direction: row;
             justify-content: flex-start;
-            gap: 10px;
-            padding: 11px 14px;
-            border-radius: 12px;
+            gap: 8px;
+            padding: 8px 10px;
+            border-radius: 8px;
             font-size: 13px;
           }
-          .nav-item svg { width: 18px; height: 18px; flex-shrink: 0; }
-          .nav-item span { font-size: 13px; font-weight: 600; letter-spacing: 0; }
+          .nav-item svg { width: 16px; height: 16px; flex-shrink: 0; }
+          .nav-item span { font-size: 13px; font-weight: 500; letter-spacing: 0; }
           .nav-item.active { background: rgba(108,92,231,0.25); }
 
           /* Main content area */
           .desktop-main {
-            margin-left: 220px;
+            margin-left: 200px;
             flex: 1;
             display: flex;
             flex-direction: column;
@@ -1091,8 +1091,8 @@ export default function MemorixPage() {
 
         @media (min-width: 1100px) {
           .desktop-content { max-width: 960px; }
-          .bottom-nav { width: 240px; }
-          .desktop-main { margin-left: 240px; }
+          .bottom-nav { width: 210px; }
+          .desktop-main { margin-left: 210px; }
         }
       `}</style>
 
