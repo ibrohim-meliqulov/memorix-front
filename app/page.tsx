@@ -269,7 +269,12 @@ export default function MemorixPage() {
           if (res.ok) {
             userData = await res.json();
             setUser(userData);
-            // loadHomeData called via effect when accessToken & user set
+            // Check onboarding after URL token login too
+            const seen = localStorage.getItem("memorix_onboarded");
+            if (!seen) {
+              setShowOnboarding(true);
+              setObIndex(0);
+            }
             return;
           }
         }
@@ -945,17 +950,17 @@ export default function MemorixPage() {
         /* sidebar-top only shows on desktop */
         .sidebar-top { display: none; }
         .sidebar-avatar-wrap { display: none; }
-        .ob-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.25); transition: all 0.3s ease; }
-        .ob-dot.active { width: 24px; border-radius: 4px; background: var(--accent2); }
+        .ob-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(108,92,231,0.25); transition: all 0.3s ease; }
+        .ob-dot.active { width: 24px; border-radius: 4px; background: #6C5CE7; }
         .ob-icon { font-size: 80px; margin-bottom: 24px; animation: obFloat 3s ease-in-out infinite; }
         @keyframes obFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
-        .ob-title { font-size: 28px; font-weight: 900; color: #ffffff; letter-spacing: -0.03em; margin-bottom: 14px; text-shadow: 0 2px 20px rgba(168,85,247,0.4); }
-        .ob-desc { font-size: 16px; color: rgba(255,255,255,0.78); line-height: 1.65; max-width: 290px; }
-        .ob-feature { display: flex; align-items: center; gap: 14px; background: rgba(255,255,255,0.10); border: 1px solid rgba(255,255,255,0.16); border-radius: 16px; padding: 15px 18px; margin-bottom: 10px; width: 100%; text-align: left; transition: background 0.15s; }
-        .ob-feature:hover { background: rgba(255,255,255,0.14); }
+        .ob-title { font-size: 28px; font-weight: 900; color: #1e1b4b; letter-spacing: -0.03em; margin-bottom: 14px; }
+        .ob-desc { font-size: 16px; color: rgba(51,41,100,0.72); line-height: 1.65; max-width: 290px; }
+        .ob-feature { display: flex; align-items: center; gap: 14px; background: rgba(108,92,231,0.07); border: 1px solid rgba(108,92,231,0.18); border-radius: 16px; padding: 15px 18px; margin-bottom: 10px; width: 100%; text-align: left; transition: background 0.15s; }
+        .ob-feature:hover { background: rgba(108,92,231,0.12); }
         .ob-feature-icon { font-size: 26px; flex-shrink: 0; }
-        .ob-feature-text { font-size: 14px; color: rgba(255,255,255,0.82); line-height: 1.45; }
-        .ob-feature-text strong { color: #ffffff; display: block; margin-bottom: 3px; font-size: 15px; font-weight: 700; }
+        .ob-feature-text { font-size: 14px; color: rgba(51,41,100,0.78); line-height: 1.45; }
+        .ob-feature-text strong { color: #1e1b4b; display: block; margin-bottom: 3px; font-size: 15px; font-weight: 700; }
 
         /* Empty deck state */
         .empty-deck-state { background: rgba(255,255,255,0.05) !important; border-color: rgba(255,255,255,0.1) !important; }
@@ -1392,7 +1397,7 @@ export default function MemorixPage() {
           <div
             style={{
               position: "fixed", top: 0, left: 0, right: 0, bottom: 0,
-              background: "linear-gradient(160deg,#0d0025 0%,#1a0040 50%,#0a1550 100%)",
+              background: "linear-gradient(160deg,#f5f3ff 0%,#ede9fe 50%,#eef2ff 100%)",
               zIndex: 1000, display: "flex", flexDirection: "column",
               alignItems: "center", justifyContent: "space-between",
               padding: "40px 24px 40px",
@@ -1441,7 +1446,7 @@ export default function MemorixPage() {
               {obIndex < OB_SLIDES.length - 1 && (
                 <button
                   onClick={finishOnboarding}
-                  style={{ background: "none", border: "none", color: "rgba(255,255,255,0.45)", fontSize: 14, width: "100%", padding: 14, cursor: "pointer", fontFamily: "inherit", marginTop: 4 }}
+                  style={{ background: "none", border: "none", color: "rgba(51,41,100,0.45)", fontSize: 14, width: "100%", padding: 14, cursor: "pointer", fontFamily: "inherit", marginTop: 4 }}
                 >
                   O'tkazib yuborish
                 </button>
@@ -2468,13 +2473,13 @@ export default function MemorixPage() {
               </button>
               <button
                 onClick={() => {
-                  localStorage.removeItem("memorix_onboarded");
                   setAccessToken(null);
                   setUser(null);
                   setDecks([]);
                   setStats(null);
-                  showToast("Chiqildi ✓");
-                  window.location.reload();
+                  // memorix_onboarded saqlanadi — keyingi kirishda onboarding chiqmaydi
+                  // Landing sahifaga qaytish
+                  window.location.href = window.location.origin + window.location.pathname.replace(/\/app.*/, "") || "/";
                 }}
                 className="logout-btn"
               >
