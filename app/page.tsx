@@ -954,6 +954,9 @@ export default function MemorixPage() {
         .ob-feature-text { font-size: 13px; color: rgba(255,255,255,0.7); line-height: 1.4; }
         .ob-feature-text strong { color: white; display: block; margin-bottom: 2px; }
 
+        /* home-layout: mobile da bitta ustun */
+        .home-layout { display: flex; flex-direction: column; gap: 0; }
+        .home-right { margin-top: 4px; }
         .plan-cards-grid { display: grid; grid-template-columns: 1fr; gap: 12px; margin-bottom: 20px; }
         @media (min-width: 640px) { .plan-cards-grid { grid-template-columns: repeat(3, 1fr); gap: 14px; } }
         /* ── DESKTOP RESPONSIVE ── */
@@ -1061,41 +1064,105 @@ export default function MemorixPage() {
           .logo { display: none; }
           .logo-sub { font-size: 16px; font-weight: 600; color: white; margin-left: 0; }
 
-          .desktop-content { margin-left: 220px; flex: 1; min-height: 100vh; transition: margin-left 0.25s cubic-bezier(0.4,0,0.2,1); }
+          /* ── Content area ── */
+          .desktop-content {
+            margin-left: 220px;
+            flex: 1;
+            min-height: 100vh;
+            transition: margin-left 0.25s cubic-bezier(0.4,0,0.2,1);
+            display: flex;
+            flex-direction: column;
+          }
           .desktop-content.sidebar-closed { margin-left: 0; }
-          .screen { padding: 0 32px; max-width: 1000px; }
 
-          .stats-strip { grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 8px; }
-          .stat-card { padding: 16px 14px; }
-          .stat-card .num { font-size: 24px; }
+          /* Screen wrapper — markazlashgan, chiroyli padding */
+          .screen {
+            padding: 0 40px 40px;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+          }
+
+          /* Header ham markazlashgan */
+          .header {
+            padding: 20px 40px 12px 64px;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+          }
+
+          /* ── Home sahifa: deck + stats 2 ustun ── */
+          .home-layout {
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 20px;
+            align-items: start;
+          }
+          .home-left { min-width: 0; }
+          .home-right { min-width: 0; }
+
+          /* Stats strip — yuqorida, to'liq kenglik */
+          .stats-strip {
+            grid-template-columns: repeat(3,1fr);
+            gap: 12px;
+            margin-bottom: 12px;
+          }
+          .stat-card { padding: 18px 16px; }
+          .stat-card .num { font-size: 26px; }
           .stat-card .lbl { font-size: 12px; margin-top: 3px; }
-          .deck-list { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-          .deck-card { padding: 14px 16px; }
+
+          /* Deck list — bir ustun (home-left ichida) */
+          .deck-list { display: flex; flex-direction: column; gap: 10px; }
+          .deck-card { padding: 14px 18px; }
           .deck-card:hover { border-color: rgba(168,85,247,0.4); background: rgba(255,255,255,0.09); }
-          .stats-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
-          .flip-scene { height: 300px; }
-          .flip-front .fc-word { font-size: 34px; }
-          .flip-back .fc-trans { font-size: 26px; }
-          #screen-create, #screen-study, #screen-quiz, #screen-pro { max-width: 640px; }
+
+          /* Stats bo'limi — home-right ichida */
+          .stats-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+          .stat-big { padding: 14px; }
+          .stat-big .val { font-size: 22px; }
+          .chart-wrap { padding: 14px; margin-bottom: 0; }
+          .bars { height: 80px; }
+
+          /* Study sahifasi — markazda, katta karta */
+          #screen-study {
+            max-width: 680px;
+            margin: 0 auto;
+          }
+          .flip-scene { height: 320px; }
+          .flip-front .fc-word { font-size: 36px; }
+          .flip-back .fc-trans { font-size: 28px; }
+
+          /* Kichik sahifalar — markazda */
+          #screen-create, #screen-quiz, #screen-pro {
+            max-width: 660px;
+            margin: 0 auto;
+          }
+
           .btn { font-size: 15px; padding: 15px; }
           .seg-tab { padding: 9px 12px; font-size: 13px; }
-          .toast { left: 240px; right: 32px; bottom: 24px; max-width: 420px; margin: 0 auto; transition: left 0.25s cubic-bezier(0.4,0,0.2,1); }
-          .toast.sidebar-closed { left: 32px; }
-          .chart-wrap { padding: 16px; }
-          .bars { height: 88px; }
+          .toast {
+            left: 250px;
+            right: 40px;
+            bottom: 24px;
+            max-width: 440px;
+            margin: 0 auto;
+            transition: left 0.25s cubic-bezier(0.4,0,0.2,1);
+          }
+          .toast.sidebar-closed { left: 40px; }
           .streak-banner { padding: 16px 18px; }
           .streak-num { font-size: 24px; }
         }
 
-        @media (min-width: 1100px) {
+        @media (min-width: 1200px) {
           .bottom-nav { width: 220px; }
           .sidebar-toggle.open { left: 186px; }
           .desktop-content { margin-left: 220px; }
           .desktop-content.sidebar-closed { margin-left: 0; }
-          .header { max-width: 1080px; padding: 24px 44px 14px 64px; }
-          .screen { padding: 0 44px; max-width: 1080px; }
-          .deck-list { grid-template-columns: 1fr 1fr 1fr; }
-          #screen-create, #screen-study, #screen-quiz, #screen-pro { max-width: 680px; }
+          .screen { padding: 0 48px 48px; max-width: 1280px; }
+          .header { padding: 24px 48px 14px 64px; max-width: 1280px; }
+          .home-layout { grid-template-columns: 1fr 360px; gap: 24px; }
+          #screen-study { max-width: 720px; }
+          #screen-create, #screen-quiz, #screen-pro { max-width: 700px; }
         }
       `}</style>
 
@@ -1205,6 +1272,7 @@ export default function MemorixPage() {
 
           {/* ── HOME SCREEN ── */}
           <div className={`screen${activeScreen === "home" ? " active" : ""}`} id="screen-home">
+            {/* Stats yuqorida — to'liq kenglik */}
             <div className="stats-strip">
               <div className="stat-card">
                 <div className="num">{stats?.totalDecks ?? "—"}</div>
@@ -1220,99 +1288,108 @@ export default function MemorixPage() {
               </div>
             </div>
 
-            {/* Streak Banner */}
-            {streak > 0 && (
-              <div className="streak-banner" style={{ marginTop: 12 }}>
-                <div className="streak-fire">{streakFire}</div>
-                <div className="streak-info">
-                  <div className="streak-num">{streak} kun</div>
-                  <div className="streak-label">ketma-ket o'rganmoqdasiz</div>
-                </div>
-                {streakBadge && (
-                  <div className={`streak-badge-pill ${streakBadge.cls}`}>{streakBadge.label}</div>
-                )}
-              </div>
-            )}
+            {/* Desktop: 2 ustun — chap: decks, o'ng: stats */}
+            <div className="home-layout">
+              <div className="home-left">
 
-            <div className="section-label">Mening to'plamlarim</div>
-            <div className="deck-list">
-              {!stats && decks.length === 0 ? (
-                <div className="loader"><div className="spinner" /><p>Yuklanmoqda...</p></div>
-              ) : decks.length === 0 ? (
-                <div className="empty-state">
-                  <div className="icon">📚</div>
-                  <p>Hali to'plamlar yo'q.<br />"Yaratish" bo'limidan birinchisini yarating!</p>
-                </div>
-              ) : (
-                decks.map((deck, i) => {
-                  const emoji = getDeckEmoji(deck.title);
-                  const iconClass = getDeckIcon(i);
-                  const desc = deck.description || "";
-                  const langMatch = desc.match(/(🇬🇧 Ingliz|🇷🇺 Rus|🇰🇷 Koreys)/);
-                  const langBadge = langMatch ? langMatch[1] : "";
-                  const count = deck._count?.flashcards ?? 0;
-                  return (
-                    <div
-                      key={deck.id}
-                      className="deck-card"
-                      onClick={() => openDeckForStudy(deck.id, desc)}
-                    >
-                      <div className={`deck-icon ${iconClass}`}>{emoji}</div>
-                      <div className="deck-body">
-                        <div className="deck-title">{deck.title}</div>
-                        <div className="deck-meta">{count} ta so'z{langBadge ? " • " + langBadge : ""}</div>
-                      </div>
-                      <div className="deck-actions" onClick={(e) => e.stopPropagation()}>
-                        <div className="deck-count">{count}</div>
-                        <button className="icon-btn" onClick={() => renameDeck(deck.id, deck.title)}>✏️</button>
-                        <button className="icon-btn danger" onClick={() => deleteDeck(deck.id)}>🗑</button>
-                      </div>
+                {/* Streak Banner */}
+                {streak > 0 && (
+                  <div className="streak-banner" style={{ marginTop: 0 }}>
+                    <div className="streak-fire">{streakFire}</div>
+                    <div className="streak-info">
+                      <div className="streak-num">{streak} kun</div>
+                      <div className="streak-label">ketma-ket o'rganmoqdasiz</div>
                     </div>
-                  );
-                })
-              )}
-            </div>
+                    {streakBadge && (
+                      <div className={`streak-badge-pill ${streakBadge.cls}`}>{streakBadge.label}</div>
+                    )}
+                  </div>
+                )}
 
-            {/* Stats Section */}
-            {stats && (
-              <div style={{ marginTop: 4 }}>
-                <div className="section-label">Statistika</div>
-                <div className="stats-grid">
-                  <div className="stat-big">
-                    <div className="emoji">{streakFire}</div>
-                    <div className="val">{streak}</div>
-                    <div className="lbl2">Ketma-ket kun</div>
-                  </div>
-                  <div className="stat-big">
-                    <div className="emoji">📖</div>
-                    <div className="val">{stats.totalStudied ?? 0}</div>
-                    <div className="lbl2">Jami o'rganilgan</div>
-                  </div>
-                </div>
-                <div className="chart-wrap">
-                  <div className="chart-title">Haftalik faollik</div>
-                  <div className="bars">
-                    {weekly.map((val, i) => {
-                      const h = Math.round((val / maxVal) * 100);
-                      const isToday = i === todayIdx;
+                <div className="section-label">Mening to'plamlarim</div>
+                <div className="deck-list">
+                  {!stats && decks.length === 0 ? (
+                    <div className="loader"><div className="spinner" /><p>Yuklanmoqda...</p></div>
+                  ) : decks.length === 0 ? (
+                    <div className="empty-state">
+                      <div className="icon">📚</div>
+                      <p>Hali to'plamlar yo'q.<br />"Yaratish" bo'limidan birinchisini yarating!</p>
+                    </div>
+                  ) : (
+                    decks.map((deck, i) => {
+                      const emoji = getDeckEmoji(deck.title);
+                      const iconClass = getDeckIcon(i);
+                      const desc = deck.description || "";
+                      const langMatch = desc.match(/(🇬🇧 Ingliz|🇷🇺 Rus|🇰🇷 Koreys)/);
+                      const langBadge = langMatch ? langMatch[1] : "";
+                      const count = deck._count?.flashcards ?? 0;
                       return (
-                        <div key={i} className="bar-col">
-                          <div className="bar-val">{val > 0 ? val : ""}</div>
-                          <div className="bar-wrap">
-                            <div
-                              className={`bar${isToday ? " active" : val > 0 ? " filled" : ""}`}
-                              style={{ height: `${h}%` }}
-                            />
+                        <div
+                          key={deck.id}
+                          className="deck-card"
+                          onClick={() => openDeckForStudy(deck.id, desc)}
+                        >
+                          <div className={`deck-icon ${iconClass}`}>{emoji}</div>
+                          <div className="deck-body">
+                            <div className="deck-title">{deck.title}</div>
+                            <div className="deck-meta">{count} ta so'z{langBadge ? " • " + langBadge : ""}</div>
                           </div>
-                          <div className={`bar-day${isToday ? " today" : ""}`}>{dayLabels[i]}</div>
+                          <div className="deck-actions" onClick={(e) => e.stopPropagation()}>
+                            <div className="deck-count">{count}</div>
+                            <button className="icon-btn" onClick={() => renameDeck(deck.id, deck.title)}>✏️</button>
+                            <button className="icon-btn danger" onClick={() => deleteDeck(deck.id)}>🗑</button>
+                          </div>
                         </div>
                       );
-                    })}
-                  </div>
+                    })
+                  )}
                 </div>
-              </div>
-            )}
-          </div>
+
+              </div>{/* /home-left */}
+
+              {/* ── O'ng ustun: Statistika ── */}
+              <div className="home-right">
+                {stats && (
+                  <div>
+                    <div className="section-label" style={{ marginTop: 0 }}>Statistika</div>
+                    <div className="stats-grid" style={{ marginBottom: 10 }}>
+                      <div className="stat-big">
+                        <div className="emoji">{streakFire}</div>
+                        <div className="val">{streak}</div>
+                        <div className="lbl2">Ketma-ket kun</div>
+                      </div>
+                      <div className="stat-big">
+                        <div className="emoji">📖</div>
+                        <div className="val">{stats.totalStudied ?? 0}</div>
+                        <div className="lbl2">Jami o'rganilgan</div>
+                      </div>
+                    </div>
+                    <div className="chart-wrap">
+                      <div className="chart-title">Haftalik faollik</div>
+                      <div className="bars">
+                        {weekly.map((val, i) => {
+                          const h = Math.round((val / maxVal) * 100);
+                          const isToday = i === todayIdx;
+                          return (
+                            <div key={i} className="bar-col">
+                              <div className="bar-val">{val > 0 ? val : ""}</div>
+                              <div className="bar-wrap">
+                                <div
+                                  className={`bar${isToday ? " active" : val > 0 ? " filled" : ""}`}
+                                  style={{ height: `${h}%` }}
+                                />
+                              </div>
+                              <div className={`bar-day${isToday ? " today" : ""}`}>{dayLabels[i]}</div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>{/* /home-right */}
+            </div>{/* /home-layout */}
+          </div>{/* /screen-home */}
 
           {/* ── CREATE SCREEN ── */}
           <div className={`screen${activeScreen === "create" ? " active" : ""}`} id="screen-create">
