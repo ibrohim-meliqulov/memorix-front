@@ -956,6 +956,18 @@ export default function MemorixPage() {
         .ob-feature-text { font-size: 13px; color: rgba(255,255,255,0.7); line-height: 1.4; }
         .ob-feature-text strong { color: white; display: block; margin-bottom: 2px; }
 
+        /* Empty deck state */
+        .empty-deck-state { background: rgba(255,255,255,0.05) !important; border-color: rgba(255,255,255,0.1) !important; }
+        .eds-title { font-size: 17px; font-weight: 800; color: white; margin-bottom: 6px; }
+        .eds-sub { font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.5; margin-bottom: 20px; }
+        .eds-btn { padding: 16px 12px; border-radius: 16px; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px; font-family: inherit; border: none; }
+        .eds-btn-purple { background: linear-gradient(135deg,rgba(108,92,231,0.45),rgba(108,92,231,0.25)); border: 1px solid rgba(108,92,231,0.6) !important; }
+        .eds-btn-pink { background: linear-gradient(135deg,rgba(168,85,247,0.45),rgba(168,85,247,0.25)); border: 1px solid rgba(168,85,247,0.6) !important; }
+        .eds-btn-label { font-size: 12px; font-weight: 700; color: white; }
+        .eds-btn-sub { font-size: 10px; color: rgba(255,255,255,0.6); }
+        .eds-tip { background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.2); border-radius: 14px; padding: 12px 14px; display: flex; align-items: center; gap: 10; text-align: left; color: rgba(255,255,255,0.6); }
+        .eds-tip-title { color: rgba(16,185,129,0.9); display: block; font-size: 11px; margin-bottom: 1px; }
+
         /* Progress sahifasi */
         #screen-progress { max-width: 720px; margin: 0 auto; }
 
@@ -1220,6 +1232,16 @@ export default function MemorixPage() {
           .desktop-content .streak-label { color: #64748b !important; }
           .desktop-content .loader p { color: #64748b !important; }
           .desktop-content .empty-state { color: #94a3b8 !important; }
+          /* Empty deck state — desktop light theme */
+          .desktop-content .empty-deck-state { background: white !important; border-color: rgba(200,196,230,0.5) !important; box-shadow: 0 2px 8px rgba(108,92,231,0.07); }
+          .desktop-content .eds-title { color: #1e293b !important; }
+          .desktop-content .eds-sub { color: #64748b !important; }
+          .desktop-content .eds-btn-purple { background: linear-gradient(135deg,rgba(108,92,231,0.12),rgba(108,92,231,0.06)) !important; border: 1px solid rgba(108,92,231,0.3) !important; }
+          .desktop-content .eds-btn-pink { background: linear-gradient(135deg,rgba(168,85,247,0.12),rgba(168,85,247,0.06)) !important; border: 1px solid rgba(168,85,247,0.3) !important; }
+          .desktop-content .eds-btn-label { color: #1e293b !important; }
+          .desktop-content .eds-btn-sub { color: #64748b !important; }
+          .desktop-content .eds-tip { background: rgba(16,185,129,0.06) !important; border-color: rgba(16,185,129,0.2) !important; color: #475569 !important; }
+          .desktop-content .eds-tip-title { color: #059669 !important; }
           .desktop-content .field-label { color: #64748b !important; }
           .desktop-content .preview-card { background: white !important; border-color: rgba(200,196,230,0.5) !important; }
           .desktop-content .preview-card .pf { color: #1e293b !important; }
@@ -1521,26 +1543,26 @@ export default function MemorixPage() {
                     <div className="loader"><div className="spinner" /><p>Yuklanmoqda...</p></div>
                   ) : decks.length === 0 ? (
                     /* SMART EMPTY STATE */
-                    <div style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 22, padding: "28px 20px", textAlign: "center", backdropFilter: "blur(16px)" }}>
+                    <div style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 22, padding: "28px 20px", textAlign: "center", backdropFilter: "blur(16px)" }} className="empty-deck-state">
                       <div style={{ fontSize: 52, marginBottom: 12, display: "block", animation: "obFloat 3s ease-in-out infinite" }}>✨</div>
-                      <div style={{ fontSize: 17, fontWeight: 800, color: "white", marginBottom: 6 }}>Birinchi to'plamingizni yarating!</div>
-                      <div style={{ fontSize: 13, color: "rgba(255,255,255,0.5)", lineHeight: 1.5, marginBottom: 20 }}>Matn yoki rasm yuboring — AI o'zi flashcard yaratib beradi</div>
+                      <div className="eds-title">Birinchi to'plamingizni yarating!</div>
+                      <div className="eds-sub">Matn yoki rasm yuboring — AI o'zi flashcard yaratib beradi</div>
                       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 16 }}>
-                        <button style={{ padding: "16px 12px", borderRadius: 16, background: "linear-gradient(135deg,rgba(108,92,231,0.35),rgba(108,92,231,0.15))", border: "1px solid rgba(108,92,231,0.5)", cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "center", gap: 6, fontFamily: "inherit" }} onClick={() => { switchScreen("create"); setInputMethod("text"); }}>
+                        <button className="eds-btn eds-btn-purple" onClick={() => { switchScreen("create"); setInputMethod("text"); }}>
                           <span style={{ fontSize: 26 }}>📝</span>
-                          <span style={{ fontSize: 12, fontWeight: 700, color: "white" }}>Matn</span>
-                          <span style={{ fontSize: 10, color: "rgba(255,255,255,0.5)" }}>Paste qiling</span>
+                          <span className="eds-btn-label">Matn</span>
+                          <span className="eds-btn-sub">Paste qiling</span>
                         </button>
-                        <button style={{ padding: "16px 12px", borderRadius: 16, background: "linear-gradient(135deg,rgba(168,85,247,0.35),rgba(168,85,247,0.15))", border: "1px solid rgba(168,85,247,0.5)", cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "center", gap: 6, fontFamily: "inherit" }} onClick={() => { switchScreen("create"); setInputMethod("image"); }}>
+                        <button className="eds-btn eds-btn-pink" onClick={() => { switchScreen("create"); setInputMethod("image"); }}>
                           <span style={{ fontSize: 26 }}>📷</span>
-                          <span style={{ fontSize: 12, fontWeight: 700, color: "white" }}>Rasm</span>
-                          <span style={{ fontSize: 10, color: "rgba(255,255,255,0.5)" }}>Lug'at rasmi</span>
+                          <span className="eds-btn-label">Rasm</span>
+                          <span className="eds-btn-sub">Lug'at rasmi</span>
                         </button>
                       </div>
-                      <div style={{ background: "rgba(16,185,129,0.08)", border: "1px solid rgba(16,185,129,0.2)", borderRadius: 14, padding: "12px 14px", display: "flex", alignItems: "center", gap: 10, textAlign: "left" }}>
+                      <div className="eds-tip">
                         <span style={{ fontSize: 20, flexShrink: 0 }}>💡</span>
-                        <div style={{ fontSize: 12, color: "rgba(255,255,255,0.6)", lineHeight: 1.4 }}>
-                          <strong style={{ color: "rgba(16,185,129,0.9)", display: "block", fontSize: 11, marginBottom: 1 }}>Tezkor yo'l</strong>
+                        <div style={{ fontSize: 12, lineHeight: 1.4 }}>
+                          <strong className="eds-tip-title">Tezkor yo'l</strong>
                           Lug'at sahifasini rasmga oling — AI so'zlarni o'zi ajratadi
                         </div>
                       </div>
