@@ -966,7 +966,8 @@ export default function MemorixPage() {
         @media (min-width: 640px) { .plan-cards-grid { grid-template-columns: repeat(3, 1fr); gap: 14px; } }
         /* ── DESKTOP RESPONSIVE ── */
         @media (min-width: 768px) {
-          .memorix-root { display: flex; min-height: 100vh; padding-bottom: 0; }
+          .memorix-root { display: flex; min-height: 100vh; padding-bottom: 0; background: #ededf7; }
+          .memorix-root::before, .memorix-root::after { display: none; }
 
           /* ── SIDEBAR ── */
           .bottom-nav {
@@ -988,8 +989,46 @@ export default function MemorixPage() {
             z-index: 200;
           }
           .bottom-nav.sidebar-closed {
-            width: 0;
-            border-right: none;
+            width: 56px;
+            border-right: 1px solid rgba(0,0,0,0.07);
+            overflow: hidden;
+          }
+          /* Sidebar yopiq — ikonka markazda, matn yashirinsin */
+          .bottom-nav.sidebar-closed .nav-item {
+            justify-content: center;
+            padding: 10px 0;
+            gap: 0;
+          }
+          .bottom-nav.sidebar-closed .nav-item span {
+            display: none;
+          }
+          .bottom-nav.sidebar-closed .sidebar-top {
+            padding: 20px 4px 12px;
+            align-items: center;
+          }
+          .bottom-nav.sidebar-closed .sidebar-top .logo-text,
+          .bottom-nav.sidebar-closed .sidebar-top .logo-sub,
+          .bottom-nav.sidebar-closed .sidebar-top span {
+            display: none;
+          }
+          .bottom-nav.sidebar-closed .sidebar-top > div {
+            border-bottom: 1px solid rgba(0,0,0,0.07);
+            padding: 6px 0 14px !important;
+            padding-left: 0 !important;
+            justify-content: center;
+          }
+          .bottom-nav.sidebar-closed .sidebar-avatar-wrap {
+            justify-content: center;
+            padding: 14px 0 20px;
+          }
+          .bottom-nav.sidebar-closed .avatar-name,
+          .bottom-nav.sidebar-closed .sidebar-avatar-wrap button span,
+          .bottom-nav.sidebar-closed .sidebar-avatar-wrap > button > span {
+            display: none;
+          }
+          .bottom-nav.sidebar-closed .sidebar-avatar-wrap button {
+            justify-content: center;
+            padding: 8px 4px;
           }
           .bottom-nav::before { display: none; }
 
@@ -1009,19 +1048,18 @@ export default function MemorixPage() {
             cursor: pointer;
             align-items: center;
             justify-content: center;
-            transition: left 0.25s cubic-bezier(0.4,0,0.2,1), background 0.15s, box-shadow 0.15s;
+            transition: background 0.15s, box-shadow 0.15s;
             color: #6C5CE7;
           }
           .sidebar-toggle:hover {
             background: white;
             box-shadow: 0 4px 18px rgba(108,92,231,0.18);
           }
-          .sidebar-toggle.open { left: 186px; }
 
           .sidebar-top {
             display: flex;
             flex-direction: column;
-            padding: 20px 14px 12px;
+            padding: 16px 14px 12px;
             flex-shrink: 0;
           }
 
@@ -1067,7 +1105,7 @@ export default function MemorixPage() {
           .sidebar-top { display: flex; flex-direction: column; }
           .header { padding: 20px 32px 12px 64px; max-width: 1000px; }
           .logo { display: none; }
-          .logo-sub { font-size: 16px; font-weight: 600; color: white; margin-left: 0; }
+          .logo-sub { font-size: 16px; font-weight: 600; color: #1e293b; margin-left: 0; }
 
           /* ── Content area ── */
           .desktop-content {
@@ -1077,8 +1115,9 @@ export default function MemorixPage() {
             transition: margin-left 0.25s cubic-bezier(0.4,0,0.2,1);
             display: flex;
             flex-direction: column;
+            background: #f4f3ff;
           }
-          .desktop-content.sidebar-closed { margin-left: 0; }
+          .desktop-content.sidebar-closed { margin-left: 56px; }
 
           /* Screen wrapper — markazlashgan, chiroyli padding */
           .screen {
@@ -1095,6 +1134,81 @@ export default function MemorixPage() {
             max-width: 1200px;
             margin: 0 auto;
           }
+          /* Desktop header matnlari qora */
+          .header .logo-sub { color: #1e293b; }
+          .header .avatar-mobile { display: none; }
+          /* Section label desktop da qora */
+          .section-label { color: #94a3b8; }
+          /* Desktop — barcha matnlar qoramtir */
+          .desktop-content .greeting-name { color: #1e293b !important; }
+          .desktop-content .greeting-sub { color: #64748b !important; }
+          .desktop-content .section-label { color: #94a3b8 !important; }
+          .desktop-content .stat-card .num { color: #1e293b; }
+          .desktop-content .stat-card .lbl { color: #64748b; }
+          .desktop-content .deck-title { color: #1e293b !important; }
+          .desktop-content .deck-meta { color: #64748b !important; }
+          .desktop-content .stat-big .val { color: #1e293b !important; }
+          .desktop-content .stat-big .lbl2 { color: #64748b !important; }
+          .desktop-content .stat-big .emoji { filter: none; }
+          .desktop-content .chart-title { color: #94a3b8 !important; }
+          .desktop-content .bar-day { color: #94a3b8 !important; }
+          .desktop-content .bar-day.today { color: #6C5CE7 !important; }
+          .desktop-content .bar-val { color: #64748b !important; }
+          .desktop-content .streak-num { color: #f59e0b !important; }
+          .desktop-content .streak-label { color: #64748b !important; }
+          .desktop-content .loader p { color: #64748b !important; }
+          .desktop-content .empty-state { color: #94a3b8 !important; }
+          .desktop-content .field-label { color: #64748b !important; }
+          .desktop-content .preview-card { background: white !important; border-color: rgba(200,196,230,0.5) !important; }
+          .desktop-content .preview-card .pf { color: #1e293b !important; }
+          .desktop-content .preview-card .pb { color: #6C5CE7 !important; }
+          .desktop-content .preview-card .pe { color: #94a3b8 !important; }
+          .desktop-content .mx-input,
+          .desktop-content .mx-textarea { background: white !important; border-color: rgba(200,196,230,0.6) !important; color: #1e293b !important; }
+          .desktop-content .mx-input::placeholder,
+          .desktop-content .mx-textarea::placeholder { color: #94a3b8 !important; }
+          .desktop-content .seg-tabs { background: rgba(108,92,231,0.08) !important; border-color: rgba(200,196,230,0.5) !important; }
+          .desktop-content .seg-tab { color: #64748b !important; }
+          .desktop-content .seg-tab.active { color: white !important; }
+          .desktop-content .upload-zone { border-color: rgba(200,196,230,0.8) !important; }
+          .desktop-content .upload-zone .uz-title { color: #1e293b !important; }
+          .desktop-content .upload-zone .uz-sub { color: #64748b !important; }
+          .desktop-content .flip-front { background: white !important; border-color: rgba(200,196,230,0.5) !important; }
+          .desktop-content .flip-front .fc-word { color: #1e293b !important; }
+          .desktop-content .flip-front .fc-tap { color: #94a3b8 !important; }
+          .desktop-content .flip-back .fc-trans { color: #6C5CE7 !important; }
+          .desktop-content .flip-back .fc-ex { color: #64748b !important; }
+          .desktop-content .study-actions .btn-glass { background: white !important; border-color: rgba(200,196,230,0.5) !important; color: #1e293b !important; }
+          .desktop-content .quiz-question { background: white !important; border-color: rgba(200,196,230,0.5) !important; }
+          .desktop-content .quiz-question .q-label { color: #94a3b8 !important; }
+          .desktop-content .quiz-question .q-word { color: #1e293b !important; }
+          .desktop-content .quiz-question .q-hint { color: #64748b !important; }
+          .desktop-content .choice-btn { background: white !important; border-color: rgba(200,196,230,0.5) !important; color: #1e293b !important; }
+          .desktop-content .choice-btn.correct { background: rgba(16,185,129,0.08) !important; border-color: rgba(16,185,129,0.4) !important; color: #059669 !important; }
+          .desktop-content .choice-btn.wrong { background: rgba(239,68,68,0.08) !important; border-color: rgba(239,68,68,0.3) !important; color: #dc2626 !important; }
+          .desktop-content .quiz-input { background: white !important; border-color: rgba(200,196,230,0.6) !important; color: #1e293b !important; }
+          .desktop-content .result-card { background: white !important; border-color: rgba(200,196,230,0.5) !important; }
+          .desktop-content .glass { background: white !important; border-color: rgba(200,196,230,0.5) !important; }
+          .desktop-content .icon-btn { color: #94a3b8 !important; }
+          .desktop-content .icon-btn.danger { color: rgba(239,68,68,0.6) !important; }
+          .desktop-content .quiz-mode-card { background: white !important; border-color: rgba(200,196,230,0.5) !important; }
+          .desktop-content .quiz-mode-title { color: #1e293b !important; }
+          .desktop-content .quiz-mode-sub { color: #64748b !important; }
+          .desktop-content .pro-h2 { color: #1e293b !important; }
+          .desktop-content .pro-sub { color: #64748b !important; }
+          .desktop-content .plan-card { background: white !important; border-color: rgba(200,196,230,0.5) !important; }
+          .desktop-content .plan-card.pro-card { background: linear-gradient(145deg,#1e1b3a,#2d1f5e) !important; border-color: rgba(168,85,247,0.5) !important; }
+          .desktop-content .plan-name { color: #94a3b8 !important; }
+          .desktop-content .plan-card.pro-card .plan-name { color: #c4b5fd !important; }
+          .desktop-content .plan-price { color: #1e293b !important; }
+          .desktop-content .plan-period { color: #64748b !important; }
+          .desktop-content .plan-card.pro-card .plan-price,
+          .desktop-content .plan-card.pro-card .plan-period { color: white !important; }
+          .desktop-content .feature-table { background: white !important; border-color: rgba(200,196,230,0.5) !important; }
+          .desktop-content .ft-row { border-color: rgba(200,196,230,0.3) !important; }
+          .desktop-content .ft-col-name { color: #475569 !important; }
+          .desktop-content .pf-item.ok { color: #475569 !important; }
+          .desktop-content .pf-item.no { color: #cbd5e1 !important; }
 
           /* ── Home sahifa: deck + stats 2 ustun ── */
           .home-layout {
@@ -1112,21 +1226,34 @@ export default function MemorixPage() {
             gap: 12px;
             margin-bottom: 12px;
           }
-          .stat-card { padding: 18px 16px; }
+          .stat-card { padding: 18px 16px; background: white; border-color: rgba(200,196,230,0.6); box-shadow: 0 2px 8px rgba(108,92,231,0.08); }
+          .stat-card .num { color: #1e293b; }
+          .stat-card .lbl { color: #64748b; }
+          .stat-card.accent { background: linear-gradient(135deg,rgba(108,92,231,0.12),rgba(168,85,247,0.08)); border-color: rgba(168,85,247,0.3); }
+          .stat-card.accent .num { color: #4f46e5; }
+          .stat-card.accent .lbl { color: #7c3aed; }
           .stat-card .num { font-size: 26px; }
           .stat-card .lbl { font-size: 12px; margin-top: 3px; }
 
           /* Deck list — bir ustun (home-left ichida) */
           .deck-list { display: flex; flex-direction: column; gap: 10px; }
-          .deck-card { padding: 14px 18px; }
-          .deck-card:hover { border-color: rgba(168,85,247,0.4); background: rgba(255,255,255,0.09); }
+          .deck-card { padding: 14px 18px; background: white; border-color: rgba(200,196,230,0.5); box-shadow: 0 2px 6px rgba(0,0,0,0.06); }
+          .deck-card:hover { border-color: rgba(108,92,231,0.35); background: white; box-shadow: 0 4px 16px rgba(108,92,231,0.12); }
+          .deck-title { color: #1e293b; }
+          .deck-meta { color: #64748b; }
 
           /* Stats bo'limi — home-right ichida */
           .stats-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
-          .stat-big { padding: 14px; }
-          .stat-big .val { font-size: 22px; }
-          .chart-wrap { padding: 14px; margin-bottom: 0; }
+          .stat-big { padding: 14px; background: white; border-color: rgba(200,196,230,0.5); box-shadow: 0 2px 6px rgba(0,0,0,0.06); }
+          .stat-big .val { font-size: 22px; color: #1e293b; }
+          .stat-big .lbl2 { color: #64748b; }
+          .chart-wrap { padding: 14px; margin-bottom: 0; background: white; border-color: rgba(200,196,230,0.5); box-shadow: 0 2px 6px rgba(0,0,0,0.06); }
+          .chart-title { color: #94a3b8; }
           .bars { height: 80px; }
+          .bar { background: rgba(108,92,231,0.1); }
+          .bar.filled { background: rgba(108,92,231,0.3); }
+          .streak-banner { background: linear-gradient(135deg,rgba(245,158,11,0.1),rgba(239,68,68,0.06)); border-color: rgba(245,158,11,0.25); }
+          .streak-label { color: #64748b; }
 
           /* Study sahifasi — markazda, katta karta */
           #screen-study {
@@ -1157,16 +1284,15 @@ export default function MemorixPage() {
             margin: 0 auto;
             transition: left 0.25s cubic-bezier(0.4,0,0.2,1);
           }
-          .toast.sidebar-closed { left: 40px; }
+          .toast.sidebar-closed { left: 80px; }
           .streak-banner { padding: 16px 18px; }
           .streak-num { font-size: 24px; }
         }
 
         @media (min-width: 1200px) {
           .bottom-nav { width: 220px; }
-          .sidebar-toggle.open { left: 186px; }
           .desktop-content { margin-left: 220px; }
-          .desktop-content.sidebar-closed { margin-left: 0; }
+          .desktop-content.sidebar-closed { margin-left: 56px; }
           .screen { padding: 0 48px 48px; max-width: 1280px; }
           .header { padding: 24px 48px 14px 64px; max-width: 1280px; }
           .home-layout { grid-template-columns: 1fr 360px; gap: 24px; }
@@ -1710,86 +1836,69 @@ export default function MemorixPage() {
 
               {/* Streak banner */}
               {streak > 0 && (
-                <div className="streak-banner" style={{ marginBottom: 16 }}>
+                <div className="streak-banner" style={{ marginBottom: 16, background: "linear-gradient(135deg,rgba(245,158,11,0.1),rgba(239,68,68,0.06))", border: "1px solid rgba(245,158,11,0.2)" }}>
                   <div className="streak-fire">{streakFire}</div>
                   <div className="streak-info">
-                    <div className="streak-num">{streak} kun</div>
-                    <div className="streak-label">ketma-ket o'rganmoqdasiz</div>
+                    <div className="streak-num" style={{ color: "#d97706" }}>{streak} kun</div>
+                    <div className="streak-label" style={{ color: "#64748b" }}>ketma-ket o'rganmoqdasiz</div>
                   </div>
-                  {streakBadge && (
-                    <div className={`streak-badge-pill ${streakBadge.cls}`}>{streakBadge.label}</div>
-                  )}
+                  {streakBadge && <div className={`streak-badge-pill ${streakBadge.cls}`}>{streakBadge.label}</div>}
                 </div>
               )}
 
               {/* Stats kartalar — 4 ta */}
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 16 }}>
-                <div style={{ background: "var(--glass)", border: "1px solid var(--glass-border)", borderRadius: "var(--radius)", padding: 20, textAlign: "center" }}>
-                  <div style={{ fontSize: 32, marginBottom: 6 }}>📚</div>
-                  <div style={{ fontSize: 28, fontWeight: 800, color: "white" }}>{stats?.totalDecks ?? 0}</div>
-                  <div style={{ fontSize: 11, color: "var(--text-dim)", marginTop: 3 }}>To'plamlar</div>
-                  {stats?.limits && stats.limits.decks !== Infinity && (
-                    <div style={{ marginTop: 8 }}>
-                      <div style={{ height: 4, background: "rgba(255,255,255,0.08)", borderRadius: 100, overflow: "hidden" }}>
-                        <div style={{ height: "100%", width: `${Math.min(100, ((stats.totalDecks) / (stats.limits.decks)) * 100)}%`, background: "linear-gradient(90deg,#6C5CE7,#a855f7)", borderRadius: 100 }} />
+                {[
+                  {
+                    emoji: "📚", val: stats?.totalDecks ?? 0, label: "To'plamlar", color: "#1e293b",
+                    bar: stats?.limits?.decks && stats.limits.decks !== Infinity
+                      ? { pct: Math.min(100, ((stats.totalDecks ?? 0) / (stats.limits.decks)) * 100), color: "linear-gradient(90deg,#6C5CE7,#a855f7)", text: `${stats.totalDecks ?? 0} / ${stats.limits.decks}` }
+                      : null
+                  },
+                  {
+                    emoji: "📝", val: stats?.totalFlashcards ?? 0, label: "So'zlar", color: "#1e293b",
+                    bar: stats?.limits?.cards && stats.limits.cards !== Infinity
+                      ? { pct: Math.min(100, ((stats.totalFlashcards ?? 0) / (stats.limits.cards)) * 100), color: "linear-gradient(90deg,#10b981,#0ea5e9)", text: `${stats.totalFlashcards ?? 0} / ${stats.limits.cards ?? 30}` }
+                      : null
+                  },
+                  { emoji: "🔥", val: streak, label: "Streak kun", color: "#d97706", bar: null },
+                  { emoji: "🎯", val: stats?.totalStudied ?? 0, label: "Jami o'rganilgan", color: "#1e293b", bar: null },
+                ].map((item, i) => (
+                  <div key={i} style={{ background: "white", border: "1px solid rgba(200,196,230,0.5)", borderRadius: "var(--radius)", padding: 20, textAlign: "center", boxShadow: "0 2px 8px rgba(108,92,231,0.07)" }}>
+                    <div style={{ fontSize: 32, marginBottom: 6 }}>{item.emoji}</div>
+                    <div style={{ fontSize: 28, fontWeight: 800, color: item.color }}>{item.val}</div>
+                    <div style={{ fontSize: 11, color: "#64748b", marginTop: 3 }}>{item.label}</div>
+                    {item.bar && (
+                      <div style={{ marginTop: 8 }}>
+                        <div style={{ height: 4, background: "rgba(108,92,231,0.1)", borderRadius: 100, overflow: "hidden" }}>
+                          <div style={{ height: "100%", width: `${item.bar.pct}%`, background: item.bar.color, borderRadius: 100 }} />
+                        </div>
+                        <div style={{ fontSize: 10, color: "#94a3b8", marginTop: 4 }}>{item.bar.text}</div>
                       </div>
-                      <div style={{ fontSize: 10, color: "var(--text-dim)", marginTop: 4 }}>{stats.totalDecks} / {stats.limits.decks}</div>
-                    </div>
-                  )}
-                </div>
-                <div style={{ background: "var(--glass)", border: "1px solid var(--glass-border)", borderRadius: "var(--radius)", padding: 20, textAlign: "center" }}>
-                  <div style={{ fontSize: 32, marginBottom: 6 }}>📝</div>
-                  <div style={{ fontSize: 28, fontWeight: 800, color: "white" }}>{stats?.totalFlashcards ?? 0}</div>
-                  <div style={{ fontSize: 11, color: "var(--text-dim)", marginTop: 3 }}>So'zlar</div>
-                  {stats?.limits && stats.limits.cards !== Infinity && (
-                    <div style={{ marginTop: 8 }}>
-                      <div style={{ height: 4, background: "rgba(255,255,255,0.08)", borderRadius: 100, overflow: "hidden" }}>
-                        <div style={{ height: "100%", width: `${Math.min(100, ((stats.totalFlashcards) / (stats.limits.cards)) * 100)}%`, background: "linear-gradient(90deg,#10b981,#0ea5e9)", borderRadius: 100 }} />
-                      </div>
-                      <div style={{ fontSize: 10, color: "var(--text-dim)", marginTop: 4 }}>{stats?.totalFlashcards ?? 0} / {stats?.limits?.cards ?? 30}</div>
-                    </div>
-                  )}
-                </div>
-                <div style={{ background: "var(--glass)", border: "1px solid var(--glass-border)", borderRadius: "var(--radius)", padding: 20, textAlign: "center" }}>
-                  <div style={{ fontSize: 32, marginBottom: 6 }}>🔥</div>
-                  <div style={{ fontSize: 28, fontWeight: 800, color: "#fbbf24" }}>{streak}</div>
-                  <div style={{ fontSize: 11, color: "var(--text-dim)", marginTop: 3 }}>Streak kun</div>
-                </div>
-                <div style={{ background: "var(--glass)", border: "1px solid var(--glass-border)", borderRadius: "var(--radius)", padding: 20, textAlign: "center" }}>
-                  <div style={{ fontSize: 32, marginBottom: 6 }}>🎯</div>
-                  <div style={{ fontSize: 28, fontWeight: 800, color: "white" }}>{stats?.totalStudied ?? 0}</div>
-                  <div style={{ fontSize: 11, color: "var(--text-dim)", marginTop: 3 }}>Jami o'rganilgan</div>
-                </div>
+                    )}
+                  </div>
+                ))}
               </div>
 
-              {/* Haftalik grafik — katta */}
-              <div style={{ background: "var(--glass)", border: "1px solid var(--glass-border)", borderRadius: "var(--radius)", padding: 20, marginBottom: 16 }}>
-                <div style={{ fontSize: 12, fontWeight: 700, color: "var(--text-dim)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 16 }}>Haftalik faollik</div>
+              {/* Haftalik grafik */}
+              <div style={{ background: "white", border: "1px solid rgba(200,196,230,0.5)", borderRadius: "var(--radius)", padding: 20, marginBottom: 16, boxShadow: "0 2px 8px rgba(108,92,231,0.07)" }}>
+                <div style={{ fontSize: 12, fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 16 }}>Haftalik faollik</div>
                 <div style={{ display: "flex", gap: 8, alignItems: "flex-end", height: 120 }}>
                   {weekly.map((val, i) => {
                     const h = Math.round((val / Math.max(...weekly, 1)) * 100);
                     const isToday = i === todayIdx;
                     return (
                       <div key={i} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 6 }}>
-                        <div style={{ fontSize: 11, color: "var(--text-dim)", fontWeight: 600, minHeight: 14 }}>{val > 0 ? val : ""}</div>
+                        <div style={{ fontSize: 11, color: "#64748b", fontWeight: 600, minHeight: 14 }}>{val > 0 ? val : ""}</div>
                         <div style={{ width: "100%", flex: 1, display: "flex", alignItems: "flex-end" }}>
                           <div style={{
-                            width: "100%",
-                            height: `${h}%`,
-                            minHeight: 4,
-                            borderRadius: "6px 6px 0 0",
-                            background: isToday
-                              ? "linear-gradient(180deg,#a855f7,#6C5CE7)"
-                              : val > 0
-                                ? "rgba(108,92,231,0.45)"
-                                : "rgba(255,255,255,0.07)",
-                            boxShadow: isToday ? "0 0 12px rgba(168,85,247,0.5)" : "none",
+                            width: "100%", height: `${h}%`, minHeight: 4, borderRadius: "6px 6px 0 0",
+                            background: isToday ? "linear-gradient(180deg,#a855f7,#6C5CE7)" : val > 0 ? "rgba(108,92,231,0.35)" : "rgba(108,92,231,0.08)",
+                            boxShadow: isToday ? "0 0 12px rgba(168,85,247,0.4)" : "none",
                             transition: "height 0.3s ease"
                           }} />
                         </div>
-                        <div style={{ fontSize: 11, color: isToday ? "#a855f7" : "var(--text-dim)", fontWeight: isToday ? 700 : 400 }}>
-                          {dayLabels[i]}
-                        </div>
+                        <div style={{ fontSize: 11, color: isToday ? "#6C5CE7" : "#94a3b8", fontWeight: isToday ? 700 : 400 }}>{dayLabels[i]}</div>
                       </div>
                     );
                   })}
@@ -1797,45 +1906,44 @@ export default function MemorixPage() {
               </div>
 
               {/* Plan progress */}
-              <div style={{ background: "linear-gradient(135deg,rgba(108,92,231,0.15),rgba(168,85,247,0.1))", border: "1px solid rgba(168,85,247,0.3)", borderRadius: "var(--radius)", padding: 18, marginBottom: 16 }}>
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
-                  <div style={{ fontSize: 13, fontWeight: 700, color: "white" }}>👑 {stats?.plan ?? "FREE"} reja</div>
-                  <button onClick={() => switchScreen("pro")} style={{ fontSize: 11, fontWeight: 700, color: "#c4b5fd", background: "rgba(168,85,247,0.2)", border: "1px solid rgba(168,85,247,0.4)", borderRadius: 100, padding: "4px 12px", cursor: "pointer", fontFamily: "inherit" }}>
+              <div style={{ background: "white", border: "1px solid rgba(108,92,231,0.2)", borderRadius: "var(--radius)", padding: 18, marginBottom: 16, boxShadow: "0 2px 8px rgba(108,92,231,0.07)" }}>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
+                  <div style={{ fontSize: 14, fontWeight: 700, color: "#1e293b" }}>👑 {stats?.plan ?? "FREE"} reja</div>
+                  <button onClick={() => switchScreen("pro")} style={{ fontSize: 11, fontWeight: 700, color: "white", background: "linear-gradient(135deg,#6C5CE7,#a855f7)", border: "none", borderRadius: 100, padding: "6px 14px", cursor: "pointer", fontFamily: "inherit" }}>
                     Upgrade →
                   </button>
                 </div>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
-                  <div>
-                    <div style={{ fontSize: 11, color: "var(--text-dim)", marginBottom: 4 }}>To'plamlar</div>
-                    <div style={{ height: 6, background: "rgba(255,255,255,0.08)", borderRadius: 100, overflow: "hidden" }}>
-                      <div style={{ height: "100%", width: `${stats?.limits?.decks && stats.limits.decks !== Infinity ? Math.min(100, ((stats.totalDecks ?? 0) / (stats.limits.decks)) * 100) : 0}%`, background: "linear-gradient(90deg,#6C5CE7,#a855f7)", borderRadius: 100 }} />
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+                  {[
+                    { label: "To'plamlar", val: stats?.totalDecks ?? 0, max: stats?.limits?.decks ?? 3, color: "linear-gradient(90deg,#6C5CE7,#a855f7)" },
+                    { label: "So'zlar", val: stats?.totalFlashcards ?? 0, max: stats?.limits?.cards ?? 30, color: "linear-gradient(90deg,#10b981,#0ea5e9)" },
+                  ].map((item, i) => (
+                    <div key={i}>
+                      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
+                        <div style={{ fontSize: 12, color: "#64748b" }}>{item.label}</div>
+                        <div style={{ fontSize: 12, fontWeight: 700, color: "#1e293b" }}>{item.val}<span style={{ color: "#94a3b8", fontWeight: 400 }}>/{item.max}</span></div>
+                      </div>
+                      <div style={{ height: 6, background: "rgba(108,92,231,0.1)", borderRadius: 100, overflow: "hidden" }}>
+                        <div style={{ height: "100%", width: `${Math.min(100, (item.val / item.max) * 100)}%`, background: item.color, borderRadius: 100 }} />
+                      </div>
                     </div>
-                    <div style={{ fontSize: 10, color: "var(--text-dim)", marginTop: 3 }}>{stats?.totalDecks ?? 0} / {stats?.limits?.decks ?? 3}</div>
-                  </div>
-                  <div>
-                    <div style={{ fontSize: 11, color: "var(--text-dim)", marginBottom: 4 }}>So'zlar</div>
-                    <div style={{ height: 6, background: "rgba(255,255,255,0.08)", borderRadius: 100, overflow: "hidden" }}>
-                      <div style={{ height: "100%", width: `${stats?.limits?.cards && stats.limits.cards !== Infinity ? Math.min(100, ((stats.totalFlashcards ?? 0) / (stats.limits.cards)) * 100) : 0}%`, background: "linear-gradient(90deg,#10b981,#0ea5e9)", borderRadius: 100 }} />
-                    </div>
-                    <div style={{ fontSize: 10, color: "var(--text-dim)", marginTop: 3 }}>{stats?.totalFlashcards ?? 0} / {stats?.limits?.cards ?? 30}</div>
-                  </div>
+                  ))}
                 </div>
               </div>
 
-              {/* Jump back in — oxirgi to'plam */}
+              {/* Jump back in */}
               {decks.length > 0 && (
                 <div style={{ marginBottom: 16 }}>
-                  <div className="section-label">Davom etish</div>
-                  <div
-                    style={{ background: "linear-gradient(135deg,rgba(108,92,231,0.2),rgba(168,85,247,0.1))", border: "1px solid rgba(168,85,247,0.3)", borderRadius: "var(--radius)", padding: 16, cursor: "pointer", display: "flex", alignItems: "center", gap: 14 }}
+                  <div style={{ fontSize: 11, fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 10 }}>Davom etish</div>
+                  <div style={{ background: "white", border: "1px solid rgba(108,92,231,0.2)", borderRadius: "var(--radius)", padding: 16, cursor: "pointer", display: "flex", alignItems: "center", gap: 14, boxShadow: "0 2px 8px rgba(108,92,231,0.07)" }}
                     onClick={() => openDeckForStudy(decks[0].id, decks[0].description || "")}
                   >
                     <div style={{ width: 48, height: 48, borderRadius: 14, background: "linear-gradient(135deg,#6C5CE7,#a855f7)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22, flexShrink: 0 }}>
                       {getDeckEmoji(decks[0].title)}
                     </div>
                     <div style={{ flex: 1 }}>
-                      <div style={{ fontSize: 15, fontWeight: 700, color: "white" }}>{decks[0].title}</div>
-                      <div style={{ fontSize: 12, color: "rgba(255,255,255,0.45)", marginTop: 2 }}>{decks[0]._count?.flashcards ?? 0} ta so'z</div>
+                      <div style={{ fontSize: 15, fontWeight: 700, color: "#1e293b" }}>{decks[0].title}</div>
+                      <div style={{ fontSize: 12, color: "#64748b", marginTop: 2 }}>{decks[0]._count?.flashcards ?? 0} ta so'z</div>
                     </div>
                     <div style={{ background: "linear-gradient(135deg,#6C5CE7,#a855f7)", color: "white", fontSize: 12, fontWeight: 700, padding: "8px 16px", borderRadius: 100, flexShrink: 0 }}>
                       ▶ Boshlash
@@ -1851,42 +1959,40 @@ export default function MemorixPage() {
           <div className={`screen${activeScreen === "account" ? " active" : ""}`} id="screen-account">
             <div style={{ maxWidth: 480, margin: "0 auto" }}>
               {/* Avatar card */}
-              <div style={{ textAlign: "center", padding: "32px 20px 24px", background: "var(--glass)", border: "1px solid var(--glass-border)", borderRadius: "var(--radius)", marginBottom: 16 }}>
+              <div style={{ textAlign: "center", padding: "32px 20px 24px", background: "white", border: "1px solid rgba(200,196,230,0.5)", borderRadius: "var(--radius)", marginBottom: 16, boxShadow: "0 2px 8px rgba(108,92,231,0.07)" }}>
                 <div style={{ width: 72, height: 72, borderRadius: "50%", background: "linear-gradient(135deg,#6C5CE7,#a855f7)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 28, fontWeight: 800, color: "white", margin: "0 auto 14px" }}>{avatarLetter}</div>
-                <div style={{ fontSize: 20, fontWeight: 800, color: "white", marginBottom: 4 }}>{userName}</div>
-                <div style={{ fontSize: 13, color: "var(--text-dim)", marginBottom: 14 }}>{user?.telegramId ? "@" + user.telegramId : "Telegram foydalanuvchi"}</div>
-                <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(108,92,231,0.2)", border: "1px solid rgba(108,92,231,0.35)", borderRadius: 100, padding: "6px 14px", fontSize: 12, fontWeight: 700, color: "#c4b5fd" }}>
+                <div style={{ fontSize: 20, fontWeight: 800, color: "#1e293b", marginBottom: 4 }}>{userName}</div>
+                <div style={{ fontSize: 13, color: "#64748b", marginBottom: 14 }}>{user?.telegramId ? "@" + user.telegramId : "Telegram foydalanuvchi"}</div>
+                <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(108,92,231,0.1)", border: "1px solid rgba(108,92,231,0.2)", borderRadius: 100, padding: "6px 14px", fontSize: 12, fontWeight: 700, color: "#6C5CE7" }}>
                   👑 {stats?.plan ?? "FREE"} reja
                 </div>
               </div>
 
               {/* Stats */}
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10, marginBottom: 16 }}>
-                <div style={{ background: "var(--glass)", border: "1px solid var(--glass-border)", borderRadius: "var(--radius-sm)", padding: "14px 12px", textAlign: "center" }}>
-                  <div style={{ fontSize: 22, fontWeight: 800, color: "white" }}>{stats?.totalDecks ?? 0}</div>
-                  <div style={{ fontSize: 11, color: "var(--text-dim)", marginTop: 2 }}>To'plamlar</div>
-                </div>
-                <div style={{ background: "var(--glass)", border: "1px solid var(--glass-border)", borderRadius: "var(--radius-sm)", padding: "14px 12px", textAlign: "center" }}>
-                  <div style={{ fontSize: 22, fontWeight: 800, color: "white" }}>{stats?.totalFlashcards ?? 0}</div>
-                  <div style={{ fontSize: 11, color: "var(--text-dim)", marginTop: 2 }}>So'zlar</div>
-                </div>
-                <div style={{ background: "var(--glass)", border: "1px solid var(--glass-border)", borderRadius: "var(--radius-sm)", padding: "14px 12px", textAlign: "center" }}>
-                  <div style={{ fontSize: 22, fontWeight: 800, color: "white" }}>{streak > 0 ? streak : 0}</div>
-                  <div style={{ fontSize: 11, color: "var(--text-dim)", marginTop: 2 }}>Streak 🔥</div>
-                </div>
+                {[
+                  { val: stats?.totalDecks ?? 0, label: "To'plamlar" },
+                  { val: stats?.totalFlashcards ?? 0, label: "So'zlar" },
+                  { val: streak, label: "Streak 🔥" },
+                ].map((item, i) => (
+                  <div key={i} style={{ background: "white", border: "1px solid rgba(200,196,230,0.5)", borderRadius: "var(--radius-sm)", padding: "14px 12px", textAlign: "center", boxShadow: "0 2px 6px rgba(0,0,0,0.05)" }}>
+                    <div style={{ fontSize: 22, fontWeight: 800, color: "#1e293b" }}>{item.val}</div>
+                    <div style={{ fontSize: 11, color: "#64748b", marginTop: 2 }}>{item.label}</div>
+                  </div>
+                ))}
               </div>
 
               {/* Menu items */}
               <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 16 }}>
-                <button onClick={() => switchScreen("pro")} style={{ display: "flex", alignItems: "center", gap: 14, padding: "14px 16px", background: "linear-gradient(135deg,rgba(108,92,231,0.2),rgba(168,85,247,0.1))", border: "1px solid rgba(168,85,247,0.3)", borderRadius: "var(--radius-sm)", cursor: "pointer", fontFamily: "inherit", color: "white", fontSize: 14, fontWeight: 600 }}>
+                <button onClick={() => switchScreen("pro")} style={{ display: "flex", alignItems: "center", gap: 14, padding: "14px 16px", background: "linear-gradient(135deg,rgba(108,92,231,0.08),rgba(168,85,247,0.05))", border: "1px solid rgba(108,92,231,0.2)", borderRadius: "var(--radius-sm)", cursor: "pointer", fontFamily: "inherit", color: "#4f46e5", fontSize: 14, fontWeight: 600 }}>
                   <span style={{ fontSize: 20 }}>👑</span>
                   <span style={{ flex: 1, textAlign: "left" }}>Premium rejaga o'tish</span>
-                  <span style={{ color: "var(--text-dim)", fontSize: 16 }}>→</span>
+                  <span style={{ color: "#94a3b8", fontSize: 16 }}>→</span>
                 </button>
-                <button onClick={() => switchScreen("home")} style={{ display: "flex", alignItems: "center", gap: 14, padding: "14px 16px", background: "var(--glass)", border: "1px solid var(--glass-border)", borderRadius: "var(--radius-sm)", cursor: "pointer", fontFamily: "inherit", color: "white", fontSize: 14, fontWeight: 500 }}>
+                <button onClick={() => switchScreen("home")} style={{ display: "flex", alignItems: "center", gap: 14, padding: "14px 16px", background: "white", border: "1px solid rgba(200,196,230,0.5)", borderRadius: "var(--radius-sm)", cursor: "pointer", fontFamily: "inherit", color: "#1e293b", fontSize: 14, fontWeight: 500, boxShadow: "0 1px 4px rgba(0,0,0,0.05)" }}>
                   <span style={{ fontSize: 20 }}>📚</span>
                   <span style={{ flex: 1, textAlign: "left" }}>Mening to'plamlarim</span>
-                  <span style={{ color: "var(--text-dim)", fontSize: 16 }}>→</span>
+                  <span style={{ color: "#94a3b8", fontSize: 16 }}>→</span>
                 </button>
               </div>
 
@@ -1894,14 +2000,11 @@ export default function MemorixPage() {
               <button
                 onClick={() => {
                   localStorage.removeItem("memorix_onboarded");
-                  setAccessToken(null);
-                  setUser(null);
-                  setDecks([]);
-                  setStats(null);
+                  setAccessToken(null); setUser(null); setDecks([]); setStats(null);
                   showToast("Chiqildi ✓");
                   window.location.reload();
                 }}
-                style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center", gap: 10, padding: "14px", background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.2)", borderRadius: "var(--radius-sm)", cursor: "pointer", fontFamily: "inherit", color: "#ef4444", fontSize: 14, fontWeight: 700 }}
+                style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center", gap: 10, padding: "14px", background: "rgba(239,68,68,0.06)", border: "1px solid rgba(239,68,68,0.18)", borderRadius: "var(--radius-sm)", cursor: "pointer", fontFamily: "inherit", color: "#dc2626", fontSize: 14, fontWeight: 700 }}
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" />
@@ -2211,7 +2314,7 @@ export default function MemorixPage() {
 
           {/* ── SIDEBAR TOGGLE (desktop only) ── */}
           <button
-            className={`sidebar-toggle${sidebarOpen ? " open" : ""}`}
+            className="sidebar-toggle"
             onClick={() => setSidebarOpen(o => !o)}
             title={sidebarOpen ? "Yopish" : "Ochish"}
           >
@@ -2226,7 +2329,7 @@ export default function MemorixPage() {
           <div className={`bottom-nav${sidebarOpen ? "" : " sidebar-closed"}`}>
             {/* Desktop sidebar logo */}
             <div className="sidebar-top">
-              <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "4px 4px 14px", borderBottom: "1px solid rgba(0,0,0,0.07)", marginBottom: 8 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "6px 4px 14px 52px", borderBottom: "1px solid rgba(0,0,0,0.07)", marginBottom: 8 }}>
                 <svg width="22" height="22" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <rect width="32" height="32" rx="8" fill="#6C5CE7" />
                   <rect x="7" y="9" width="18" height="14" rx="3" fill="white" fillOpacity="0.15" stroke="white" strokeWidth="1.5" />
