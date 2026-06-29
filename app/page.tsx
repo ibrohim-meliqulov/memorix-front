@@ -282,7 +282,14 @@ export default function MemorixPage() {
             }
             setAuthLoading(false);
             return;
+          } else {
+            // Token eskirgan — tozalab auth sahifaga yuboramiz
+            localStorage.removeItem("memorix_token");
+            window.location.href = "https://memorix-landing-sand.vercel.app/auth";
+            return;
           }
+        } else {
+          // Token yo'q — Telegram WebApp tekshiramiz
         }
 
         // Telegram Mini App auth
@@ -291,6 +298,7 @@ export default function MemorixPage() {
 
         let result: any;
         if (tg?.initData) {
+          // Telegram ichidan ochilgan — initData bilan auth
           const res = await fetch(`${API_BASE}/auth/telegram`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -298,12 +306,9 @@ export default function MemorixPage() {
           });
           result = await res.json();
         } else {
-          const res = await fetch(`${API_BASE}/auth/dev-login`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ telegramId: "browser_test_user" }),
-          });
-          result = await res.json();
+          // Browser da ochilgan, token ham yo'q — auth sahifaga yuboramiz
+          window.location.href = "https://memorix-landing-sand.vercel.app/auth";
+          return;
         }
 
         setAccessToken(result.accessToken);
@@ -745,15 +750,18 @@ export default function MemorixPage() {
         minHeight: "100vh",
         background: "linear-gradient(135deg, #0a0015 0%, #1a0035 50%, #0d1545 100%)",
         display: "flex", alignItems: "center", justifyContent: "center",
-        flexDirection: "column", gap: 16,
+        flexDirection: "column", gap: 20,
       }}>
+        <div style={{ fontSize: 48 }}>🧠</div>
+        <div style={{ fontSize: 22, fontWeight: 800, color: "white", letterSpacing: "-0.02em" }}>Memorix</div>
         <div style={{
-          width: 44, height: 44,
+          width: 36, height: 36,
           border: "3px solid rgba(255,255,255,0.08)",
           borderTopColor: "#a855f7",
           borderRadius: "50%",
           animation: "spin 0.7s linear infinite",
         }} />
+        <div style={{ fontSize: 13, color: "rgba(255,255,255,0.4)" }}>Yuklanmoqda...</div>
         <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
       </div>
     );
