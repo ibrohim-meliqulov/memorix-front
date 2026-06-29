@@ -3,17 +3,17 @@
 @tailwind utilities;
 
 :root {
-  --bg1: #0a0015;
-  --bg2: #1a0035;
-  --bg3: #0d1545;
-  --glass: rgba(255, 255, 255, 0.06);
-  --glass-border: rgba(255, 255, 255, 0.10);
-  --glass-hover: rgba(255, 255, 255, 0.10);
+  --bg1: #f8f7ff;
+  --bg2: #f0eeff;
+  --bg3: #eef2ff;
+  --glass: rgba(108, 92, 231, 0.06);
+  --glass-border: rgba(108, 92, 231, 0.12);
+  --glass-hover: rgba(108, 92, 231, 0.10);
   --accent: #6C5CE7;
   --accent2: #a855f7;
-  --text: #ffffff;
-  --text-dim: rgba(255, 255, 255, 0.4);
-  --text-mid: rgba(255, 255, 255, 0.7);
+  --text: #1e1b4b;
+  --text-dim: rgba(51, 41, 100, 0.45);
+  --text-mid: rgba(51, 41, 100, 0.70);
   --success: #10b981;
   --danger: #ef4444;
   --radius: 18px;
@@ -35,14 +35,12 @@ body {
   height: 100%;
 }
 
-/* Telefon va laptop uchun bir xil qora-binafsha fon */
 html {
-  background: #0a0015;
+  background: #f8f7ff;
 }
 
 body {
-  background: linear-gradient(135deg, var(--bg1) 0%, var(--bg2) 50%, var(--bg3) 100%);
-  /* background-attachment: fixed — mobilda ishlamaydi, o'chirildi */
+  background: linear-gradient(160deg, #f8f7ff 0%, #f0eeff 50%, #eef2ff 100%);
   background-attachment: scroll;
   color: var(--text);
   font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'SF Pro Display', sans-serif;
@@ -54,17 +52,15 @@ body {
   overflow-x: hidden;
 }
 
-/* Mobilda gradient to'liq qoplash uchun */
 body::before {
   content: '';
   position: fixed;
   inset: 0;
-  background: linear-gradient(135deg, var(--bg1) 0%, var(--bg2) 50%, var(--bg3) 100%);
+  background: linear-gradient(160deg, #f8f7ff 0%, #f0eeff 50%, #eef2ff 100%);
   z-index: -2;
   pointer-events: none;
 }
 
-/* Ambient orbs */
 body::after {
   content: '';
   position: fixed;
@@ -73,15 +69,15 @@ body::after {
   width: 280px;
   height: 280px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(108, 92, 231, 0.3) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(108, 92, 231, 0.12) 0%, transparent 70%);
   pointer-events: none;
   z-index: -1;
 }
 
 /* Glass utility */
 .glass {
-  background: var(--glass);
-  border: 1px solid var(--glass-border);
+  background: rgba(255, 255, 255, 0.70);
+  border: 1px solid rgba(108, 92, 231, 0.12);
   border-radius: var(--radius);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
@@ -156,11 +152,11 @@ body::after {
 input[type="text"],
 textarea {
   width: 100%;
-  background: var(--glass);
-  border: 1px solid var(--glass-border);
+  background: rgba(255, 255, 255, 0.80);
+  border: 1px solid rgba(108, 92, 231, 0.18);
   border-radius: var(--radius-sm);
   padding: 14px 16px;
-  color: white;
+  color: #1e1b4b;
   font-family: inherit;
   font-size: 15px;
   outline: none;
@@ -170,12 +166,12 @@ textarea {
 
 input[type="text"]:focus,
 textarea:focus {
-  border-color: rgba(168, 85, 247, 0.6);
+  border-color: rgba(108, 92, 231, 0.5);
 }
 
 input::placeholder,
 textarea::placeholder {
-  color: var(--text-dim);
+  color: rgba(51, 41, 100, 0.40);
 }
 
 textarea {
@@ -186,7 +182,7 @@ textarea {
 .spinner {
   width: 34px;
   height: 34px;
-  border: 3px solid rgba(255, 255, 255, 0.08);
+  border: 3px solid rgba(108, 92, 231, 0.12);
   border-top-color: var(--accent2);
   border-radius: 50%;
   animation: spin 0.7s linear infinite;
@@ -198,17 +194,19 @@ textarea {
   bottom: 100px;
   left: 16px;
   right: 16px;
-  background: rgba(30, 27, 58, 0.95);
-  border: 1px solid rgba(168, 85, 247, 0.3);
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(108, 92, 231, 0.20);
   border-radius: var(--radius-sm);
   padding: 14px 18px;
   font-size: 14px;
+  color: #1e1b4b;
   text-align: center;
   transform: translateY(100px);
   opacity: 0;
   transition: all 0.25s ease;
   z-index: 500;
   backdrop-filter: blur(20px);
+  box-shadow: 0 4px 20px rgba(108, 92, 231, 0.12);
 }
 
 .toast.show {
@@ -222,10 +220,10 @@ textarea {
   bottom: 0;
   left: 0;
   right: 0;
-  background: rgba(10, 0, 21, 0.85);
+  background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  border-top: 1px solid rgba(108, 92, 231, 0.10);
   display: flex;
   padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
   gap: 4px;
@@ -237,7 +235,7 @@ textarea {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: rgba(108, 92, 231, 0.25);
+  background: rgba(108, 92, 231, 0.20);
   transition: all 0.3s ease;
 }
 
@@ -263,7 +261,7 @@ textarea {
 
 .ob-desc {
   font-size: 15px;
-  color: rgba(51, 41, 100, 0.72);
+  color: rgba(51, 41, 100, 0.68);
   line-height: 1.6;
   max-width: 280px;
 }
@@ -288,7 +286,7 @@ textarea {
 
 .ob-feature-text {
   font-size: 13px;
-  color: rgba(51, 41, 100, 0.75);
+  color: rgba(51, 41, 100, 0.72);
   line-height: 1.4;
 }
 
@@ -300,25 +298,25 @@ textarea {
 
 /* Streak badges */
 .badge-bronze {
-  background: rgba(180, 83, 9, 0.3);
-  color: #fbbf24;
-  border: 1px solid rgba(180, 83, 9, 0.5);
+  background: rgba(180, 83, 9, 0.12);
+  color: #b45309;
+  border: 1px solid rgba(180, 83, 9, 0.25);
 }
 
 .badge-silver {
-  background: rgba(100, 116, 139, 0.3);
-  color: #e2e8f0;
-  border: 1px solid rgba(100, 116, 139, 0.5);
+  background: rgba(100, 116, 139, 0.12);
+  color: #475569;
+  border: 1px solid rgba(100, 116, 139, 0.25);
 }
 
 .badge-gold {
-  background: rgba(234, 179, 8, 0.2);
-  color: #fde047;
-  border: 1px solid rgba(234, 179, 8, 0.4);
+  background: rgba(234, 179, 8, 0.12);
+  color: #a16207;
+  border: 1px solid rgba(234, 179, 8, 0.25);
 }
 
 .badge-diamond {
-  background: rgba(99, 102, 241, 0.2);
-  color: #a5b4fc;
-  border: 1px solid rgba(99, 102, 241, 0.4);
+  background: rgba(99, 102, 241, 0.10);
+  color: #4f46e5;
+  border: 1px solid rgba(99, 102, 241, 0.25);
 }

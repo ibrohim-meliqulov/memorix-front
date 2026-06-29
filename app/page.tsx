@@ -725,12 +725,12 @@ export default function MemorixPage() {
     return (
       <div style={{
         minHeight: "100vh",
-        background: "linear-gradient(135deg, #0a0015 0%, #1a0035 50%, #0d1545 100%)",
+        background: "linear-gradient(160deg, #f8f7ff 0%, #f0eeff 50%, #eef2ff 100%)",
         display: "flex", alignItems: "center", justifyContent: "center",
         flexDirection: "column", gap: 20,
       }}>
         <div style={{ fontSize: 48 }}>🧠</div>
-        <div style={{ fontSize: 22, fontWeight: 800, color: "white", letterSpacing: "-0.02em" }}>Memorix</div>
+        <div style={{ fontSize: 22, fontWeight: 800, color: "#1e1b4b", letterSpacing: "-0.02em" }}>Memorix</div>
         <div style={{
           width: 36, height: 36,
           border: "3px solid rgba(255,255,255,0.08)",
@@ -738,7 +738,7 @@ export default function MemorixPage() {
           borderRadius: "50%",
           animation: "spin 0.7s linear infinite",
         }} />
-        <div style={{ fontSize: 13, color: "rgba(255,255,255,0.4)" }}>Yuklanmoqda...</div>
+        <div style={{ fontSize: 13, color: "rgba(51,41,100,0.45)" }}>Yuklanmoqda...</div>
         <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
       </div>
     );
@@ -748,16 +748,16 @@ export default function MemorixPage() {
     <>
       <style>{`
         :root {
-          --bg1: #0a0015;
-          --bg2: #1a0035;
-          --bg3: #0d1545;
-          --glass: rgba(255,255,255,0.06);
-          --glass-border: rgba(255,255,255,0.10);
+          --bg1: #f8f7ff;
+          --bg2: #f0eeff;
+          --bg3: #eef2ff;
+          --glass: rgba(255,255,255,0.75);
+          --glass-border: rgba(108,92,231,0.12);
           --accent: #6C5CE7;
           --accent2: #a855f7;
-          --text: #ffffff;
-          --text-dim: rgba(255,255,255,0.4);
-          --text-mid: rgba(255,255,255,0.7);
+          --text: #1e1b4b;
+          --text-dim: rgba(51,41,100,0.45);
+          --text-mid: rgba(51,41,100,0.70);
           --success: #10b981;
           --danger: #ef4444;
           --radius: 18px;
@@ -766,8 +766,8 @@ export default function MemorixPage() {
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
         html, body { min-height: 100vh; }
         .memorix-root {
-          background: linear-gradient(135deg, var(--bg1) 0%, var(--bg2) 50%, var(--bg3) 100%);
-          background-attachment: fixed;
+          background: linear-gradient(160deg, var(--bg1) 0%, var(--bg2) 50%, var(--bg3) 100%);
+          background-attachment: scroll;
           color: var(--text);
           font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'SF Pro Display', sans-serif;
           -webkit-font-smoothing: antialiased;
@@ -779,40 +779,39 @@ export default function MemorixPage() {
         .memorix-root::before {
           content: '';
           position: fixed;
-          top: -80px; left: -60px;
-          width: 280px; height: 280px;
-          border-radius: 50%;
-          background: radial-gradient(circle, rgba(108,92,231,0.3) 0%, transparent 70%);
-          pointer-events: none; z-index: 0;
+          inset: 0;
+          background: linear-gradient(160deg, #f8f7ff 0%, #f0eeff 50%, #eef2ff 100%);
+          pointer-events: none; z-index: -1;
         }
         .memorix-root::after {
           content: '';
           position: fixed;
-          top: 200px; right: -60px;
-          width: 220px; height: 220px;
+          top: -80px; left: -60px;
+          width: 280px; height: 280px;
           border-radius: 50%;
-          background: radial-gradient(circle, rgba(168,85,247,0.2) 0%, transparent 70%);
+          background: radial-gradient(circle, rgba(108,92,231,0.10) 0%, transparent 70%);
           pointer-events: none; z-index: 0;
         }
-        .glass { background: var(--glass); border: 1px solid var(--glass-border); border-radius: var(--radius); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+        .glass { background: rgba(255,255,255,0.80); border: 1px solid rgba(108,92,231,0.12); border-radius: var(--radius); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
         .header { padding: 20px 20px 12px; display: flex; align-items: center; justify-content: space-between; position: relative; z-index: 10; }
+        .header-avatar-btn { background: none; border: none; cursor: pointer; padding: 0; }
         .logo { display: flex; align-items: center; gap: 8px; }
         .logo-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--accent2); box-shadow: 0 0 16px var(--accent2); }
-        .logo-text { font-size: 22px; font-weight: 800; color: white; letter-spacing: -0.03em; }
+        .logo-text { font-size: 22px; font-weight: 800; color: #1e1b4b; letter-spacing: -0.03em; }
         .logo-sub { font-size: 11px; color: var(--text-dim); margin-top: 1px; margin-left: 18px; }
-        .avatar { width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--accent2)); display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 700; color: white; }
+        .avatar { width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--accent2)); display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 700; color: #1e1b4b; }
         .screen { display: none; padding: 0 16px; animation: fadeUp 0.2s ease; position: relative; z-index: 5; }
         .screen.active { display: block; }
         @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
         .section-label { font-size: 11px; font-weight: 700; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.1em; margin: 20px 0 10px; }
         .stats-strip { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 4px; }
-        .stat-card { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.18); border-radius: var(--radius-sm); padding: 14px 12px; }
+        .stat-card { background: rgba(255,255,255,0.85); border: 1px solid rgba(108,92,231,0.12); border-radius: var(--radius-sm); padding: 14px 12px; }
         .stat-card.accent { background: linear-gradient(135deg, rgba(108,92,231,0.35), rgba(168,85,247,0.25)); border-color: rgba(168,85,247,0.4); }
-        .stat-card .num { font-size: 22px; font-weight: 800; color: white; }
+        .stat-card .num { font-size: 22px; font-weight: 800; color: #1e1b4b; }
         .stat-card .lbl { font-size: 11px; color: var(--text-dim); margin-top: 2px; }
         .stat-card.accent .lbl { color: rgba(168,85,247,0.8); }
         .deck-list { display: flex; flex-direction: column; gap: 10px; }
-        .deck-card { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.16); border-radius: var(--radius); padding: 14px 16px; display: flex; align-items: center; transition: border-color 0.15s, transform 0.1s; cursor: pointer; }
+        .deck-card { background: rgba(255,255,255,0.85); border: 1px solid rgba(108,92,231,0.10); border-radius: var(--radius); padding: 14px 16px; display: flex; align-items: center; transition: border-color 0.15s, transform 0.1s; cursor: pointer; }
         .deck-card:active { transform: scale(0.98); }
         .deck-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; margin-right: 12px; flex-shrink: 0; }
         .deck-icon.purple { background: linear-gradient(135deg, #6C5CE7, #a855f7); }
@@ -821,12 +820,12 @@ export default function MemorixPage() {
         .deck-icon.pink { background: linear-gradient(135deg, #ec4899, #a855f7); }
         .deck-icon.amber { background: linear-gradient(135deg, #f59e0b, #ef4444); }
         .deck-body { flex: 1; min-width: 0; }
-        .deck-title { font-size: 15px; font-weight: 700; color: white; margin-bottom: 3px; }
+        .deck-title { font-size: 15px; font-weight: 700; color: #1e1b4b; margin-bottom: 3px; }
         .deck-meta { font-size: 12px; color: var(--text-dim); }
         .deck-actions { display: flex; align-items: center; gap: 6px; }
-        .deck-count { background: rgba(108,92,231,0.2); border: 1px solid rgba(108,92,231,0.35); color: #c4b5fd; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 100px; white-space: nowrap; }
+        .deck-count { background: rgba(108,92,231,0.2); border: 1px solid rgba(108,92,231,0.35); color: #6C5CE7; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 100px; white-space: nowrap; }
         .icon-btn { background: none; border: none; cursor: pointer; padding: 6px; border-radius: 8px; font-size: 16px; transition: background 0.15s; color: var(--text-dim); }
-        .icon-btn:active { background: rgba(255,255,255,0.1); }
+        .icon-btn:active { background: rgba(108,92,231,0.08); }
         .icon-btn.danger { color: rgba(239,68,68,0.6); }
         .empty-state { text-align: center; padding: 60px 20px; color: var(--text-dim); }
         .empty-state .icon { font-size: 44px; margin-bottom: 14px; opacity: 0.5; }
@@ -834,7 +833,7 @@ export default function MemorixPage() {
         .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
         .stat-big { background: var(--glass); border: 1px solid var(--glass-border); border-radius: var(--radius); padding: 16px; text-align: center; }
         .stat-big .emoji { font-size: 28px; margin-bottom: 6px; }
-        .stat-big .val { font-size: 26px; font-weight: 800; color: white; }
+        .stat-big .val { font-size: 26px; font-weight: 800; color: #1e1b4b; }
         .stat-big .lbl2 { font-size: 11px; color: var(--text-dim); margin-top: 3px; }
         .chart-wrap { background: var(--glass); border: 1px solid var(--glass-border); border-radius: var(--radius); padding: 14px; margin-bottom: 20px; }
         .chart-title { font-size: 11px; font-weight: 700; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 12px; }
@@ -842,39 +841,39 @@ export default function MemorixPage() {
         .bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 5px; }
         .bar-val { font-size: 10px; color: var(--text-dim); font-weight: 600; min-height: 12px; }
         .bar-wrap { width: 100%; flex: 1; display: flex; align-items: flex-end; }
-        .bar { width: 100%; min-height: 3px; border-radius: 4px 4px 0 0; background: rgba(255,255,255,0.08); }
+        .bar { width: 100%; min-height: 3px; border-radius: 4px 4px 0 0; background: rgba(108,92,231,0.10); }
         .bar.active { background: linear-gradient(180deg, #a855f7, #6C5CE7); box-shadow: 0 0 10px rgba(168,85,247,0.5); }
         .bar.filled { background: rgba(108,92,231,0.4); }
         .bar-day { font-size: 10px; color: var(--text-dim); }
         .bar-day.today { color: #a855f7; font-weight: 700; }
-        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(10,0,21,0.85); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border-top: 1px solid rgba(255,255,255,0.07); display: flex; padding: 10px 12px calc(10px + env(safe-area-inset-bottom)); gap: 4px; z-index: 100; }
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.92); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border-top: 1px solid rgba(108,92,231,0.10); display: flex; padding: 10px 12px calc(10px + env(safe-area-inset-bottom)); gap: 4px; z-index: 100; }
         .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 8px 4px; border-radius: 12px; color: var(--text-dim); cursor: pointer; transition: all 0.15s; background: none; border: none; font-family: inherit; }
-        .nav-item.active { color: #c4b5fd; background: rgba(108,92,231,0.2); }
+        .nav-item.active { color: #6C5CE7; background: rgba(108,92,231,0.10); }
         .nav-item svg { width: 22px; height: 22px; }
         .nav-item span { font-size: 10px; font-weight: 700; letter-spacing: 0.02em; }
         .field-label { font-size: 12px; font-weight: 700; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.08em; margin: 18px 0 8px; }
-        .mx-input, .mx-textarea { width: 100%; background: var(--glass); border: 1px solid var(--glass-border); border-radius: var(--radius-sm); padding: 14px 16px; color: white; font-family: inherit; font-size: 15px; outline: none; resize: none; transition: border-color 0.15s; }
+        .mx-input, .mx-textarea { width: 100%; background: var(--glass); border: 1px solid var(--glass-border); border-radius: var(--radius-sm); padding: 14px 16px; color: #1e1b4b; font-family: inherit; font-size: 15px; outline: none; resize: none; transition: border-color 0.15s; }
         .mx-input:focus, .mx-textarea:focus { border-color: rgba(168,85,247,0.6); }
         .mx-input::placeholder, .mx-textarea::placeholder { color: var(--text-dim); }
         .mx-textarea { min-height: 130px; }
-        .seg-tabs { display: flex; background: rgba(255,255,255,0.04); border: 1px solid var(--glass-border); border-radius: 100px; padding: 4px; gap: 4px; margin-bottom: 16px; }
+        .seg-tabs { display: flex; background: rgba(108,92,231,0.06); border: 1px solid var(--glass-border); border-radius: 100px; padding: 4px; gap: 4px; margin-bottom: 16px; }
         .seg-tab { flex: 1; text-align: center; padding: 9px; border-radius: 100px; font-size: 13px; font-weight: 700; color: var(--text-dim); cursor: pointer; transition: all 0.15s; border: none; background: none; font-family: inherit; }
-        .seg-tab.active { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: white; }
-        .upload-zone { border: 1.5px dashed rgba(255,255,255,0.15); border-radius: var(--radius); padding: 40px 20px; text-align: center; cursor: pointer; transition: all 0.15s; }
+        .seg-tab.active { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #1e1b4b; }
+        .upload-zone { border: 1.5px dashed rgba(108,92,231,0.25); border-radius: var(--radius); padding: 40px 20px; text-align: center; cursor: pointer; transition: all 0.15s; }
         .upload-zone:hover { border-color: var(--accent2); background: rgba(168,85,247,0.05); }
         .upload-zone .uz-icon { font-size: 36px; margin-bottom: 10px; }
-        .upload-zone .uz-title { font-size: 15px; font-weight: 700; color: white; margin-bottom: 4px; }
+        .upload-zone .uz-title { font-size: 15px; font-weight: 700; color: #1e1b4b; margin-bottom: 4px; }
         .upload-zone .uz-sub { font-size: 13px; color: var(--text-dim); }
         .btn { width: 100%; padding: 16px; border-radius: var(--radius); border: none; font-family: inherit; font-size: 15px; font-weight: 700; cursor: pointer; transition: opacity 0.15s, transform 0.1s; }
         .btn:active { transform: scale(0.98); }
-        .btn-primary { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: white; margin-top: 16px; box-shadow: 0 4px 20px rgba(108,92,231,0.4); }
+        .btn-primary { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #1e1b4b; margin-top: 16px; box-shadow: 0 4px 20px rgba(108,92,231,0.4); }
         .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
-        .btn-success { background: linear-gradient(135deg, #059669, #10b981); color: white; }
+        .btn-success { background: linear-gradient(135deg, #059669, #10b981); color: #1e1b4b; }
         .btn-fail { background: rgba(239,68,68,0.15); border: 1px solid rgba(239,68,68,0.3); color: #f87171; }
-        .btn-glass { background: var(--glass); border: 1px solid var(--glass-border); color: white; }
+        .btn-glass { background: var(--glass); border: 1px solid var(--glass-border); color: #1e1b4b; }
         .preview-list { display: flex; flex-direction: column; gap: 8px; margin: 14px 0; }
         .preview-card { background: var(--glass); border: 1px solid var(--glass-border); border-radius: var(--radius-sm); padding: 13px 15px; }
-        .preview-card .pf { font-weight: 700; font-size: 15px; color: white; }
+        .preview-card .pf { font-weight: 700; font-size: 15px; color: #1e1b4b; }
         .preview-card .pb { color: #c4b5fd; font-size: 14px; margin-top: 3px; }
         .preview-card .pe { color: var(--text-dim); font-size: 12px; margin-top: 5px; font-style: italic; }
         .study-progress { height: 4px; background: rgba(255,255,255,0.08); border-radius: 100px; overflow: hidden; margin-bottom: 24px; }
@@ -884,11 +883,11 @@ export default function MemorixPage() {
         .flip-inner.flipped { transform: rotateY(180deg); }
         .flip-front, .flip-back { position: absolute; top: 0; left: 0; width: 100%; height: 100%; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: 24px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 36px 24px; background: var(--glass); border: 1px solid var(--glass-border); }
         .flip-back { transform: rotateY(180deg); background: linear-gradient(145deg, rgba(108,92,231,0.15), rgba(168,85,247,0.1)); border-color: rgba(168,85,247,0.35); }
-        .flip-front .fc-word { font-size: 32px; font-weight: 800; letter-spacing: -0.02em; color: white; }
+        .flip-front .fc-word { font-size: 32px; font-weight: 800; letter-spacing: -0.02em; color: #1e1b4b; }
         .flip-front .fc-tap { font-size: 12px; color: var(--text-dim); margin-top: 20px; }
         .flip-back .fc-trans { font-size: 24px; color: #c4b5fd; font-weight: 700; }
         .flip-back .fc-ex { font-size: 13px; color: var(--text-dim); margin-top: 12px; line-height: 1.5; font-style: italic; }
-        .speak-btn { display: flex; align-items: center; gap: 8px; background: var(--glass); border: 1px solid var(--glass-border); border-radius: 100px; padding: 10px 20px; color: white; font-size: 14px; font-weight: 600; cursor: pointer; margin: 14px auto 0; font-family: inherit; transition: background 0.15s; }
+        .speak-btn { display: flex; align-items: center; gap: 8px; background: var(--glass); border: 1px solid var(--glass-border); border-radius: 100px; padding: 10px 20px; color: #1e1b4b; font-size: 14px; font-weight: 600; cursor: pointer; margin: 14px auto 0; font-family: inherit; transition: background 0.15s; }
         .speak-btn:active { background: rgba(255,255,255,0.12); }
         .study-actions { display: flex; gap: 10px; margin-top: 14px; }
         .study-actions .btn { margin-top: 0; }
@@ -904,9 +903,9 @@ export default function MemorixPage() {
         .quiz-mode-card { background: var(--glass); border: 1px solid var(--glass-border); border-radius: var(--radius); padding: 20px; cursor: pointer; transition: all 0.15s; text-align: center; margin-bottom: 12px; }
         .quiz-mode-card:active { transform: scale(0.98); }
         .quiz-mode-icon { font-size: 36px; margin-bottom: 10px; }
-        .quiz-mode-title { font-size: 16px; font-weight: 700; color: white; margin-bottom: 4px; }
+        .quiz-mode-title { font-size: 16px; font-weight: 700; color: #1e1b4b; margin-bottom: 4px; }
         .quiz-mode-sub { font-size: 12px; color: var(--text-dim); }
-        .choice-btn { width: 100%; padding: 14px 16px; background: var(--glass); border: 1px solid var(--glass-border); border-radius: var(--radius-sm); color: white; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; text-align: left; margin-bottom: 10px; display: flex; align-items: center; gap: 12px; }
+        .choice-btn { width: 100%; padding: 14px 16px; background: var(--glass); border: 1px solid var(--glass-border); border-radius: var(--radius-sm); color: #1e1b4b; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; text-align: left; margin-bottom: 10px; display: flex; align-items: center; gap: 12px; }
         .choice-btn:active { transform: scale(0.98); }
         .choice-btn.correct { background: rgba(16,185,129,0.2); border-color: rgba(16,185,129,0.6); color: #6ee7b7; }
         .choice-btn.wrong { background: rgba(239,68,68,0.15); border-color: rgba(239,68,68,0.4); color: #fca5a5; }
@@ -914,13 +913,13 @@ export default function MemorixPage() {
         .choice-letter { width: 28px; height: 28px; border-radius: 8px; background: rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; flex-shrink: 0; }
         .choice-btn.correct .choice-letter { background: rgba(16,185,129,0.3); }
         .choice-btn.wrong .choice-letter { background: rgba(239,68,68,0.3); }
-        .quiz-input { width: 100%; background: var(--glass); border: 1px solid var(--glass-border); border-radius: var(--radius-sm); padding: 16px; color: white; font-family: inherit; font-size: 18px; font-weight: 700; outline: none; text-align: center; letter-spacing: 0.05em; transition: border-color 0.15s; margin-bottom: 12px; }
+        .quiz-input { width: 100%; background: var(--glass); border: 1px solid var(--glass-border); border-radius: var(--radius-sm); padding: 16px; color: #1e1b4b; font-family: inherit; font-size: 18px; font-weight: 700; outline: none; text-align: center; letter-spacing: 0.05em; transition: border-color 0.15s; margin-bottom: 12px; }
         .quiz-input:focus { border-color: rgba(168,85,247,0.6); }
         .quiz-input.correct { border-color: rgba(16,185,129,0.6); background: rgba(16,185,129,0.1); color: #6ee7b7; }
         .quiz-input.wrong { border-color: rgba(239,68,68,0.4); background: rgba(239,68,68,0.1); color: #fca5a5; }
         .quiz-question { background: var(--glass); border: 1px solid var(--glass-border); border-radius: var(--radius); padding: 28px 20px; text-align: center; margin-bottom: 20px; }
         .quiz-question .q-label { font-size: 11px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 10px; }
-        .quiz-question .q-word { font-size: 28px; font-weight: 800; color: white; }
+        .quiz-question .q-word { font-size: 28px; font-weight: 800; color: #1e1b4b; }
         .quiz-question .q-hint { font-size: 13px; color: var(--text-dim); margin-top: 8px; }
         .result-card { background: var(--glass); border: 1px solid var(--glass-border); border-radius: var(--radius); padding: 28px 20px; text-align: center; margin-bottom: 16px; }
         .streak-banner { background: linear-gradient(135deg, rgba(245,158,11,0.15), rgba(239,68,68,0.1)); border: 1px solid rgba(245,158,11,0.3); border-radius: var(--radius); padding: 14px 16px; display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
@@ -928,7 +927,7 @@ export default function MemorixPage() {
         @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.15)} }
         .streak-info { flex: 1; }
         .streak-num { font-size: 22px; font-weight: 800; color: #fbbf24; }
-        .streak-label { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 1px; }
+        .streak-label { font-size: 12px; color: rgba(51,41,100,0.5); margin-top: 1px; }
         .streak-badge-pill { font-size: 11px; font-weight: 800; padding: 4px 12px; border-radius: 100px; white-space: nowrap; }
         .badge-bronze { background: rgba(180,83,9,0.3); color: #fbbf24; border: 1px solid rgba(180,83,9,0.5); }
         .badge-silver { background: rgba(100,116,139,0.3); color: #e2e8f0; border: 1px solid rgba(100,116,139,0.5); }
@@ -939,33 +938,33 @@ export default function MemorixPage() {
         .celebration-card { background: linear-gradient(145deg, #1e1b3a, #2d1f5e); border: 1px solid rgba(168,85,247,0.4); border-radius: 28px; padding: 36px 28px; text-align: center; max-width: 300px; width: 90%; animation: popIn 0.4s cubic-bezier(0.34,1.56,0.64,1); }
         @keyframes popIn { from{transform:scale(0.7);opacity:0} to{transform:scale(1);opacity:1} }
         .celebration-emoji { font-size: 64px; margin-bottom: 12px; }
-        .celebration-title { font-size: 22px; font-weight: 800; color: white; margin-bottom: 8px; }
+        .celebration-title { font-size: 22px; font-weight: 800; color: #1e1b4b; margin-bottom: 8px; }
         .celebration-sub { font-size: 14px; color: rgba(255,255,255,0.5); margin-bottom: 20px; line-height: 1.5; }
         .celebration-badge { font-size: 16px; font-weight: 800; padding: 10px 24px; border-radius: 100px; display: inline-block; margin-bottom: 20px; }
-        .celebration-close { width: 100%; padding: 14px; border-radius: var(--radius); border: none; font-family: inherit; font-size: 15px; font-weight: 700; cursor: pointer; background: linear-gradient(135deg, var(--accent), var(--accent2)); color: white; }
+        .celebration-close { width: 100%; padding: 14px; border-radius: var(--radius); border: none; font-family: inherit; font-size: 15px; font-weight: 700; cursor: pointer; background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #1e1b4b; }
         .pro-header { text-align: center; padding: 16px 0 20px; }
         .pro-badge { display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, var(--accent), var(--accent2)); padding: 6px 18px; border-radius: 100px; margin-bottom: 14px; }
-        .pro-badge span { font-size: 12px; font-weight: 800; color: white; letter-spacing: 0.06em; }
+        .pro-badge span { font-size: 12px; font-weight: 800; color: #1e1b4b; letter-spacing: 0.06em; }
         .pro-h2 { font-size: 24px; font-weight: 800; letter-spacing: -0.02em; }
         .pro-sub { color: var(--text-dim); font-size: 13px; margin-top: 6px; }
         .plan-card { background: var(--glass); border: 1px solid var(--glass-border); border-radius: 20px; padding: 18px; position: relative; overflow: hidden; display: flex; flex-direction: column; }
         .plan-card.pro-card { background: linear-gradient(145deg, rgba(30,27,58,0.9), rgba(45,31,94,0.9)); border-color: rgba(168,85,247,0.5); }
         .plan-name { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-dim); margin-bottom: 10px; }
         .plan-card.pro-card .plan-name { color: #c4b5fd; }
-        .plan-price { font-size: 26px; font-weight: 800; color: white; }
+        .plan-price { font-size: 26px; font-weight: 800; color: #1e1b4b; }
         .plan-period { font-size: 11px; color: var(--text-dim); margin-bottom: 14px; }
-        .plan-rec { position: absolute; top: 12px; right: -8px; background: linear-gradient(135deg, var(--accent), var(--accent2)); color: white; font-size: 9px; font-weight: 800; padding: 3px 16px 3px 10px; border-radius: 100px 0 0 100px; letter-spacing: 0.05em; }
-        .plan-btn { margin-top: auto; width: 100%; padding: 11px 10px; background: linear-gradient(135deg, var(--accent), var(--accent2)); color: white; border: none; border-radius: 12px; font-family: inherit; font-size: 12px; font-weight: 700; cursor: pointer; }
+        .plan-rec { position: absolute; top: 12px; right: -8px; background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #1e1b4b; font-size: 9px; font-weight: 800; padding: 3px 16px 3px 10px; border-radius: 100px 0 0 100px; letter-spacing: 0.05em; }
+        .plan-btn { margin-top: auto; width: 100%; padding: 11px 10px; background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #1e1b4b; border: none; border-radius: 12px; font-family: inherit; font-size: 12px; font-weight: 700; cursor: pointer; }
         .plan-current { margin-top: auto; text-align: center; font-size: 12px; color: var(--text-dim); padding: 11px 10px; border: 1px solid var(--glass-border); border-radius: 12px; }
         .pf-item { font-size: 12px; display: flex; align-items: center; gap: 6px; }
-        .pf-item.ok { color: rgba(255,255,255,0.7); }
-        .pf-item.no { color: rgba(255,255,255,0.25); }
+        .pf-item.ok { color: rgba(51,41,100,0.7); }
+        .pf-item.no { color: rgba(51,41,100,0.25); }
         .pf-item.pro-ok { color: #86efac; }
         .feature-table { background: var(--glass); border: 1px solid var(--glass-border); border-radius: var(--radius); overflow: hidden; margin-bottom: 20px; }
-        .ft-row { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; padding: 11px 14px; align-items: center; border-top: 1px solid rgba(255,255,255,0.05); font-size: 13px; }
+        .ft-row { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; padding: 11px 14px; align-items: center; border-top: 1px solid rgba(108,92,231,0.07); font-size: 13px; }
         .ft-row:first-child { border-top: none; }
-        .ft-row:nth-child(even) { background: rgba(255,255,255,0.03); }
-        .ft-col-name { display: flex; align-items: center; gap: 7px; color: rgba(255,255,255,0.7); }
+        .ft-row:nth-child(even) { background: rgba(108,92,231,0.03); }
+        .ft-col-name { display: flex; align-items: center; gap: 7px; color: rgba(51,41,100,0.7); }
         /* sidebar-top only shows on desktop */
         .sidebar-top { display: none; }
         .sidebar-avatar-wrap { display: none; }
@@ -982,15 +981,15 @@ export default function MemorixPage() {
         .ob-feature-text strong { color: #1e1b4b; display: block; margin-bottom: 3px; font-size: 15px; font-weight: 700; }
 
         /* Empty deck state */
-        .empty-deck-state { background: rgba(255,255,255,0.05) !important; border-color: rgba(255,255,255,0.1) !important; }
-        .eds-title { font-size: 17px; font-weight: 800; color: white; margin-bottom: 6px; }
-        .eds-sub { font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.5; margin-bottom: 20px; }
+        .empty-deck-state { background: rgba(255,255,255,0.80) !important; border-color: rgba(108,92,231,0.12) !important; }
+        .eds-title { font-size: 17px; font-weight: 800; color: #1e1b4b; margin-bottom: 6px; }
+        .eds-sub { font-size: 13px; color: rgba(51,41,100,0.55); line-height: 1.5; margin-bottom: 20px; }
         .eds-btn { padding: 16px 12px; border-radius: 16px; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px; font-family: inherit; border: none; }
         .eds-btn-purple { background: linear-gradient(135deg,rgba(108,92,231,0.45),rgba(108,92,231,0.25)); border: 1px solid rgba(108,92,231,0.6) !important; }
         .eds-btn-pink { background: linear-gradient(135deg,rgba(168,85,247,0.45),rgba(168,85,247,0.25)); border: 1px solid rgba(168,85,247,0.6) !important; }
-        .eds-btn-label { font-size: 12px; font-weight: 700; color: white; }
-        .eds-btn-sub { font-size: 10px; color: rgba(255,255,255,0.6); }
-        .eds-tip { background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.2); border-radius: 14px; padding: 12px 14px; display: flex; align-items: center; gap: 10; text-align: left; color: rgba(255,255,255,0.6); }
+        .eds-btn-label { font-size: 12px; font-weight: 700; color: #1e1b4b; }
+        .eds-btn-sub { font-size: 10px; color: rgba(51,41,100,0.55); }
+        .eds-tip { background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.2); border-radius: 14px; padding: 12px 14px; display: flex; align-items: center; gap: 10; text-align: left; color: rgba(51,41,100,0.65); }
         .eds-tip-title { color: rgba(16,185,129,0.9); display: block; font-size: 11px; margin-bottom: 1px; }
 
         /* Progress sahifasi */
@@ -1195,7 +1194,7 @@ export default function MemorixPage() {
             border-radius: 50%;
             background: linear-gradient(135deg, #6C5CE7, #a855f7);
             display: flex; align-items: center; justify-content: center;
-            font-size: 12px; font-weight: 700; color: white;
+            font-size: 12px; font-weight: 700; color: #1e1b4b;
             flex-shrink: 0;
           }
           .avatar-name { font-size: 12px; color: #94a3b8; font-weight: 500; }
@@ -1256,7 +1255,7 @@ export default function MemorixPage() {
           .desktop-content .streak-num { color: #f59e0b !important; }
           .desktop-content .streak-label { color: #64748b !important; }
           .desktop-content .loader p { color: #64748b !important; }
-          .desktop-content .empty-state { color: #94a3b8 !important; }
+          .header-avatar-btn { display: none; }
           /* Empty deck state — desktop light theme */
           .desktop-content .empty-deck-state { background: white !important; border-color: rgba(200,196,230,0.5) !important; box-shadow: 0 2px 8px rgba(108,92,231,0.07); }
           .desktop-content .eds-title { color: #1e293b !important; }
@@ -1514,6 +1513,15 @@ export default function MemorixPage() {
                 {user ? `Salom, ${userName} 👋` : "Xush kelibsiz 👋"}
               </div>
             </div>
+            {/* Mobile: avatar — profile screen ga o'tadi */}
+            {user && (
+              <button
+                onClick={() => switchScreen("account")}
+                className="header-avatar-btn"
+              >
+                <div className="avatar">{avatarLetter}</div>
+              </button>
+            )}
           </div>
 
           {/* ── HOME SCREEN ── */}
@@ -1546,7 +1554,7 @@ export default function MemorixPage() {
                     <span style={{ fontSize: 18 }}>⚡</span>
                     <div style={{ flex: 1 }}>
                       <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(16,185,129,0.9)", textTransform: "uppercase", letterSpacing: "0.06em" }}>Davom etish</div>
-                      <div style={{ fontSize: 13, fontWeight: 700, color: "white", marginTop: 1 }}>{decks[0].title}</div>
+                      <div style={{ fontSize: 13, fontWeight: 700, color: "#1e1b4b", marginTop: 1 }}>{decks[0].title}</div>
                     </div>
                     <div style={{ fontSize: 12, fontWeight: 700, color: "rgba(16,185,129,0.8)" }}>▶</div>
                   </div>
@@ -1632,7 +1640,7 @@ export default function MemorixPage() {
                         onClick={() => switchScreen("create")}
                       >
                         <div style={{ textAlign: "left" }}>
-                          <div style={{ fontSize: 13, fontWeight: 700, color: "white" }}>+ Yangi to'plam yarating</div>
+                          <div style={{ fontSize: 13, fontWeight: 700, color: "#1e1b4b" }}>+ Yangi to'plam yarating</div>
                           <div style={{ fontSize: 11, color: "rgba(255,255,255,0.45)", marginTop: 2 }}>AI bilan flashcard yarating</div>
                         </div>
                         <span style={{ fontSize: 24 }}>✨</span>
@@ -1772,7 +1780,7 @@ export default function MemorixPage() {
             {aiError && !aiLoading && (
               <div style={{ textAlign: "center", padding: "30px 20px" }}>
                 <div style={{ fontSize: 36, marginBottom: 12 }}>😔</div>
-                <div style={{ fontSize: 15, color: "white", marginBottom: 8 }}>AI hozir band</div>
+                <div style={{ fontSize: 15, color: "#1e1b4b", marginBottom: 8 }}>AI hozir band</div>
                 <div style={{ fontSize: 13, color: "rgba(255,255,255,0.4)", lineHeight: 1.6 }}>{aiError}</div>
                 <button className="btn btn-primary" style={{ marginTop: 20 }} onClick={() => setAiError("")}>
                   ← Qayta urinish
@@ -1889,10 +1897,10 @@ export default function MemorixPage() {
                             {getDeckEmoji(currentDeck.title)}
                           </div>
                           <div>
-                            <div style={{ fontSize: 16, fontWeight: 700, color: "white" }}>{currentDeck.title}</div>
+                            <div style={{ fontSize: 16, fontWeight: 700, color: "#1e1b4b" }}>{currentDeck.title}</div>
                             <div style={{ fontSize: 12, color: "rgba(255,255,255,0.45)", marginTop: 2 }}>{currentDeck.flashcards?.length ?? 0} ta so'z</div>
                           </div>
-                          <div style={{ marginLeft: "auto", background: "linear-gradient(135deg,#6C5CE7,#a855f7)", color: "white", fontSize: 12, fontWeight: 700, padding: "8px 16px", borderRadius: 100 }}>
+                          <div style={{ marginLeft: "auto", background: "linear-gradient(135deg,#6C5CE7,#a855f7)", color: "#1e1b4b", fontSize: 12, fontWeight: 700, padding: "8px 16px", borderRadius: 100 }}>
                             ▶ Davom
                           </div>
                         </div>
@@ -2020,7 +2028,7 @@ export default function MemorixPage() {
               <div style={{ background: "white", border: "1px solid rgba(108,92,231,0.2)", borderRadius: "var(--radius)", padding: 18, marginBottom: 16, boxShadow: "0 2px 8px rgba(108,92,231,0.07)" }}>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
                   <div style={{ fontSize: 14, fontWeight: 700, color: "#1e293b" }}>👑 {stats?.plan ?? "FREE"} reja</div>
-                  <button onClick={() => switchScreen("pro")} style={{ fontSize: 11, fontWeight: 700, color: "white", background: "linear-gradient(135deg,#6C5CE7,#a855f7)", border: "none", borderRadius: 100, padding: "6px 14px", cursor: "pointer", fontFamily: "inherit" }}>
+                  <button onClick={() => switchScreen("pro")} style={{ fontSize: 11, fontWeight: 700, color: "#1e1b4b", background: "linear-gradient(135deg,#6C5CE7,#a855f7)", border: "none", borderRadius: 100, padding: "6px 14px", cursor: "pointer", fontFamily: "inherit" }}>
                     Upgrade →
                   </button>
                 </div>
@@ -2056,7 +2064,7 @@ export default function MemorixPage() {
                       <div style={{ fontSize: 15, fontWeight: 700, color: "#1e293b" }}>{decks[0].title}</div>
                       <div style={{ fontSize: 12, color: "#64748b", marginTop: 2 }}>{decks[0]._count?.flashcards ?? 0} ta so'z</div>
                     </div>
-                    <div style={{ background: "linear-gradient(135deg,#6C5CE7,#a855f7)", color: "white", fontSize: 12, fontWeight: 700, padding: "8px 16px", borderRadius: 100, flexShrink: 0 }}>
+                    <div style={{ background: "linear-gradient(135deg,#6C5CE7,#a855f7)", color: "#1e1b4b", fontSize: 12, fontWeight: 700, padding: "8px 16px", borderRadius: 100, flexShrink: 0 }}>
                       ▶ Boshlash
                     </div>
                   </div>
@@ -2071,7 +2079,7 @@ export default function MemorixPage() {
             <div style={{ maxWidth: 480, margin: "0 auto" }}>
               {/* Avatar card */}
               <div style={{ textAlign: "center", padding: "32px 20px 24px", background: "white", border: "1px solid rgba(200,196,230,0.5)", borderRadius: "var(--radius)", marginBottom: 16, boxShadow: "0 2px 8px rgba(108,92,231,0.07)" }}>
-                <div style={{ width: 72, height: 72, borderRadius: "50%", background: "linear-gradient(135deg,#6C5CE7,#a855f7)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 28, fontWeight: 800, color: "white", margin: "0 auto 14px" }}>{avatarLetter}</div>
+                <div style={{ width: 72, height: 72, borderRadius: "50%", background: "linear-gradient(135deg,#6C5CE7,#a855f7)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 28, fontWeight: 800, color: "#1e1b4b", margin: "0 auto 14px" }}>{avatarLetter}</div>
                 <div style={{ fontSize: 20, fontWeight: 800, color: "#1e293b", marginBottom: 4 }}>{userName}</div>
                 <div style={{ fontSize: 13, color: "#64748b", marginBottom: 14 }}>{user?.telegramId ? "@" + user.telegramId : "Telegram foydalanuvchi"}</div>
                 <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(108,92,231,0.1)", border: "1px solid rgba(108,92,231,0.2)", borderRadius: 100, padding: "6px 14px", fontSize: 12, fontWeight: 700, color: "#6C5CE7" }}>
@@ -2154,7 +2162,7 @@ export default function MemorixPage() {
                       >
                         <div className={`deck-icon ${iconClass}`} style={{ width: 44, height: 44, borderRadius: 12, flexShrink: 0 }}>{emoji}</div>
                         <div style={{ flex: 1 }}>
-                          <div style={{ fontSize: 15, fontWeight: 700, color: "white" }}>{deck.title}</div>
+                          <div style={{ fontSize: 15, fontWeight: 700, color: "#1e1b4b" }}>{deck.title}</div>
                           <div style={{ fontSize: 12, color: "var(--text-dim)", marginTop: 2 }}>{count} ta so'z</div>
                         </div>
                         {count < 4 ? (
@@ -2175,7 +2183,7 @@ export default function MemorixPage() {
                 <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20 }}>
                   <button
                     onClick={() => setQuizPhase("home")}
-                    style={{ background: "var(--glass)", border: "1px solid var(--glass-border)", borderRadius: 10, padding: "8px 12px", color: "white", cursor: "pointer", fontFamily: "inherit" }}
+                    style={{ background: "var(--glass)", border: "1px solid var(--glass-border)", borderRadius: 10, padding: "8px 12px", color: "#1e1b4b", cursor: "pointer", fontFamily: "inherit" }}
                   >← Orqaga</button>
                   <span style={{ fontSize: 15, fontWeight: 700 }}>{quizDeck.title}</span>
                 </div>
@@ -2281,7 +2289,7 @@ export default function MemorixPage() {
               <>
                 <div className="result-card">
                   <div style={{ fontSize: 56, marginBottom: 12 }}>{quizEmoji}</div>
-                  <div style={{ fontSize: 22, fontWeight: 800, color: "white", marginBottom: 4 }}>{quizMsg}</div>
+                  <div style={{ fontSize: 22, fontWeight: 800, color: "#1e1b4b", marginBottom: 4 }}>{quizMsg}</div>
                   <div style={{ fontSize: 48, fontWeight: 800, background: "linear-gradient(135deg,#6C5CE7,#a855f7)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", margin: "16px 0" }}>{quizPct}%</div>
                   <div style={{ display: "flex", justifyContent: "center", gap: 24, marginBottom: 8 }}>
                     <div style={{ textAlign: "center" }}>
@@ -2295,7 +2303,7 @@ export default function MemorixPage() {
                     </div>
                     <div style={{ width: 1, background: "rgba(255,255,255,0.1)" }} />
                     <div style={{ textAlign: "center" }}>
-                      <div style={{ fontSize: 24, fontWeight: 800, color: "white" }}>{quizTotal}</div>
+                      <div style={{ fontSize: 24, fontWeight: 800, color: "#1e1b4b" }}>{quizTotal}</div>
                       <div style={{ fontSize: 12, color: "var(--text-dim)" }}>Jami</div>
                     </div>
                   </div>
@@ -2318,7 +2326,7 @@ export default function MemorixPage() {
             <div className="seg-tabs" style={{ marginBottom: 16 }}>
               <button className={`seg-tab${pricingType === "monthly" ? " active" : ""}`} onClick={() => setPricingType("monthly")}>Oylik</button>
               <button className={`seg-tab${pricingType === "yearly" ? " active" : ""}`} onClick={() => setPricingType("yearly")}>
-                Yillik &nbsp;<span style={{ background: "#10b981", color: "white", fontSize: 10, padding: "2px 7px", borderRadius: 100 }}>−30%</span>
+                Yillik &nbsp;<span style={{ background: "#10b981", color: "#1e1b4b", fontSize: 10, padding: "2px 7px", borderRadius: 100 }}>−30%</span>
               </button>
             </div>
 
@@ -2399,7 +2407,7 @@ export default function MemorixPage() {
             <div className="section-label">Batafsil taqqoslash</div>
             <div className="feature-table">
               <div className="ft-row" style={{ background: "rgba(255,255,255,0.05)" }}>
-                <div className="ft-col-name" style={{ fontWeight: 700, color: "white" }}>Feature</div>
+                <div className="ft-col-name" style={{ fontWeight: 700, color: "#1e1b4b" }}>Feature</div>
                 <div style={{ textAlign: "center", fontSize: 12, fontWeight: 700, color: "var(--text-dim)" }}>Free</div>
                 <div style={{ textAlign: "center", fontSize: 12, fontWeight: 700, color: "#7dd3fc" }}>Starter</div>
                 <div style={{ textAlign: "center", fontSize: 12, fontWeight: 700, color: "#c4b5fd" }}>Premium</div>
