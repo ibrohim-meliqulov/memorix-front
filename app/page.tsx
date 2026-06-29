@@ -806,13 +806,13 @@ export default function MemorixPage() {
         @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
         .section-label { font-size: 11px; font-weight: 700; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.1em; margin: 20px 0 10px; }
         .stats-strip { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 4px; }
-        .stat-card { background: var(--glass); border: 1px solid var(--glass-border); border-radius: var(--radius-sm); padding: 14px 12px; }
+        .stat-card { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.18); border-radius: var(--radius-sm); padding: 14px 12px; }
         .stat-card.accent { background: linear-gradient(135deg, rgba(108,92,231,0.35), rgba(168,85,247,0.25)); border-color: rgba(168,85,247,0.4); }
         .stat-card .num { font-size: 22px; font-weight: 800; color: white; }
         .stat-card .lbl { font-size: 11px; color: var(--text-dim); margin-top: 2px; }
         .stat-card.accent .lbl { color: rgba(168,85,247,0.8); }
         .deck-list { display: flex; flex-direction: column; gap: 10px; }
-        .deck-card { background: var(--glass); border: 1px solid var(--glass-border); border-radius: var(--radius); padding: 14px 16px; display: flex; align-items: center; transition: border-color 0.15s, transform 0.1s; cursor: pointer; }
+        .deck-card { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.16); border-radius: var(--radius); padding: 14px 16px; display: flex; align-items: center; transition: border-color 0.15s, transform 0.1s; cursor: pointer; }
         .deck-card:active { transform: scale(0.98); }
         .deck-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; margin-right: 12px; flex-shrink: 0; }
         .deck-icon.purple { background: linear-gradient(135deg, #6C5CE7, #a855f7); }
@@ -2504,7 +2504,7 @@ export default function MemorixPage() {
                   setDecks([]);
                   setStats(null);
                   localStorage.removeItem("memorix_token");
-                  window.location.href = "/login";
+                  window.location.href = "https://memorix-landing-sand.vercel.app/auth";
                 }}
                 className="logout-btn"
               >
