@@ -292,32 +292,9 @@ export default function MemorixPage() {
           // Token yo'q — Telegram WebApp tekshiramiz
         }
 
-        // Telegram Mini App auth
-        const tg = (window as any).Telegram?.WebApp;
-        if (tg) { tg.ready(); tg.expand(); }
-
-        let result: any;
-        if (tg?.initData) {
-          // Telegram ichidan ochilgan — initData bilan auth
-          const res = await fetch(`${API_BASE}/auth/telegram`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ initData: tg.initData }),
-          });
-          result = await res.json();
-        } else {
-          // Browser da ochilgan, token ham yo'q — auth sahifaga yuboramiz
-          window.location.href = "https://memorix-landing-sand.vercel.app/auth";
-          return;
-        }
-
-        setAccessToken(result.accessToken);
-        setUser(result.user);
-
-        if (!result.user?.onboarded) {
-          setShowOnboarding(true);
-          setObIndex(0);
-        }
+        // Token yo'q — auth sahifaga yuboramiz
+        window.location.href = "https://memorix-landing-sand.vercel.app/auth";
+        return;
       } catch (err: any) {
         showToast("Kirishda xatolik: " + (err?.message || ""));
       } finally {
