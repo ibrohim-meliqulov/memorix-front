@@ -2123,7 +2123,7 @@ export default function MemorixPage() {
                 onClick={() => {
                   setAccessToken(null); setUser(null); setDecks([]); setStats(null);
                   localStorage.removeItem("memorix_token");
-                  window.location.href = "/login";
+                  window.location.href = "https://memorix-landing-sand.vercel.app/auth";
                 }}
                 style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center", gap: 10, padding: "14px", background: "rgba(239,68,68,0.06)", border: "1px solid rgba(239,68,68,0.18)", borderRadius: "var(--radius-sm)", cursor: "pointer", fontFamily: "inherit", color: "#dc2626", fontSize: 14, fontWeight: 700 }}
               >
