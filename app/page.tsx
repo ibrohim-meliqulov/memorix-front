@@ -975,10 +975,10 @@ export default function MemorixPage() {
         @keyframes obFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
         .ob-title { font-size: 28px; font-weight: 900; color: #1e1b4b; letter-spacing: -0.03em; margin-bottom: 14px; }
         .ob-desc { font-size: 16px; color: rgba(51,41,100,0.72); line-height: 1.65; max-width: 290px; }
-        .ob-feature { display: flex; align-items: center; gap: 14px; background: rgba(108,92,231,0.07); border: 1px solid rgba(108,92,231,0.18); border-radius: 16px; padding: 15px 18px; margin-bottom: 10px; width: 100%; text-align: left; transition: background 0.15s; }
+        .ob-feature { display: flex; align-items: center; gap: 14px; background: rgba(108,92,231,0.07); border: 1px solid rgba(108,92,231,0.15); border-radius: 16px; padding: 15px 18px; margin-bottom: 10px; width: 100%; text-align: left; transition: background 0.15s; }
         .ob-feature:hover { background: rgba(108,92,231,0.12); }
         .ob-feature-icon { font-size: 26px; flex-shrink: 0; }
-        .ob-feature-text { font-size: 14px; color: rgba(51,41,100,0.78); line-height: 1.45; }
+        .ob-feature-text { font-size: 14px; color: rgba(51,41,100,0.75); line-height: 1.45; }
         .ob-feature-text strong { color: #1e1b4b; display: block; margin-bottom: 3px; font-size: 15px; font-weight: 700; }
 
         /* Empty deck state */
@@ -1416,17 +1416,13 @@ export default function MemorixPage() {
           <div style={{
             position: "fixed", top: 0, left: 0, right: 0, bottom: 0,
             background: "linear-gradient(160deg,#f5f3ff 0%,#ede9fe 50%,#eef2ff 100%)",
-            zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center",
+            zIndex: 1000, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "space-between",
+            padding: "40px 20px 28px",
           }}>
             <div style={{
               width: "100%", maxWidth: 420,
-              margin: "0 auto",
-              padding: "32px 28px 28px",
-              display: "flex", flexDirection: "column", alignItems: "center",
-              background: "white",
-              borderRadius: 24,
-              boxShadow: "0 8px 40px rgba(108,92,231,0.12)",
-              border: "1px solid rgba(108,92,231,0.1)",
+              flex: 1,
+              display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
               gap: 0,
             }}>
               {/* Dots */}
