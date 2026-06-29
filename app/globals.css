@@ -35,20 +35,37 @@ body {
   height: 100%;
 }
 
+/* Telefon va laptop uchun bir xil qora-binafsha fon */
+html {
+  background: #0a0015;
+}
+
 body {
   background: linear-gradient(135deg, var(--bg1) 0%, var(--bg2) 50%, var(--bg3) 100%);
-  background-attachment: fixed;
+  /* background-attachment: fixed — mobilda ishlamaydi, o'chirildi */
+  background-attachment: scroll;
   color: var(--text);
   font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'SF Pro Display', sans-serif;
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
+  min-height: -webkit-fill-available;
   padding-bottom: 90px;
   position: relative;
   overflow-x: hidden;
 }
 
-/* Ambient orbs */
+/* Mobilda gradient to'liq qoplash uchun */
 body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(135deg, var(--bg1) 0%, var(--bg2) 50%, var(--bg3) 100%);
+  z-index: -2;
+  pointer-events: none;
+}
+
+/* Ambient orbs */
+body::after {
   content: '';
   position: fixed;
   top: -80px;
@@ -58,20 +75,7 @@ body::before {
   border-radius: 50%;
   background: radial-gradient(circle, rgba(108, 92, 231, 0.3) 0%, transparent 70%);
   pointer-events: none;
-  z-index: 0;
-}
-
-body::after {
-  content: '';
-  position: fixed;
-  top: 200px;
-  right: -60px;
-  width: 220px;
-  height: 220px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(168, 85, 247, 0.2) 0%, transparent 70%);
-  pointer-events: none;
-  z-index: 0;
+  z-index: -1;
 }
 
 /* Glass utility */
@@ -89,6 +93,7 @@ body::after {
     opacity: 0;
     transform: translateY(8px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -102,23 +107,49 @@ body::after {
 }
 
 @keyframes pulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.15); }
+
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.15);
+  }
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes popIn {
-  from { transform: scale(0.7); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
+  from {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 @keyframes obFloat {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
 /* Inputs */
@@ -206,14 +237,14 @@ textarea {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(108, 92, 231, 0.25);
   transition: all 0.3s ease;
 }
 
 .ob-dot.active {
   width: 24px;
   border-radius: 4px;
-  background: var(--accent2);
+  background: #6C5CE7;
 }
 
 .ob-icon {
@@ -225,14 +256,14 @@ textarea {
 .ob-title {
   font-size: 26px;
   font-weight: 800;
-  color: white;
+  color: #1e1b4b;
   letter-spacing: -0.02em;
   margin-bottom: 12px;
 }
 
 .ob-desc {
   font-size: 15px;
-  color: rgba(255, 255, 255, 0.55);
+  color: rgba(51, 41, 100, 0.72);
   line-height: 1.6;
   max-width: 280px;
 }
@@ -241,8 +272,8 @@ textarea {
   display: flex;
   align-items: center;
   gap: 12px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(108, 92, 231, 0.07);
+  border: 1px solid rgba(108, 92, 231, 0.18);
   border-radius: 14px;
   padding: 14px 16px;
   margin-bottom: 10px;
@@ -257,18 +288,37 @@ textarea {
 
 .ob-feature-text {
   font-size: 13px;
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(51, 41, 100, 0.78);
   line-height: 1.4;
 }
 
 .ob-feature-text strong {
-  color: white;
+  color: #1e1b4b;
   display: block;
   margin-bottom: 2px;
 }
 
 /* Streak badges */
-.badge-bronze  { background: rgba(180, 83, 9, 0.3);    color: #fbbf24; border: 1px solid rgba(180, 83, 9, 0.5); }
-.badge-silver  { background: rgba(100, 116, 139, 0.3); color: #e2e8f0; border: 1px solid rgba(100, 116, 139, 0.5); }
-.badge-gold    { background: rgba(234, 179, 8, 0.2);   color: #fde047; border: 1px solid rgba(234, 179, 8, 0.4); }
-.badge-diamond { background: rgba(99, 102, 241, 0.2);  color: #a5b4fc; border: 1px solid rgba(99, 102, 241, 0.4); }
+.badge-bronze {
+  background: rgba(180, 83, 9, 0.3);
+  color: #fbbf24;
+  border: 1px solid rgba(180, 83, 9, 0.5);
+}
+
+.badge-silver {
+  background: rgba(100, 116, 139, 0.3);
+  color: #e2e8f0;
+  border: 1px solid rgba(100, 116, 139, 0.5);
+}
+
+.badge-gold {
+  background: rgba(234, 179, 8, 0.2);
+  color: #fde047;
+  border: 1px solid rgba(234, 179, 8, 0.4);
+}
+
+.badge-diamond {
+  background: rgba(99, 102, 241, 0.2);
+  color: #a5b4fc;
+  border: 1px solid rgba(99, 102, 241, 0.4);
+}
