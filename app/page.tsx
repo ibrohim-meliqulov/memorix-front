@@ -1428,63 +1428,71 @@ export default function MemorixPage() {
       <div className="memorix-root">
         {/* ── ONBOARDING ── */}
         {showOnboarding && (
-          <div
-            style={{
-              position: "fixed", top: 0, left: 0, right: 0, bottom: 0,
-              background: "linear-gradient(160deg,#f5f3ff 0%,#ede9fe 50%,#eef2ff 100%)",
-              zIndex: 1000, display: "flex", flexDirection: "column",
-              alignItems: "center", justifyContent: "space-between",
-              padding: "40px 24px 40px",
-            }}
-          >
-            {/* Dots */}
-            <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
-              {OB_SLIDES.map((_, i) => (
-                <div key={i} className={`ob-dot${i === obIndex ? " active" : ""}`} />
-              ))}
-            </div>
+          <div style={{
+            position: "fixed", top: 0, left: 0, right: 0, bottom: 0,
+            background: "linear-gradient(160deg,#f5f3ff 0%,#ede9fe 50%,#eef2ff 100%)",
+            zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center",
+          }}>
+            <div style={{
+              width: "100%", maxWidth: 420,
+              margin: "0 auto",
+              padding: "32px 28px 28px",
+              display: "flex", flexDirection: "column", alignItems: "center",
+              background: "white",
+              borderRadius: 24,
+              boxShadow: "0 8px 40px rgba(108,92,231,0.12)",
+              border: "1px solid rgba(108,92,231,0.1)",
+              gap: 0,
+            }}>
+              {/* Dots */}
+              <div style={{ display: "flex", gap: 8, marginBottom: 24 }}>
+                {OB_SLIDES.map((_, i) => (
+                  <div key={i} className={`ob-dot${i === obIndex ? " active" : ""}`} />
+                ))}
+              </div>
 
-            {/* Slide */}
-            <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", width: "100%" }}>
-              <div className="ob-icon">{OB_SLIDES[obIndex].icon}</div>
-              <div className="ob-title">{OB_SLIDES[obIndex].title}</div>
-              {OB_SLIDES[obIndex].desc && (
-                <div className="ob-desc">{OB_SLIDES[obIndex].desc}</div>
-              )}
-              {OB_SLIDES[obIndex].type === "features" && OB_SLIDES[obIndex].features && (
-                <div style={{ width: "100%", marginTop: 24 }}>
-                  {OB_SLIDES[obIndex].features!.map((f, fi) => (
-                    <div key={fi} className="ob-feature">
-                      <span className="ob-feature-icon">{f.icon}</span>
-                      <div className="ob-feature-text">
-                        <strong>{f.title}</strong>{f.desc}
+              {/* Slide */}
+              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", width: "100%" }}>
+                <div style={{ fontSize: 56, marginBottom: 16, animation: "obFloat 3s ease-in-out infinite" }}>{OB_SLIDES[obIndex].icon}</div>
+                <div className="ob-title">{OB_SLIDES[obIndex].title}</div>
+                {OB_SLIDES[obIndex].desc && (
+                  <div className="ob-desc">{OB_SLIDES[obIndex].desc}</div>
+                )}
+                {OB_SLIDES[obIndex].type === "features" && OB_SLIDES[obIndex].features && (
+                  <div style={{ width: "100%", marginTop: 16 }}>
+                    {OB_SLIDES[obIndex].features!.map((f, fi) => (
+                      <div key={fi} className="ob-feature">
+                        <span className="ob-feature-icon">{f.icon}</span>
+                        <div className="ob-feature-text">
+                          <strong>{f.title}</strong>{f.desc}
+                        </div>
                       </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
+                    ))}
+                  </div>
+                )}
+              </div>
 
-            {/* Buttons */}
-            <div style={{ width: "100%" }}>
-              <button
-                className="btn btn-primary"
-                style={{
-                  marginTop: 0,
-                  ...(obIndex === OB_SLIDES.length - 1 ? { background: "linear-gradient(135deg,#10b981,#059669)" } : {}),
-                }}
-                onClick={obNextSlide}
-              >
-                {obIndex === OB_SLIDES.length - 1 ? "🚀 Boshlash!" : "Davom →"}
-              </button>
-              {obIndex < OB_SLIDES.length - 1 && (
+              {/* Buttons */}
+              <div style={{ width: "100%", marginTop: 24 }}>
                 <button
-                  onClick={finishOnboarding}
-                  style={{ background: "none", border: "none", color: "rgba(51,41,100,0.45)", fontSize: 14, width: "100%", padding: 14, cursor: "pointer", fontFamily: "inherit", marginTop: 4 }}
+                  className="btn btn-primary"
+                  style={{
+                    marginTop: 0,
+                    ...(obIndex === OB_SLIDES.length - 1 ? { background: "linear-gradient(135deg,#10b981,#059669)" } : {}),
+                  }}
+                  onClick={obNextSlide}
                 >
-                  O'tkazib yuborish
+                  {obIndex === OB_SLIDES.length - 1 ? "🚀 Boshlash!" : "Davom →"}
                 </button>
-              )}
+                {obIndex < OB_SLIDES.length - 1 && (
+                  <button
+                    onClick={finishOnboarding}
+                    style={{ background: "none", border: "none", color: "rgba(51,41,100,0.45)", fontSize: 14, width: "100%", padding: 12, cursor: "pointer", fontFamily: "inherit", marginTop: 4 }}
+                  >
+                    O'tkazib yuborish
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         )}
