@@ -107,7 +107,7 @@ const PLAN_FEATURES = [
   { icon: "📚", name: "To'plamlar", free: "3", starter: "10", pro: "Cheksiz", freeNo: false, starterNo: false, freeOk: true, starterOk: true, proOk: true },
   { icon: "📝", name: "So'zlar", free: "30", starter: "100", pro: "Cheksiz", freeNo: false, starterNo: false, freeOk: true, starterOk: true, proOk: true },
   { icon: "✨", name: "AI yaratish", free: "✓", starter: "✓", pro: "✓", freeNo: false, starterNo: false, freeOk: true, starterOk: true, proOk: true },
-  { icon: "📊", name: "Statistika", free: "✗", starter: "✓", pro: "✓", freeNo: true, starterNo: false, freeOk: false, starterOk: true, proOk: true },
+  { icon: "📊", name: "Statistika", free: "✓", starter: "✓", pro: "✓", freeNo: false, starterNo: false, freeOk: true, starterOk: true, proOk: true },
   { icon: "🎮", name: "Quiz", free: "✗", starter: "✓", pro: "✓", freeNo: true, starterNo: false, freeOk: false, starterOk: true, proOk: true },
   { icon: "🔁", name: "Spaced rep.", free: "✗", starter: "✗", pro: "✓", freeNo: true, starterNo: true, freeOk: false, starterOk: false, proOk: true },
   { icon: "⚡", name: "Ustuvorlik", free: "✗", starter: "✗", pro: "✓", freeNo: true, starterNo: true, freeOk: false, starterOk: false, proOk: true },
@@ -2443,7 +2443,7 @@ export default function MemorixPage() {
                   <div className="pf-item ok">📝 30 ta so'z</div>
                   <div className="pf-item ok">✨ AI yaratish</div>
                   <div className="pf-item ok">🌐 3 ta til</div>
-                  <div className="pf-item no">✗ Statistika</div>
+                  <div className="pf-item ok">📊 Statistika</div>
                   <div className="pf-item no">✗ Quiz rejimi</div>
                 </div>
                 <div className="plan-current">Hozirgi rejangiz</div>
