@@ -690,23 +690,20 @@ export default function MemorixPage() {
   };
 
   const speakWord = async (word: string, lang: Lang) => {
-    const langCode = LANG_SPEECH[lang] || "en-US";
     try {
-      if (lang === "english") {
-        const res = await fetch(
-          `https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(word)}`
-        );
-        const data = await res.json();
-        const audioUrl = data[0]?.phonetics?.find((p: any) => p.audio)?.audio;
-        if (audioUrl) {
-          new Audio(audioUrl).play();
-          return;
-        }
+      const data = await apiCall(
+        `/pronunciation?text=${encodeURIComponent(word)}&lang=${lang}`
+      );
+      if (data?.audioUrl) {
+        new Audio(data.audioUrl).play();
+        return;
       }
-    } catch { }
+    } catch {
+      // Google TTS ishlamasa — brauzer ovoziga qaytamiz
+    }
     if ("speechSynthesis" in window) {
       const u = new SpeechSynthesisUtterance(word);
-      u.lang = langCode;
+      u.lang = LANG_SPEECH[lang] || "en-US";
       window.speechSynthesis.speak(u);
     }
   };
