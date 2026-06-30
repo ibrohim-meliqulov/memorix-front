@@ -211,6 +211,15 @@ export default function MemorixPage() {
   // PRO screen
   const [pricingType, setPricingType] = useState<PricingType>("monthly");
 
+  // Payment modal
+  const [paymentModalOpen, setPaymentModalOpen] = useState(false);
+  const [paymentPlan, setPaymentPlan] = useState<"STARTER" | "PRO">("STARTER");
+  const [paymentFile, setPaymentFile] = useState<File | null>(null);
+  const [paymentPreview, setPaymentPreview] = useState<string | null>(null);
+  const [paymentLoading, setPaymentLoading] = useState(false);
+  const [paymentResult, setPaymentResult] = useState<{ success: boolean; message: string } | null>(null);
+  const paymentFileInputRef = useRef<HTMLInputElement>(null);
+
   // Sidebar
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
@@ -236,7 +245,68 @@ export default function MemorixPage() {
     [accessToken]
   );
 
-  // ─── TOAST ────────────────────────────────────────────────────────────────
+  // ─── PAYMENT ──────────────────────────────────────────────────────────────
+
+  const openPaymentModal = useCallback((plan: "STARTER" | "PRO") => {
+    setPaymentPlan(plan);
+    setPaymentFile(null);
+    setPaymentPreview(null);
+    setPaymentResult(null);
+    setPaymentModalOpen(true);
+  }, []);
+
+  const closePaymentModal = useCallback(() => {
+    setPaymentModalOpen(false);
+    setPaymentFile(null);
+    setPaymentPreview(null);
+    setPaymentResult(null);
+  }, []);
+
+  const handlePaymentFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const selected = e.target.files?.[0];
+    if (!selected) return;
+    setPaymentFile(selected);
+    setPaymentPreview(URL.createObjectURL(selected));
+    setPaymentResult(null);
+  }, []);
+
+  const submitPaymentCheck = useCallback(async () => {
+    if (!paymentFile) {
+      showToast("Iltimos chek rasmini yuklang");
+      return;
+    }
+    setPaymentLoading(true);
+    setPaymentResult(null);
+    try {
+      const formData = new FormData();
+      formData.append("file", paymentFile);
+      formData.append("plan", paymentPlan);
+
+      const headers: Record<string, string> = {};
+      if (accessToken) headers["Authorization"] = `Bearer ${accessToken}`;
+
+      const res = await fetch(`${API_BASE}/payment/upload`, {
+        method: "POST",
+        headers,
+        body: formData,
+      });
+      const data = await res.json();
+
+      if (res.ok) {
+        setPaymentResult({ success: true, message: data.message || "Chek yuborildi! Admin tez orada tasdiqlaydi." });
+        setPaymentFile(null);
+        setPaymentPreview(null);
+      } else {
+        setPaymentResult({ success: false, message: data.message || "Xatolik yuz berdi" });
+      }
+    } catch {
+      setPaymentResult({ success: false, message: "Server bilan aloqa yo'q" });
+    } finally {
+      setPaymentLoading(false);
+    }
+  }, [paymentFile, paymentPlan, accessToken, showToast]);
+
+
 
   const showToast = useCallback((msg: string) => {
     setToast(msg);
@@ -2366,12 +2436,7 @@ export default function MemorixPage() {
                   <div className="pf-item pro-ok">✓ Statistika</div>
                   <div className="pf-item pro-ok">✓ Quiz rejimi</div>
                 </div>
-                <button className="plan-btn" style={{ background: "linear-gradient(135deg,#0ea5e9,#6366f1)" }} onClick={() => {
-                  const url = "https://t.me/memorix_uz_bot?start=starter";
-                  const tg = (window as any).Telegram?.WebApp;
-                  if (tg?.openTelegramLink) tg.openTelegramLink(url);
-                  else window.open(url, "_blank");
-                }}>Starter olish →</button>
+                <button className="plan-btn" style={{ background: "linear-gradient(135deg,#0ea5e9,#6366f1)" }} onClick={() => openPaymentModal("STARTER")}>Starter olish →</button>
               </div>
 
               {/* PREMIUM */}
@@ -2394,12 +2459,7 @@ export default function MemorixPage() {
                   <div className="pf-item pro-ok">✓ Spaced rep.</div>
                   <div className="pf-item pro-ok">⚡ Ustuvorlik</div>
                 </div>
-                <button className="plan-btn" onClick={() => {
-                  const url = "https://t.me/memorix_uz_bot?start=premium";
-                  const tg = (window as any).Telegram?.WebApp;
-                  if (tg?.openTelegramLink) tg.openTelegramLink(url);
-                  else window.open(url, "_blank");
-                }}>Premium olish →</button>
+                <button className="plan-btn" onClick={() => openPaymentModal("PRO")}>Premium olish →</button>
               </div>
             </div>
 
@@ -2525,6 +2585,128 @@ export default function MemorixPage() {
           {/* ── TOAST ── */}
           <div className={`toast${toastVisible ? " show" : ""}${sidebarOpen ? "" : " sidebar-closed"}`}>{toast}</div>
         </div>{/* end desktop-content */}
+
+        {/* ── PAYMENT MODAL ── */}
+        {paymentModalOpen && (
+          <div
+            style={{
+              position: "fixed", inset: 0, zIndex: 1000,
+              background: "rgba(30,27,75,0.45)", backdropFilter: "blur(4px)",
+              display: "flex", alignItems: "center", justifyContent: "center", padding: 16,
+            }}
+            onClick={closePaymentModal}
+          >
+            <div
+              className="glass"
+              style={{
+                width: "100%", maxWidth: 420, maxHeight: "90vh", overflowY: "auto",
+                background: "white", boxShadow: "0 20px 60px rgba(30,27,75,0.25)",
+                animation: "popIn 0.2s ease",
+              }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Header */}
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "20px 22px 0" }}>
+                <div style={{ fontSize: 17, fontWeight: 800, color: "var(--text)" }}>
+                  {paymentPlan === "PRO" ? "👑 Premium" : "⚡ Starter"} olish
+                </div>
+                <button
+                  onClick={closePaymentModal}
+                  style={{ background: "none", border: "none", fontSize: 22, color: "var(--text-dim)", cursor: "pointer", lineHeight: 1, padding: 4 }}
+                >
+                  ×
+                </button>
+              </div>
+
+              <div style={{ padding: 22, display: "flex", flexDirection: "column", gap: 16 }}>
+
+                {/* Plan tanlash */}
+                <div style={{ display: "flex", gap: 8 }}>
+                  {(["STARTER", "PRO"] as const).map((p) => (
+                    <button
+                      key={p}
+                      onClick={() => setPaymentPlan(p)}
+                      style={{
+                        flex: 1, padding: "10px 8px", borderRadius: 12, fontSize: 13, fontWeight: 700,
+                        cursor: "pointer", fontFamily: "inherit",
+                        border: paymentPlan === p ? "1.5px solid var(--accent)" : "1px solid var(--glass-border)",
+                        background: paymentPlan === p ? "rgba(108,92,231,0.08)" : "white",
+                        color: paymentPlan === p ? "var(--accent)" : "var(--text-mid)",
+                      }}
+                    >
+                      {p === "STARTER" ? "⚡ Starter" : "👑 Premium"}
+                    </button>
+                  ))}
+                </div>
+
+                {/* To'lov ko'rsatmasi */}
+                <div style={{ background: "rgba(234,179,8,0.08)", border: "1px solid rgba(234,179,8,0.25)", borderRadius: "var(--radius-sm)", padding: 14, fontSize: 13, color: "var(--text-mid)", lineHeight: 1.6 }}>
+                  <div style={{ fontWeight: 700, color: "#a16207", marginBottom: 4 }}>To'lov tartibi:</div>
+                  <div>1. Quyidagi kartaga o'tkazing:</div>
+                  <div style={{ fontFamily: "monospace", fontWeight: 800, fontSize: 15, color: "var(--text)", margin: "4px 0" }}>8600 1234 5678 9012</div>
+                  <div>2. Chekni (screenshot) pastda yuklang</div>
+                  <div>3. Admin 24 soat ichida tasdiqlaydi</div>
+                </div>
+
+                {/* Fayl yuklash */}
+                <div>
+                  <div style={{ fontSize: 13, fontWeight: 600, color: "var(--text-mid)", marginBottom: 8 }}>To'lov chekini yuklang:</div>
+                  <label
+                    style={{
+                      display: "block", border: "2px dashed var(--glass-border)", borderRadius: "var(--radius-sm)",
+                      padding: 16, textAlign: "center", cursor: "pointer", background: "var(--glass)",
+                    }}
+                  >
+                    {paymentPreview ? (
+                      <img src={paymentPreview} alt="Chek" style={{ maxHeight: 180, margin: "0 auto", borderRadius: 10, objectFit: "contain" }} />
+                    ) : (
+                      <div style={{ color: "var(--text-dim)" }}>
+                        <div style={{ fontSize: 28, marginBottom: 4 }}>📎</div>
+                        <div style={{ fontSize: 13 }}>Chek rasmini tanlang</div>
+                        <div style={{ fontSize: 11, marginTop: 2 }}>JPG, PNG, WEBP — max 5MB</div>
+                      </div>
+                    )}
+                    <input
+                      ref={paymentFileInputRef}
+                      type="file"
+                      accept="image/*"
+                      onChange={handlePaymentFileChange}
+                      style={{ display: "none" }}
+                    />
+                  </label>
+                </div>
+
+                {/* Natija */}
+                {paymentResult && (
+                  <div style={{
+                    borderRadius: "var(--radius-sm)", padding: 12, fontSize: 13, fontWeight: 600,
+                    background: paymentResult.success ? "rgba(16,185,129,0.08)" : "rgba(239,68,68,0.08)",
+                    border: `1px solid ${paymentResult.success ? "rgba(16,185,129,0.25)" : "rgba(239,68,68,0.25)"}`,
+                    color: paymentResult.success ? "var(--success)" : "var(--danger)",
+                  }}>
+                    {paymentResult.success ? "✅ " : "❌ "}{paymentResult.message}
+                  </div>
+                )}
+
+                {/* Yuborish */}
+                <button
+                  onClick={submitPaymentCheck}
+                  disabled={paymentLoading || !paymentFile || !!paymentResult?.success}
+                  style={{
+                    width: "100%", padding: "13px 20px", borderRadius: 12, border: "none",
+                    background: paymentLoading || !paymentFile || paymentResult?.success
+                      ? "rgba(108,92,231,0.25)"
+                      : "linear-gradient(135deg,var(--accent),var(--accent2))",
+                    color: "white", fontSize: 14, fontWeight: 700, fontFamily: "inherit",
+                    cursor: paymentLoading || !paymentFile || paymentResult?.success ? "not-allowed" : "pointer",
+                  }}
+                >
+                  {paymentLoading ? "Yuklanmoqda..." : "Chekni yuborish"}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </>
   );
