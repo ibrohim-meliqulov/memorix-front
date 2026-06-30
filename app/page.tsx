@@ -11,6 +11,15 @@ interface Flashcard {
   example?: string;
 }
 
+interface Notification {
+  id: number;
+  title: string;
+  message: string;
+  type: "INFO" | "SUCCESS" | "WARNING" | "PAYMENT" | "STREAK";
+  read: boolean;
+  createdAt: string;
+}
+
 interface Deck {
   id: number;
   title: string;
@@ -228,6 +237,13 @@ export default function MemorixPage() {
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // Notifications
+  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [unreadCount, setUnreadCount] = useState(0);
+  const [notificationsOpen, setNotificationsOpen] = useState(false);
+  const [notificationsLoading, setNotificationsLoading] = useState(false);
+
+
   // ─── API HELPER ───────────────────────────────────────────────────────────
 
   const apiCall = useCallback(
@@ -400,6 +416,69 @@ export default function MemorixPage() {
   useEffect(() => {
     if (accessToken) loadHomeData();
   }, [accessToken, loadHomeData]);
+
+
+  // ─── NOTIFICATIONS ────────────────────────────────────────────────────────
+
+  const fetchUnreadCount = useCallback(async () => {
+    if (!accessToken) return;
+    try {
+      const data = await apiCall("/notifications/unread-count");
+      setUnreadCount(data.count || 0);
+    } catch {
+      // sokin xato — badge ko'rinmasa ham muammo emas
+    }
+  }, [accessToken, apiCall]);
+
+  const openNotifications = useCallback(async () => {
+    setNotificationsOpen(true);
+    setNotificationsLoading(true);
+    try {
+      const data = await apiCall("/notifications");
+      setNotifications(data);
+    } catch (err: any) {
+      showToast("Xabarlarni yuklashda xatolik: " + err?.message);
+    } finally {
+      setNotificationsLoading(false);
+    }
+  }, [apiCall, showToast]);
+
+  const closeNotifications = useCallback(() => {
+    setNotificationsOpen(false);
+  }, []);
+
+  const markNotificationRead = useCallback(async (id: number) => {
+    setNotifications(prev => prev.map(n => n.id === id ? { ...n, read: true } : n));
+    setUnreadCount(prev => Math.max(0, prev - 1));
+    try {
+      await apiCall(`/notifications/${id}/read`, { method: "PATCH" });
+    } catch {
+      // UI allaqachon yangilangan — xatoni sokin tashlab yuboramiz
+    }
+  }, [apiCall]);
+
+  const markAllNotificationsRead = useCallback(async () => {
+    setNotifications(prev => prev.map(n => ({ ...n, read: true })));
+    setUnreadCount(0);
+    try {
+      await apiCall("/notifications/read-all", { method: "PATCH" });
+    } catch {
+      showToast("Xatolik yuz berdi");
+    }
+  }, [apiCall, showToast]);
+
+  // Token bo'lganda va home screen'ga qaytganda unread count yangilanadi
+  useEffect(() => {
+    if (accessToken) fetchUnreadCount();
+  }, [accessToken, fetchUnreadCount]);
+
+  // Har 60 soniyada yangi xabar bor-yo'qligini tekshiradi
+  useEffect(() => {
+    if (!accessToken) return;
+    const interval = setInterval(fetchUnreadCount, 60000);
+    return () => clearInterval(interval);
+  }, [accessToken, fetchUnreadCount]);
+
 
   // ─── SCREEN SWITCH ────────────────────────────────────────────────────────
 
@@ -1582,14 +1661,24 @@ export default function MemorixPage() {
                 {user ? `Salom, ${userName} 👋` : "Xush kelibsiz 👋"}
               </div>
             </div>
-            {/* Mobile: avatar — profile screen ga o'tadi */}
             {user && (
-              <button
-                onClick={() => switchScreen("account")}
-                className="header-avatar-btn"
-              >
-                <div className="avatar">{avatarLetter}</div>
-              </button>
+              <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                {/* Bell — notifications */}
+                <button onClick={openNotifications} className="bell-btn">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9" />
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+                  </svg>
+                  {unreadCount > 0 && <span className="bell-badge">{unreadCount > 9 ? "9+" : unreadCount}</span>}
+                </button>
+                {/* Mobile: avatar — profile screen ga o'tadi */}
+                <button
+                  onClick={() => switchScreen("account")}
+                  className="header-avatar-btn"
+                >
+                  <div className="avatar">{avatarLetter}</div>
+                </button>
+              </div>
             )}
           </div>
 
@@ -2535,6 +2624,14 @@ export default function MemorixPage() {
                   </svg>
                   <span className="sidebar-logo-text">Memorix</span>
                 </div>
+                {/* Bell — desktop */}
+                <button onClick={openNotifications} className="bell-btn sidebar-bell">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9" />
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+                  </svg>
+                  {unreadCount > 0 && <span className="bell-badge">{unreadCount > 9 ? "9+" : unreadCount}</span>}
+                </button>
                 {/* Toggle — har doim ko'rinadi */}
                 <button
                   className="sidebar-toggle"
@@ -2615,6 +2712,90 @@ export default function MemorixPage() {
           {/* ── TOAST ── */}
           <div className={`toast${toastVisible ? " show" : ""}${sidebarOpen ? "" : " sidebar-closed"}`}>{toast}</div>
         </div>{/* end desktop-content */}
+
+        {/* ── NOTIFICATIONS PANEL ── */}
+        {notificationsOpen && (
+          <div
+            style={{
+              position: "fixed", inset: 0, zIndex: 1000,
+              background: "rgba(30,27,75,0.45)", backdropFilter: "blur(4px)",
+              display: "flex", alignItems: "center", justifyContent: "center", padding: 16,
+            }}
+            onClick={closeNotifications}
+          >
+            <div
+              className="glass"
+              style={{
+                width: "100%", maxWidth: 420, maxHeight: "80vh", display: "flex", flexDirection: "column",
+                background: "white", boxShadow: "0 20px 60px rgba(30,27,75,0.25)",
+                animation: "popIn 0.2s ease", overflow: "hidden",
+              }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Header */}
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "18px 20px", borderBottom: "1px solid var(--glass-border)" }}>
+                <div style={{ fontSize: 16, fontWeight: 800, color: "var(--text)" }}>🔔 Xabarlar</div>
+                <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                  {notifications.some(n => !n.read) && (
+                    <button
+                      onClick={markAllNotificationsRead}
+                      style={{ background: "none", border: "none", color: "var(--accent)", fontSize: 12, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}
+                    >
+                      Hammasini o'qish
+                    </button>
+                  )}
+                  <button
+                    onClick={closeNotifications}
+                    style={{ background: "none", border: "none", fontSize: 22, color: "var(--text-dim)", cursor: "pointer", lineHeight: 1, padding: 4 }}
+                  >
+                    ×
+                  </button>
+                </div>
+              </div>
+
+              {/* Body */}
+              <div style={{ overflowY: "auto", padding: "8px 0" }}>
+                {notificationsLoading ? (
+                  <div style={{ padding: 40, textAlign: "center" }}>
+                    <div className="spinner" style={{ margin: "0 auto" }} />
+                  </div>
+                ) : notifications.length === 0 ? (
+                  <div style={{ padding: 40, textAlign: "center", color: "var(--text-dim)" }}>
+                    <div style={{ fontSize: 32, marginBottom: 8 }}>📭</div>
+                    <div style={{ fontSize: 14 }}>Hozircha xabar yo'q</div>
+                  </div>
+                ) : (
+                  notifications.map((n) => (
+                    <div
+                      key={n.id}
+                      onClick={() => !n.read && markNotificationRead(n.id)}
+                      style={{
+                        padding: "12px 20px", cursor: n.read ? "default" : "pointer",
+                        background: n.read ? "transparent" : "rgba(108,92,231,0.05)",
+                        borderLeft: n.read ? "3px solid transparent" : "3px solid var(--accent)",
+                        display: "flex", gap: 10, alignItems: "flex-start",
+                      }}
+                    >
+                      <div style={{ fontSize: 18, flexShrink: 0, marginTop: 1 }}>
+                        {n.type === "PAYMENT" ? "💳" : n.type === "STREAK" ? "🔥" : n.type === "WARNING" ? "⚠️" : n.type === "SUCCESS" ? "✅" : "ℹ️"}
+                      </div>
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <div style={{ fontSize: 13.5, fontWeight: 700, color: "var(--text)" }}>{n.title}</div>
+                        <div style={{ fontSize: 12.5, color: "var(--text-mid)", marginTop: 2, lineHeight: 1.4 }}>{n.message}</div>
+                        <div style={{ fontSize: 11, color: "var(--text-dim)", marginTop: 4 }}>
+                          {new Date(n.createdAt).toLocaleString("uz-UZ", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}
+                        </div>
+                      </div>
+                      {!n.read && <div style={{ width: 7, height: 7, borderRadius: "50%", background: "var(--accent)", flexShrink: 0, marginTop: 5 }} />}
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
+
 
         {/* ── PAYMENT MODAL ── */}
         {paymentModalOpen && (
