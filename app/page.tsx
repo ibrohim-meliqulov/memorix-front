@@ -245,17 +245,6 @@ export default function MemorixPage() {
     [accessToken]
   );
 
-
-
-
-
-  const showToast = useCallback((msg: string) => {
-    setToast(msg);
-    setToastVisible(true);
-    if (toastTimer.current) clearTimeout(toastTimer.current);
-    toastTimer.current = setTimeout(() => setToastVisible(false), 2800);
-  }, []);
-
   // ─── PAYMENT ──────────────────────────────────────────────────────────────
 
   const openPaymentModal = useCallback((plan: "STARTER" | "PRO") => {
@@ -279,6 +268,14 @@ export default function MemorixPage() {
     setPaymentFile(selected);
     setPaymentPreview(URL.createObjectURL(selected));
     setPaymentResult(null);
+  }, []);
+
+
+  const showToast = useCallback((msg: string) => {
+    setToast(msg);
+    setToastVisible(true);
+    if (toastTimer.current) clearTimeout(toastTimer.current);
+    toastTimer.current = setTimeout(() => setToastVisible(false), 2800);
   }, []);
 
   const submitPaymentCheck = useCallback(async () => {
@@ -316,8 +313,6 @@ export default function MemorixPage() {
       setPaymentLoading(false);
     }
   }, [paymentFile, paymentPlan, accessToken, showToast]);
-
-
 
   // ─── AUTH ─────────────────────────────────────────────────────────────────
 
@@ -2613,6 +2608,9 @@ export default function MemorixPage() {
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "20px 22px 0" }}>
                 <div style={{ fontSize: 17, fontWeight: 800, color: "var(--text)" }}>
                   {paymentPlan === "PRO" ? "👑 Premium" : "⚡ Starter"} olish
+                  <span style={{ fontSize: 13, fontWeight: 600, color: "var(--accent)", marginLeft: 8 }}>
+                    {paymentPlan === "PRO" ? "29 900 so'm" : "9 900 so'm"}
+                  </span>
                 </div>
                 <button
                   onClick={closePaymentModal}
@@ -2631,14 +2629,19 @@ export default function MemorixPage() {
                       key={p}
                       onClick={() => setPaymentPlan(p)}
                       style={{
-                        flex: 1, padding: "10px 8px", borderRadius: 12, fontSize: 13, fontWeight: 700,
+                        flex: 1, padding: "10px 8px", borderRadius: 12,
                         cursor: "pointer", fontFamily: "inherit",
                         border: paymentPlan === p ? "1.5px solid var(--accent)" : "1px solid var(--glass-border)",
                         background: paymentPlan === p ? "rgba(108,92,231,0.08)" : "white",
                         color: paymentPlan === p ? "var(--accent)" : "var(--text-mid)",
                       }}
                     >
-                      {p === "STARTER" ? "⚡ Starter" : "👑 Premium"}
+                      <div style={{ fontSize: 13, fontWeight: 700 }}>
+                        {p === "STARTER" ? "⚡ Starter" : "👑 Premium"}
+                      </div>
+                      <div style={{ fontSize: 12, fontWeight: 600, marginTop: 2, opacity: 0.8 }}>
+                        {p === "STARTER" ? "9 900 so'm/oy" : "29 900 so'm/oy"}
+                      </div>
                     </button>
                   ))}
                 </div>
@@ -2647,7 +2650,8 @@ export default function MemorixPage() {
                 <div style={{ background: "rgba(234,179,8,0.08)", border: "1px solid rgba(234,179,8,0.25)", borderRadius: "var(--radius-sm)", padding: 14, fontSize: 13, color: "var(--text-mid)", lineHeight: 1.6 }}>
                   <div style={{ fontWeight: 700, color: "#a16207", marginBottom: 4 }}>To'lov tartibi:</div>
                   <div>1. Quyidagi kartaga o'tkazing:</div>
-                  <div style={{ fontFamily: "monospace", fontWeight: 800, fontSize: 15, color: "var(--text)", margin: "4px 0" }}>8600 1234 5678 9012</div>
+                  <div style={{ fontFamily: "monospace", fontWeight: 800, fontSize: 15, color: "var(--text)", margin: "4px 0" }}>9860 0121 0956 1501</div>
+                  <div style={{ fontSize: 12, color: "var(--text-dim)", marginBottom: 6 }}>Meliqulov Ibrohim</div>
                   <div>2. Chekni (screenshot) pastda yuklang</div>
                   <div>3. Admin 24 soat ichida tasdiqlaydi</div>
                 </div>
