@@ -245,6 +245,17 @@ export default function MemorixPage() {
     [accessToken]
   );
 
+
+
+
+
+  const showToast = useCallback((msg: string) => {
+    setToast(msg);
+    setToastVisible(true);
+    if (toastTimer.current) clearTimeout(toastTimer.current);
+    toastTimer.current = setTimeout(() => setToastVisible(false), 2800);
+  }, []);
+
   // ─── PAYMENT ──────────────────────────────────────────────────────────────
 
   const openPaymentModal = useCallback((plan: "STARTER" | "PRO") => {
@@ -307,13 +318,6 @@ export default function MemorixPage() {
   }, [paymentFile, paymentPlan, accessToken, showToast]);
 
 
-
-  const showToast = useCallback((msg: string) => {
-    setToast(msg);
-    setToastVisible(true);
-    if (toastTimer.current) clearTimeout(toastTimer.current);
-    toastTimer.current = setTimeout(() => setToastVisible(false), 2800);
-  }, []);
 
   // ─── AUTH ─────────────────────────────────────────────────────────────────
 
