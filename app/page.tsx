@@ -1825,11 +1825,39 @@ export default function MemorixPage() {
                   />
                 </div>
                 {imagePreviewUrl && (
-                  <img
-                    src={imagePreviewUrl}
-                    alt="preview"
-                    style={{ width: "100%", borderRadius: "var(--radius)", marginTop: 12 }}
-                  />
+                  <div style={{ position: "relative", marginTop: 12 }}>
+                    <img
+                      src={imagePreviewUrl}
+                      alt="preview"
+                      style={{ width: "100%", borderRadius: "var(--radius)", display: "block" }}
+                    />
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedImageFile(null);
+                        setImagePreviewUrl("");
+                        if (fileInputRef.current) fileInputRef.current.value = "";
+                      }}
+                      style={{
+                        position: "absolute",
+                        top: 8,
+                        right: 8,
+                        width: 30,
+                        height: 30,
+                        borderRadius: "50%",
+                        border: "none",
+                        background: "rgba(30,27,75,0.65)",
+                        color: "#fff",
+                        fontSize: 16,
+                        lineHeight: 1,
+                        cursor: "pointer",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >✕</button>
+                  </div>
                 )}
               </div>
             )}
