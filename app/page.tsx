@@ -2039,13 +2039,13 @@ export default function MemorixPage() {
                 {[
                   {
                     emoji: "📚", val: stats?.totalDecks ?? 0, label: "To'plamlar", color: "#1e293b",
-                    bar: stats?.limits?.decks && stats.limits.decks !== Infinity
+                    bar: stats?.limits?.decks && stats.limits.decks < 999999
                       ? { pct: Math.min(100, ((stats.totalDecks ?? 0) / (stats.limits.decks)) * 100), color: "linear-gradient(90deg,#6C5CE7,#a855f7)", text: `${stats.totalDecks ?? 0} / ${stats.limits.decks}` }
                       : null
                   },
                   {
                     emoji: "📝", val: stats?.totalFlashcards ?? 0, label: "So'zlar", color: "#1e293b",
-                    bar: stats?.limits?.cards && stats.limits.cards !== Infinity
+                    bar: stats?.limits?.cards && stats.limits.cards < 999999
                       ? { pct: Math.min(100, ((stats.totalFlashcards ?? 0) / (stats.limits.cards)) * 100), color: "linear-gradient(90deg,#10b981,#0ea5e9)", text: `${stats.totalFlashcards ?? 0} / ${stats.limits.cards ?? 30}` }
                       : null
                   },
@@ -2105,17 +2105,20 @@ export default function MemorixPage() {
                   {[
                     { label: "To'plamlar", val: stats?.totalDecks ?? 0, max: stats?.limits?.decks ?? 3, color: "linear-gradient(90deg,#6C5CE7,#a855f7)" },
                     { label: "So'zlar", val: stats?.totalFlashcards ?? 0, max: stats?.limits?.cards ?? 30, color: "linear-gradient(90deg,#10b981,#0ea5e9)" },
-                  ].map((item, i) => (
-                    <div key={i}>
-                      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
-                        <div style={{ fontSize: 12, color: "#64748b" }}>{item.label}</div>
-                        <div style={{ fontSize: 12, fontWeight: 700, color: "#1e293b" }}>{item.val}<span style={{ color: "#94a3b8", fontWeight: 400 }}>/{item.max}</span></div>
+                  ].map((item, i) => {
+                    const isUnlimited = item.max >= 999999;
+                    return (
+                      <div key={i}>
+                        <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
+                          <div style={{ fontSize: 12, color: "#64748b" }}>{item.label}</div>
+                          <div style={{ fontSize: 12, fontWeight: 700, color: "#1e293b" }}>{item.val}<span style={{ color: "#94a3b8", fontWeight: 400 }}>/{isUnlimited ? "∞" : item.max}</span></div>
+                        </div>
+                        <div style={{ height: 6, background: "rgba(108,92,231,0.1)", borderRadius: 100, overflow: "hidden" }}>
+                          <div style={{ height: "100%", width: isUnlimited ? "100%" : `${Math.min(100, (item.val / item.max) * 100)}%`, background: item.color, borderRadius: 100 }} />
+                        </div>
                       </div>
-                      <div style={{ height: 6, background: "rgba(108,92,231,0.1)", borderRadius: 100, overflow: "hidden" }}>
-                        <div style={{ height: "100%", width: `${Math.min(100, (item.val / item.max) * 100)}%`, background: item.color, borderRadius: 100 }} />
-                      </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
 
