@@ -51,7 +51,7 @@ interface QuizScore {
 }
 
 type Screen = "home" | "create" | "study" | "quiz" | "pro" | "account" | "progress";
-type Lang = "english" | "russian" | "korean";
+type Lang = "english" | "russian" | "korean" | "german";
 type InputMethod = "text" | "image";
 type PricingType = "monthly" | "yearly";
 type QuizMode = "choice" | "typing" | "mixed" | null;
@@ -66,11 +66,13 @@ const LANG_LABELS: Record<Lang, string> = {
   english: "🇬🇧 Ingliz",
   russian: "🇷🇺 Rus",
   korean: "🇰🇷 Koreys",
+  german: "🇩🇪 Nemis",
 };
 const LANG_SPEECH: Record<Lang, string> = {
   english: "en-US",
   russian: "ru-RU",
   korean: "ko-KR",
+  german: "de-DE",
 };
 
 const OB_SLIDES = [
@@ -1863,7 +1865,7 @@ export default function MemorixPage() {
 
             <div className="field-label">O'rganish tili</div>
             <div className="seg-tabs">
-              {(["english", "russian", "korean"] as Lang[]).map((lang) => (
+              {(["english", "russian", "korean", "german"] as Lang[]).map((lang) => (
                 <button
                   key={lang}
                   className={`seg-tab${selectedLang === lang ? " active" : ""}`}
@@ -1891,7 +1893,8 @@ export default function MemorixPage() {
                 className="mx-textarea"
                 placeholder={
                   selectedLang === "english" ? "Inglizcha matn..." :
-                    selectedLang === "russian" ? "Ruscha matn..." : "Koreycha matn..."
+                    selectedLang === "russian" ? "Ruscha matn..." :
+                      selectedLang === "korean" ? "Koreycha matn..." : "Nemischa matn..."
                 }
                 value={textInput}
                 onChange={(e) => setTextInput(e.target.value)}
