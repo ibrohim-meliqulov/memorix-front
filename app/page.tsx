@@ -34,6 +34,10 @@ interface Stats {
   plan: string;
   streak: number;
   totalStudied: number;
+  totalXp?: number;
+  level?: number;
+  xpIntoLevel?: number;
+  xpForNextLevel?: number;
   weekly: number[];
   limits?: { decks: number; cards: number };
 }
@@ -670,18 +674,22 @@ export default function MemorixPage() {
     if (nextIdx >= studyQueue.length) {
       setStudyFinished(true);
       setStudyIndex(nextIdx);
-      // Background: session + streak
+      // Background: session + streak + XP
       setTimeout(async () => {
         try {
-          await apiCall("/flashcards/session", {
+          const sessionResult = await apiCall("/flashcards/session", {
             method: "POST",
             body: JSON.stringify({ cardsStudied: studyQueue.length }),
           });
           const newStats = await apiCall("/users/me/stats");
+          setStats(newStats);
+
           const newStreak = newStats.streak ?? 0;
           const badge = getStreakBadge(newStreak);
           if (badge && [3, 7, 14, 30].includes(newStreak)) {
             setCelebration({ streak: newStreak, badge });
+          } else if (sessionResult?.xpEarned) {
+            showToast(`⭐ +${sessionResult.xpEarned} XP olindi!`);
           }
         } catch { }
       }, 300);
@@ -1728,6 +1736,48 @@ export default function MemorixPage() {
                     {streakBadge && (
                       <div className={`streak-badge-pill ${streakBadge.cls}`}>{streakBadge.label}</div>
                     )}
+                  </div>
+                )}
+
+                {/* Level / XP Banner */}
+                {stats && (stats.totalXp ?? 0) >= 0 && (
+                  <div
+                    className="glass"
+                    style={{
+                      display: "flex", alignItems: "center", gap: 14,
+                      padding: "14px 16px", marginTop: 10, marginBottom: 10,
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: 44, height: 44, borderRadius: "50%",
+                        background: "linear-gradient(135deg, var(--accent), var(--accent2))",
+                        display: "flex", alignItems: "center", justifyContent: "center",
+                        color: "white", fontWeight: 800, fontSize: 15, flexShrink: 0,
+                      }}
+                    >
+                      {stats.level ?? 1}
+                    </div>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
+                        <span style={{ fontSize: 13, fontWeight: 700, color: "var(--text)" }}>
+                          Level {stats.level ?? 1}
+                        </span>
+                        <span style={{ fontSize: 11.5, color: "var(--text-dim)" }}>
+                          {stats.xpIntoLevel ?? 0} / {stats.xpForNextLevel ?? 100} XP
+                        </span>
+                      </div>
+                      <div style={{ height: 6, background: "rgba(108,92,231,0.12)", borderRadius: 999, overflow: "hidden" }}>
+                        <div
+                          style={{
+                            height: "100%", borderRadius: 999,
+                            width: `${Math.min(100, ((stats.xpIntoLevel ?? 0) / (stats.xpForNextLevel ?? 100)) * 100)}%`,
+                            background: "linear-gradient(90deg, var(--accent), var(--accent2))",
+                            transition: "width 0.4s ease",
+                          }}
+                        />
+                      </div>
+                    </div>
                   </div>
                 )}
 
